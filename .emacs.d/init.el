@@ -61,8 +61,7 @@
   "Set comment char for current buffer."
   (interactive "sComment char: ")
   (setq comment-start char)
-  (font-lock-add-keywords nil `((,(concat comment-start ".+") . font-lock-comment-face)))
-  )
+  (font-lock-add-keywords nil `((,(concat comment-start ".+") . font-lock-comment-face))))
 
 (defun hn-origami-fold-style-triple-braces ()
   "Set origami-fold-style to triple-braces."

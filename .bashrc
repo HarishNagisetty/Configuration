@@ -22,11 +22,6 @@ export EDITOR="vim"
 # Aliases #
 ###########
 
-#alias vi=vimx
-#alias vim=vimx
-alias vi=~/nobackup/nvim.appimage
-alias vim=~/nobackup/nvim.appimage
-
 alias ls='ls --color=auto -F'
 alias l=ls
 alias ll="ls -o"
@@ -35,10 +30,6 @@ alias la="ls -a"
 alias ..="cd ..; ls"
 alias ....="cd ../..; ls"
 alias ......="cd ../../..; ls"
-
-alias hn-cd-config="cd ~/Documents/Configuration/; ls"
-alias hn-cd-usefulscripts="cd ~/Documents/UsefulScripts/; ls"
-alias hn-cd-ledger="cd ~/Cloud/Ledger/; ls"
 
 alias hn-copy-pwd="pwd | tr -d '\n' | xclip; pwd"
 
@@ -52,7 +43,7 @@ hn-gen-password () {
     tr -dc A-Za-z0-9 < /dev/urandom | head -c $1 ; echo ''
 }
 
-# Inactive {{{1
+# Inactive {{{
 #hn-extract-archive () {
 #    if [ -f $1 ] ; then
 #        case $1 in
@@ -84,3 +75,13 @@ hn-gen-password () {
 #        du -sh * | sort -h
 #    fi
 #}
+# }}}
+
+###########
+# Private #
+###########
+
+if [ -f ~/.bashrc.private ]; then
+    source ~/.bashrc.private
+fi
+
