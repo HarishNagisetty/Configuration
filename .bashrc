@@ -36,6 +36,7 @@ alias ..="cd ..; ls"
 alias ....="cd ../..; ls"
 alias ......="cd ../../..; ls"
 
+alias hn-cd-config="cd ~/Documents/Configuration/; ls"
 alias hn-cd-usefulscripts="cd ~/Documents/UsefulScripts/; ls"
 alias hn-cd-ledger="cd ~/Cloud/Ledger/; ls"
 
