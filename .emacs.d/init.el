@@ -9,7 +9,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(origami-show-fold-header t)
- '(package-selected-packages '(undo-fu whitespace-cleanup-mode key-chord evil))
+ '(package-selected-packages
+   '(org-bullets undo-fu whitespace-cleanup-mode key-chord evil))
  '(safe-local-variable-values '((origami-fold-style . triple-braces))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -41,7 +42,12 @@
 (global-whitespace-mode 1)
 
 ;; org mode
+(setq org-log-done 'time)
 (require 'org)
+
+;; org-bullets
+(require 'org-bullets)
+(add-hook 'org-mode-hook 'org-bullets-mode)
 
 ;; origami
 (add-to-list 'load-path "~/.emacs.d/origami.el/")
@@ -67,3 +73,11 @@
   "Set origami-fold-style to triple-braces."
   (interactive)
   (set (make-local-variable 'origami-fold-style) 'triple-braces))
+
+(defun hn-org-archive-done-tasks ()
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (org-archive-subtree)
+     (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
+   "/DONE" nil))
