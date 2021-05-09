@@ -8,6 +8,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-babel-load-languages '((emacs-lisp . t) (python . t) (perl . t) (shell . t)))
  '(origami-show-fold-header t)
  '(package-selected-packages
    '(org-bullets undo-fu whitespace-cleanup-mode key-chord evil))
@@ -28,6 +29,7 @@
 (setq evil-undo-system 'undo-fu)
 (setq evil-want-C-u-scroll t)
 (require 'evil)
+(evil-select-search-module 'evil-search-module 'evil-search)
 (evil-mode 1)
 
 ;; key-chord
@@ -54,12 +56,17 @@
 (require 'origami)
 
 ;; General Settings
+
 (setq inhibit-splash-screen t)
-(global-display-line-numbers-mode t)
+
+(if (fboundp 'global-display-line-numbers-mode)
+    (global-display-line-numbers-mode t)
+  (linum-mode))
+
 (show-paren-mode t)
 (column-number-mode t)
 (setq-default indent-tabs-mode nil)
-
+(setq epa-armor t)
 
 ;; Custom Functions
 
@@ -75,6 +82,7 @@
   (set (make-local-variable 'origami-fold-style) 'triple-braces))
 
 (defun hn-org-archive-done-tasks ()
+  "Archive all DONE tasks in Org buffer"
   (interactive)
   (org-map-entries
    (lambda ()
