@@ -61,7 +61,7 @@
 
 (if (fboundp 'global-display-line-numbers-mode)
     (global-display-line-numbers-mode t)
-  (linum-mode))
+  (global-linum-mode))
 
 (show-paren-mode t)
 (column-number-mode t)
