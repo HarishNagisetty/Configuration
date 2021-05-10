@@ -73,7 +73,7 @@
 
 (if (hn-font-exists-p "Source Code Pro")
     (set-face-attribute 'default nil :font "Source Code Pro" :height 114)
-  (set-face-attribute 'default nil :height 114))
+  (set-face-attribute 'default nil :height 124))
 
 (defun hn-set-comment-char (char)
   "Set comment char for current buffer."
