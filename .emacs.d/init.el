@@ -18,7 +18,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 113 :width normal))))
  '(region ((t (:extend t :background "medium spring green" :distant-foreground "gtk_selection_fg_color")))))
 
 ;; undo-fu
@@ -68,7 +67,13 @@
 (setq-default indent-tabs-mode nil)
 (setq epa-armor t)
 
-;; Custom Functions
+(defun hn-font-exists-p (font)
+  "Check if font exists"
+  (if (null (x-list-fonts font)) nil t))
+
+(if (hn-font-exists-p "Source Code Pro")
+    (set-face-attribute 'default nil :font "Source Code Pro" :height 114)
+  (set-face-attribute 'default nil :height 114))
 
 (defun hn-set-comment-char (char)
   "Set comment char for current buffer."
