@@ -54,7 +54,15 @@
 (add-to-list 'load-path "~/.emacs.d/origami.el/")
 (require 'origami)
 
+;; ido
+(require 'ido)
+(ido-mode t)
+(setq ido-enable-flex-matching t)
+
 ;; General Settings
+
+(setq desktop-restore-frames nil)
+(desktop-save-mode t)
 
 (setq inhibit-splash-screen t)
 
