@@ -59,6 +59,13 @@
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 
+(global-set-key (kbd "C-x r b")
+                (lambda ()
+                  (interactive)
+                  (bookmark-jump
+                   (ido-completing-read "Jump to bookmark: "
+                                        (bookmark-all-names)))))
+
 ;; General Settings
 
 (setq desktop-restore-frames nil)
