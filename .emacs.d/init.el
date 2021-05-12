@@ -39,8 +39,7 @@
 
 ;; whitespace
 (require 'whitespace)
-(setq whitespace-line-column 72)
-(setq whitespace-style '(tabs tab-mark face lines-tail))
+(setq whitespace-style '(tabs tab-mark))
 (global-whitespace-mode 1)
 
 ;; org mode
