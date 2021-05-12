@@ -66,6 +66,13 @@
                    (ido-completing-read "Jump to bookmark: "
                                         (bookmark-all-names)))))
 
+;; verilog mode
+(setq verilog-indent-level-directive 0)
+(setq verilog-indent-level-behavioral 4)
+(setq verilog-indent-level-declaration 4)
+(setq verilog-indent-level-module 4)
+(setq verilog-indent-level 4)
+
 ;; General Settings
 
 (setq desktop-restore-frames nil)
