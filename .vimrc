@@ -14,6 +14,7 @@ set incsearch
 set ruler
 set background=light
 set laststatus=1
+set colorcolumn=72
 
 let mapleader = ","
 
