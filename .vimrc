@@ -14,30 +14,57 @@ set incsearch
 set ruler
 set background=light
 set laststatus=1
+set autochdir
 
 let mapleader = ","
 
 inoremap jk <Esc>
 
-" Execute Python code and put result on next line
-xnoremap <leader>xpy yP'<O<Esc>gv:!python<CR>
+" Custom Commands {{{2
 
-" Scroll horizontally
-"nnoremap <C-L> zL
-"nnoremap <C-H> zH
+" Commands: HNCopyFileName {{{3
 
-" For terminal mode
+command! HNCopyFileName      let @*=expand("%")<CR>
+command! HNCopyFullFileName  let @*=expand("%:p")<CR>
+
+" Function: HNExecuteRange {{{3
+"
+" Filter range with command in new buffer
+"
+function! HNExecuteRange(command) range
+    " Yank range and restore register
+    let savereg = @a
+    execute "normal! " . a:firstline . "gg\"ay" . a:lastline . "gg"
+    let input = @a
+    let @a = l:savereg
+    " Open a new split and set it up.
+    split __Results__
+    normal! ggdG
+    setlocal buftype=nofile
+    " Paste yanked range
+    call append(0, split(input, '\v\n'))
+    execute "normal! ggVG:!" . a:command . "\<CR>"
+endfunction
+
+" Command: HNExecutePython {{{3
+
+command! -range=% HNExecutePython <line1>,<line2>call HNExecuteRange("python")
+
+" Terminal Mode {{{2
+
 if exists (":tnoremap")
     tnoremap <Esc> <C-\><C-n>
     tnoremap jk <C-\><C-n>
     tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 endif
 
-" Show tab as backtick {{{2
+" List Characters {{{2
+
 set list
 set listchars=tab:\`\ 
 
-" Tab press is 4 spaces {{{2
+" Tab Settings {{{2
+
 set tabstop=8
 set softtabstop=4
 set shiftwidth=4
@@ -45,6 +72,7 @@ set expandtab
 
 " Autocommands {{{2
 " FileType: TeX {{{3
+
 augroup vimrc_tex
     au!
     au FileType tex setlocal softtabstop=2
@@ -52,12 +80,14 @@ augroup vimrc_tex
 augroup END
 
 " FileType: Markdown {{{3
+
 augroup vimrc_markdown
     au!
     "au FileType markdown iabbrev <buffer> mdcm [//]: # (
 augroup END
 
 " FileType: Python {{{3
+
 augroup vimrc_python
     au!
     au FileType python set foldmethod=indent
