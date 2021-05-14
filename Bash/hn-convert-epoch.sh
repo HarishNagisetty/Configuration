@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
 # hn-convert-epoch.sh
-#  Convert the trailing number of all arguments from an epoch timestamp to a
-#  human readable timestamp.
+#  Convert the trailing number of all arguments from an epoch
+#  timestamp to a human readable timestamp.
 
 
 for i in "$@"; do
