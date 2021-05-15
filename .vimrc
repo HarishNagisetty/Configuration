@@ -46,8 +46,7 @@ function! HNExecuteRange(command) range
 endfunction
 
 command! -range=% HNExecutePython <line1>,<line2>call HNExecuteRange("python")
-command! -range=% HNExecutePerl <line1>,<line2>call HNExecuteRange("perl")
-command! -range=% HNExecuteBash <line1>,<line2>call HNExecuteRange("bash -s")
+command! -range=% HNExecuteBash <line1>,<line2>call HNExecuteRange("bash")
 
 " Terminal Mode {{{2
 
