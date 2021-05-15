@@ -23,7 +23,15 @@ let mapleader = ","
 
 inoremap jk <Esc>
 
+" Show Buffers : b
 nnoremap <Leader>b :ls<CR>:b<Space>
+
+" Tags : t
+" Follow Tag
+nnoremap <Leader>tf g]
+" Pop
+nnoremap <Leader>tp <C-t>
+
 
 " Custom Commands {{{2
 " Commands: HNCopyFileName {{{3
