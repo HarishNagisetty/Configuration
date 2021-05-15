@@ -15,6 +15,7 @@ set ruler
 set background=light
 set laststatus=1
 set autochdir
+set autoindent
 
 let mapleader = ","
 
@@ -89,6 +90,16 @@ augroup END
 augroup vimrc_python
     au!
     au FileType python set foldmethod=indent
+augroup END
+
+" FileType: SystemVerilog {{{3
+
+augroup vimrc_systemverilog
+    au!
+    au FileType verilog set softtabstop=2
+    au FileType verilog set shiftwidth=2
+    au FileType verilog_systemverilog set softtabstop=2
+    au FileType verilog_systemverilog set shiftwidth=2
 augroup END
 
 " Gnupg Settings {{{1
