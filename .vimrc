@@ -17,8 +17,9 @@ set laststatus=1
 set autoindent
 filetype plugin indent on
 
-let mapleader = ","
+runtime macros/matchit.vim
 
+let mapleader = ","
 inoremap jk <Esc>
 
 " Custom Commands {{{2
