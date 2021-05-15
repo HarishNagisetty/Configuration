@@ -16,6 +16,7 @@ set background=light
 set laststatus=1
 set autochdir
 set autoindent
+filetype plugin indent on
 
 let mapleader = ","
 
