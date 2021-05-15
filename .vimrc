@@ -33,6 +33,8 @@ nnoremap <Leader>tf g]
 nnoremap <Leader>tp <C-t>
 " Next (Push?)
 nnoremap <Leader>tn :tag<CR>
+" List
+nnoremap <Leader>tl :tags<CR>
 
 
 " Custom Commands {{{2
