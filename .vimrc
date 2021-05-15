@@ -31,6 +31,8 @@ nnoremap <Leader>b :ls<CR>:b<Space>
 nnoremap <Leader>tf g]
 " Pop
 nnoremap <Leader>tp <C-t>
+" Next (Push?)
+nnoremap <Leader>tn :tag<CR>
 
 
 " Custom Commands {{{2
