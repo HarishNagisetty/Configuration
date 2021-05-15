@@ -110,6 +110,7 @@ augroup vimrc_systemverilog
     au FileType verilog_systemverilog set shiftwidth=2
     "au FileType verilog_systemverilog let g:verilog_syntax_fold_lst="all"
     "au FileType verilog_systemverilog set foldmethod=syntax
+    au FileType verilog_systemverilog set foldmethod=manual
 augroup END
 
 " Gnupg Settings {{{1
