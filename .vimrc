@@ -14,7 +14,6 @@ set incsearch
 set ruler
 set background=light
 set laststatus=1
-set autochdir
 set autoindent
 filetype plugin indent on
 
@@ -27,6 +26,10 @@ inoremap jk <Esc>
 
 command! HNCopyFileName      let @*=expand("%")
 command! HNCopyFullFileName  let @*=expand("%:p")
+
+" Command: HNWriteBackup {{{3
+
+command! HNWriteBackup execute "w %:p." . system("date +%s")
 
 " Commands: HNExecuteRange {{{3
 "
@@ -101,6 +104,8 @@ augroup vimrc_systemverilog
     au FileType verilog set shiftwidth=2
     au FileType verilog_systemverilog set softtabstop=2
     au FileType verilog_systemverilog set shiftwidth=2
+    au FileType verilog_systemverilog let g:verilog_syntax_fold_lst="all"
+    au FileType verilog_systemverilog set foldmethod=syntax
 augroup END
 
 " Gnupg Settings {{{1
