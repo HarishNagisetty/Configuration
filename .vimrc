@@ -21,13 +21,12 @@ let mapleader = ","
 inoremap jk <Esc>
 
 " Custom Commands {{{2
-
 " Commands: HNCopyFileName {{{3
 
-command! HNCopyFileName      let @*=expand("%")<CR>
-command! HNCopyFullFileName  let @*=expand("%:p")<CR>
+command! HNCopyFileName      let @*=expand("%")
+command! HNCopyFullFileName  let @*=expand("%:p")
 
-" Function: HNExecuteRange {{{3
+" Commands: HNExecuteRange {{{3
 "
 " Filter range with command in new buffer
 "
@@ -46,9 +45,9 @@ function! HNExecuteRange(command) range
     execute "normal! ggVG:!" . a:command . "\<CR>"
 endfunction
 
-" Command: HNExecutePython {{{3
-
 command! -range=% HNExecutePython <line1>,<line2>call HNExecuteRange("python")
+command! -range=% HNExecutePerl <line1>,<line2>call HNExecuteRange("perl")
+command! -range=% HNExecuteBash <line1>,<line2>call HNExecuteRange("bash -s")
 
 " Terminal Mode {{{2
 
