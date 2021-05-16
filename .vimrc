@@ -5,17 +5,19 @@
 " General Settings {{{1
 
 syntax on
+set autoindent
+filetype plugin indent on
 set number
-set scrolloff=0
 set nomodeline
+set laststatus=1
+set background=light
+set ruler
+
+set scrolloff=0
 set foldmethod=marker
 set wildmenu
 set incsearch
-set ruler
-set background=light
-set laststatus=1
-set autoindent
-filetype plugin indent on
+set tags=./tags;
 
 runtime macros/matchit.vim
 
@@ -122,8 +124,6 @@ augroup vimrc_systemverilog
     au FileType verilog set shiftwidth=2
     au FileType verilog_systemverilog set softtabstop=2
     au FileType verilog_systemverilog set shiftwidth=2
-    "au FileType verilog_systemverilog let g:verilog_syntax_fold_lst="all"
-    "au FileType verilog_systemverilog set foldmethod=syntax
     au FileType verilog_systemverilog set foldmethod=manual
 augroup END
 
@@ -131,4 +131,8 @@ augroup END
 
 let g:GPGPreferSymmetric = 1
 let g:GPGPreferArmor = 1
+
+" Verilog-SystemVerilog Settings {{{1
+
+let g:verilog_syntax_fold_lst = "all"
 
