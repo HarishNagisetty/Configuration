@@ -19,14 +19,17 @@ filetype plugin indent on
 
 runtime macros/matchit.vim
 
-let mapleader = ","
+" Custom Key Mappings {{{2
 
+let mapleader = ","
 inoremap jk <Esc>
 
-" Show Buffers : b
+" Show Buffers : b {{{3
+
 nnoremap <Leader>b :ls<CR>:b<Space>
 
-" Tags : t
+" Tags : t {{{3
+
 " Follow Tag
 nnoremap <Leader>tf g]
 " Pop
@@ -35,7 +38,6 @@ nnoremap <Leader>tp <C-t>
 nnoremap <Leader>tn :tag<CR>
 " List
 nnoremap <Leader>tl :tags<CR>
-
 
 " Custom Commands {{{2
 " Commands: HNCopyFileName {{{3
