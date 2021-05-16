@@ -7,6 +7,8 @@
 
 for i in "$@"; do
     stamp=$(echo "$i" | grep -oP '\d+$')
-    printf "$i: "
-    date -d @$stamp
+    if [[ -n "$stamp" ]]; then
+        printf "$i: "
+        date -d @$stamp
+    fi
 done
