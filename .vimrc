@@ -4,6 +4,8 @@
 
 " General Settings {{{1
 
+set nocompatible
+
 syntax on
 set autoindent
 filetype plugin indent on
@@ -113,18 +115,18 @@ augroup END
 
 augroup vimrc_python
     au!
-    au FileType python set foldmethod=indent
+    au FileType python setlocal foldmethod=indent
 augroup END
 
 " FileType: SystemVerilog {{{3
 
 augroup vimrc_systemverilog
     au!
-    au FileType verilog set softtabstop=2
-    au FileType verilog set shiftwidth=2
-    au FileType verilog_systemverilog set softtabstop=2
-    au FileType verilog_systemverilog set shiftwidth=2
-    au FileType verilog_systemverilog set foldmethod=manual
+    au FileType verilog setlocal softtabstop=2
+    au FileType verilog setlocal shiftwidth=2
+    au FileType verilog_systemverilog setlocal softtabstop=2
+    au FileType verilog_systemverilog setlocal shiftwidth=2
+    au FileType verilog_systemverilog setlocal foldmethod=manual
 augroup END
 
 " Gnupg Settings {{{1
