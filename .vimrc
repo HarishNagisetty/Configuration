@@ -28,11 +28,21 @@ runtime macros/matchit.vim
 let mapleader = ","
 inoremap jk <Esc>
 
-" Show Buffers : b {{{3
+nnoremap <Leader> :echo "
+            \ b: Show Buffers\n
+            \ t: Tags"<CR>
+
+" Show Buffers {{{3
 
 nnoremap <Leader>b :ls<CR>:b<Space>
 
-" Tags : t {{{3
+" Tags {{{3
+
+nnoremap <Leader>t :echo "
+            \ tf: Follow Tag\n
+            \ tp: Previous (Pop) Tag\n
+            \ tn: Next (Push) Tag\n
+            \ tl: List Tags"<CR>
 
 " Follow Tag
 nnoremap <Leader>tf g]
