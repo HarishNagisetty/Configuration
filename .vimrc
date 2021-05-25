@@ -137,6 +137,7 @@ augroup vimrc_systemverilog
     au FileType verilog_systemverilog setlocal softtabstop=2
     au FileType verilog_systemverilog setlocal shiftwidth=2
     au FileType verilog_systemverilog setlocal foldmethod=manual
+    au FileType verilog_systemverilog setlocal colorcolumn=100
 augroup END
 
 " Gnupg Settings {{{1
