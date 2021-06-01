@@ -63,6 +63,11 @@ command! HNCopyFullFileName  let @*=expand("%:p")
 
 command! HNWriteBackup execute "w %:p." . system("date +%s")
 
+" Commands: HN(En|De)cryptRegion {{{3
+
+command! -range HNEncryptRegion <line1>,<line2>! gpg -ca
+command! -range HNDecryptRegion <line1>,<line2>! gpg -dq
+
 " Commands: HNExecuteRange {{{3
 "
 " Filter range with command in new buffer
