@@ -54,15 +54,15 @@ nnoremap <Leader>tn :tag<CR>
 nnoremap <Leader>tl :tags<CR>
 
 " Custom Commands {{{2
-" Commands: HNCopyFileName {{{3
+" Command: HNCopyFileName {{{3
 
-command! HNCopyFileName  let @*=expand("%:p")
+command! HNCopyFileName  let @*=expand("%:p") | echo @*
 
 " Command: HNWriteBackup {{{3
 
 command! HNWriteBackup execute "w %:p." . system("date +%s")
 
-" Commands: HN(En|De)cryptRegion {{{3
+" Commands: HNEncryptRegion {{{3
 
 command! -range HNEncryptRegion <line1>,<line2>! gpg -ca
 command! -range HNDecryptRegion <line1>,<line2>! gpg -dq
