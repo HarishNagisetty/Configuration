@@ -56,8 +56,7 @@ nnoremap <Leader>tl :tags<CR>
 " Custom Commands {{{2
 " Commands: HNCopyFileName {{{3
 
-command! HNCopyFileName      let @*=expand("%")
-command! HNCopyFullFileName  let @*=expand("%:p")
+command! HNCopyFileName  let @*=expand("%:p")
 
 " Command: HNWriteBackup {{{3
 
