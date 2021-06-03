@@ -21,6 +21,8 @@ set wildmenu
 set incsearch
 set tags=./tags;
 
+set ttimeoutlen=50
+
 runtime macros/matchit.vim
 
 " Custom Key Mappings {{{2
