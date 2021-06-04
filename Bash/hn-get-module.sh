@@ -15,9 +15,9 @@ if [[ -n "$START" ]]; then
     if [[ -n "$LEN" ]]; then
         printf "Saving $LEN lines starting from #$START.\n"
         if [[ -n $3 ]]; then
-            tail -n +$START $1 | head -n $LEN > $2.sv.$(date +%s)
-        else
             tail -n +$START $1 | head -n $LEN > $3
+        else
+            tail -n +$START $1 | head -n $LEN > $2.sv.$(date +%s)
         fi
     else
         printf "Could not find \"endmodule\" after line $START\n"
