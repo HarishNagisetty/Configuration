@@ -32,11 +32,16 @@ inoremap jk <Esc>
 
 nnoremap <Leader> :echo "
             \ b: Show Buffers\n
+            \ d: Insert Date\n
             \ t: Tags"<CR>
 
 " Show Buffers {{{3
 
 nnoremap <Leader>b :ls<CR>:b<Space>
+
+" Insert Date {{{3
+
+nnoremap <Leader>d :r! date<CR>
 
 " Tags {{{3
 
