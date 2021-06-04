@@ -2,9 +2,11 @@
 
 # hn-get-module.sh
 #  Get single Verilog module definition from a large netlist
-#
-# Usage: hn-get-module netlist_file module_name [output_file]
 
+if [[ $# -lt 2 ]]; then
+    printf "Usage: $(basename $0) netlist_file module_name [output_file]\n"
+    exit 1
+fi
 
 START=$(grep -n -m 1 "module[[:space:]]\+$2\>" $1 | sed 's/\([0-9]*\).*/\1/')
 
