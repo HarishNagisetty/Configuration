@@ -6,7 +6,7 @@
 # Usage: hn-get-module netlist_file module_name [output_file]
 
 
-START=$(grep -n -m 1 "module[[:space:]]\+$2" $1 | sed 's/\([0-9]*\).*/\1/')
+START=$(grep -n -m 1 "module[[:space:]]\+$2\>" $1 | sed 's/\([0-9]*\).*/\1/')
 
 if [[ -n "$START" ]]; then
 
