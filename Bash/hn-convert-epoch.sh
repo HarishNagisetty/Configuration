@@ -9,10 +9,27 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
+STAMPS=""
+
+# Put each timestamp on its own line.
 for i in "$@"; do
+    # This millennium is 9 to 10 digits.
     stamp=$(echo "$i" | grep -oP '\d{9,10}$')
     if [[ -n "$stamp" ]]; then
-        printf "$i: "
-        date -d @$stamp
+        STAMPS="$STAMPS\n$stamp"
     fi
+done
+
+SORTED=$(printf "$STAMPS" | sort | uniq)
+
+IFS=$'\n'
+for i in $SORTED; do
+    # Print all arguments containing this timestamp.
+    for j in "$@"; do
+        arg=$(echo "$j" | grep -P "$i\$")
+        if [[ -n "$arg" ]]; then
+            printf "$arg: "
+        fi
+    done
+    date -d @$i
 done
