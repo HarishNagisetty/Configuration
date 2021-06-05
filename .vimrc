@@ -29,10 +29,13 @@ runtime macros/matchit.vim
 
 let mapleader = ","
 inoremap jk <Esc>
+nnoremap <Tab> za
 
 nnoremap <Leader> :echo "
             \ b: Show Buffers\n
             \ d: Insert Date\n
+            \ m: Open Bookmarks\n
+            \ n: Open Notes\n
             \ t: Tags"<CR>
 
 " Show Buffers {{{3
@@ -42,6 +45,14 @@ nnoremap <Leader>b :ls<CR>:b<Space>
 " Insert Date {{{3
 
 nnoremap <Leader>d :r! date<CR>
+
+" Open Bookmarks {{{3
+
+nnoremap <Leader>m :sp ~/.marks<CR>
+
+" Open Notes {{{3
+
+nnoremap <Leader>n :sp ~/.notes<CR>
 
 " Tags {{{3
 
@@ -149,6 +160,25 @@ augroup vimrc_systemverilog
     au FileType verilog_systemverilog setlocal shiftwidth=2
     au FileType verilog_systemverilog setlocal foldmethod=manual
     au FileType verilog_systemverilog setlocal colorcolumn=100
+augroup END
+
+" FileType: Notes {{{3
+
+augroup vimrc_notes
+    au!
+    au BufNewFile,BufRead *.notes set filetype=notes syntax=conf
+    au FileType notes setlocal noswapfile
+    au FileType notes nnoremap <buffer> <Esc> :q<CR>
+augroup END
+
+" FileType: Marks {{{3
+
+augroup vimrc_marks
+    au!
+    au BufNewFile,BufRead *.marks set filetype=marks syntax=markdown
+    au FileType marks setlocal noswapfile
+    au FileType marks nnoremap <buffer> <CR> 0f(lgf
+    au FileType marks nnoremap <buffer> <Esc> :q<CR>
 augroup END
 
 " Gnupg Settings {{{1
