@@ -69,11 +69,11 @@ nnoremap <Leader>n :sp ~/.notes<CR>
 " Tags {{{3
 
 nnoremap <Leader>t :echo "
-            \ tf: Follow Tag\n
-            \ tp: Previous (Pop) Tag\n
-            \ tn: Next (Push) Tag\n
-            \ tl: List Tags"<CR>
-            \:call HNFinishKeyMapping("\<Leader>")<CR>
+            \ f: Follow Tag\n
+            \ p: Previous (Pop) Tag\n
+            \ n: Next (Push) Tag\n
+            \ l: List Tags"<CR>
+            \:call HNFinishKeyMapping("\<Leader>t")<CR>
 
 " Follow Tag
 nnoremap <Leader>tf g]
