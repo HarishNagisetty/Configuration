@@ -168,7 +168,7 @@ augroup vimrc_notes
     au!
     au BufNewFile,BufRead *.notes set filetype=notes syntax=conf
     au FileType notes setlocal noswapfile
-    au FileType notes nnoremap <buffer> <Esc> :q<CR>
+    au FileType notes nnoremap <buffer> q :q<CR>
 augroup END
 
 " FileType: Marks {{{3
@@ -178,7 +178,7 @@ augroup vimrc_marks
     au BufNewFile,BufRead *.marks set filetype=marks syntax=markdown
     au FileType marks setlocal noswapfile
     au FileType marks nnoremap <buffer> <CR> 0f(lgf
-    au FileType marks nnoremap <buffer> <Esc> :q<CR>
+    au FileType marks nnoremap <buffer> q :q<CR>
 augroup END
 
 " Gnupg Settings {{{1
