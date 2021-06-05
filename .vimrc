@@ -31,12 +31,24 @@ let mapleader = ","
 inoremap jk <Esc>
 nnoremap <Tab> za
 
+"
+" Repeat input key prefixed with previous keys
+"
+function! HNFinishKeyMapping(keys)
+    let key = input('Enter Key: ')
+    redraw
+    if len(key) > 0
+        call feedkeys(a:keys . key)
+    endif
+endfunction
+
 nnoremap <Leader> :echo "
             \ b: Show Buffers\n
             \ d: Insert Date\n
             \ m: Open Bookmarks\n
             \ n: Open Notes\n
             \ t: Tags"<CR>
+            \:call HNFinishKeyMapping("\<Leader>")<CR>
 
 " Show Buffers {{{3
 
@@ -61,6 +73,7 @@ nnoremap <Leader>t :echo "
             \ tp: Previous (Pop) Tag\n
             \ tn: Next (Push) Tag\n
             \ tl: List Tags"<CR>
+            \:call HNFinishKeyMapping("\<Leader>")<CR>
 
 " Follow Tag
 nnoremap <Leader>tf g]
