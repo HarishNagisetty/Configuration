@@ -10,20 +10,19 @@ set scrolloff=0
 set foldmethod=marker
 set wildmenu
 set incsearch
-" For the semicolon, see
-" :help file-searching
+" For the semicolon, see :help file-searching
 set tags=./tags;
 set ttimeoutlen=50
 set tabstop=8
 set softtabstop=4
 set shiftwidth=4
 set expandtab
+set nomodeline
 
 runtime macros/matchit.vim
 
 syntax on
 set number
-set nomodeline
 set laststatus=1
 set ruler
 set list
@@ -45,12 +44,27 @@ nnoremap <Leader>   :echo "
             \ d: Insert Date\n
             \ m: Open Bookmarks\n
             \ n: Open Notes\n
+            \ s: Spell Check\n
             \ t: Tags"<CR>
             \:call HNFinishKeyMapping("\<Leader>")<CR>
 nnoremap <Leader>b  :ls<CR>:b<Space>
 nnoremap <Leader>d  :r! date<CR>
 nnoremap <Leader>m  :sp ~/.marks<CR>
 nnoremap <Leader>n  :sp ~/.notes<CR>
+nnoremap <Leader>s  :echo "
+            \ a: Add Spelling\n
+            \ i: Ignore Spelling\n
+            \ n: Next Error\n
+            \ p: Previous Error\n
+            \ r: Remove Spelling\n
+            \ t: Toggle Spell Check On/Off"<CR>
+            \:call HNFinishKeyMapping("\<Leader>s")<CR>
+nnoremap <Leader>sa zg
+nnoremap <Leader>si zG
+nnoremap <Leader>sn ]s
+nnoremap <Leader>sp [s
+nnoremap <Leader>sr zug
+nnoremap <Leader>st :setlocal invspell<CR>
 nnoremap <Leader>t  :echo "
             \ f: Follow Tag\n
             \ l: List Tags\n
@@ -104,10 +118,18 @@ endfunction
 if exists (":tnoremap")
     tnoremap <Esc> <C-\><C-n>
     tnoremap jk <C-\><C-n>
+    " Insert register contents with Ctrl-R
     tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 endif
 
 " Autocommands {{{1
+
+augroup vimrc_text
+    au!
+    au FileType text setlocal colorcolumn=80
+    au FileType text setlocal textwidth=79
+    au FileType text setlocal spell
+augroup END
 
 augroup vimrc_systemverilog
     au!
