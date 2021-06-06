@@ -53,9 +53,9 @@ nnoremap <Leader>m  :sp ~/.marks<CR>
 nnoremap <Leader>n  :sp ~/.notes<CR>
 nnoremap <Leader>t  :echo "
             \ f: Follow Tag\n
-            \ l: List Tags"\n
+            \ l: List Tags\n
             \ n: Next (Push) Tag\n
-            \ p: Previous (Pop) Tag<CR>
+            \ p: Previous (Pop) Tag"<CR>
             \:call HNFinishKeyMapping("\<Leader>t")<CR>
 nnoremap <Leader>tf g]
 nnoremap <Leader>tl :tags<CR>
