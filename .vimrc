@@ -147,7 +147,7 @@ augroup END
 
 augroup vimrc_netrw
     au!
-    au FileType netrw nnoremap <LocalLeader> :echo "
+    au FileType netrw nnoremap <buffer> <LocalLeader> :echo "
                 \ d: Cycle Hide Dotfiles\n
                 \ h: Netrw Help\n
                 \ q: Quit\n
