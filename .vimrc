@@ -36,21 +36,27 @@ endif
 " Mappings {{{1
 
 let mapleader = ","
+let maplocalleader = "\<Space>"
 
 inoremap jk         <Esc>
 nnoremap <Tab>      za
 nnoremap <Leader>   :echo "
             \ b: Show Buffers\n
             \ d: Insert Date\n
-            \ m: Open Bookmarks\n
-            \ n: Open Notes\n
+            \ o: Open\n
             \ s: Spell Check\n
             \ t: Tags"<CR>
             \:call HNFinishKeyMapping("\<Leader>")<CR>
 nnoremap <Leader>b  :ls<CR>:b<Space>
 nnoremap <Leader>d  :r! date<CR>
-nnoremap <Leader>m  :sp ~/.marks<CR>
-nnoremap <Leader>n  :sp ~/.notes<CR>
+nnoremap <Leader>o  :echo "
+            \ m: Open Bookmarks\n
+            \ n: Open Notes\n
+            \ t: Open Tree"<CR>
+            \:call HNFinishKeyMapping("\<Leader>o")<CR>
+nnoremap <Leader>om  :sp ~/.marks<CR>
+nnoremap <Leader>on  :sp ~/.notes<CR>
+nnoremap <Leader>ot  :Vexplore<CR>
 nnoremap <Leader>s  :echo "
             \ a: Add Spelling\n
             \ i: Ignore Spelling\n
@@ -139,6 +145,20 @@ augroup vimrc_systemverilog
     au FileType verilog_systemverilog,verilog setlocal shiftwidth=2
 augroup END
 
+augroup vimrc_netrw
+    au!
+    au FileType netrw nnoremap <LocalLeader> :echo "
+                \ d: Cycle Hide Dotfiles\n
+                \ h: Netrw Help\n
+                \ q: Quit\n
+                \ u: Go Up"<CR>
+                \:call HNFinishKeyMapping("\<LocalLeader>")<CR>
+    au FileType netrw nmap     <buffer> <LocalLeader>d a
+    au FileType netrw nmap     <buffer> <LocalLeader>h :help netrw-quickmap<CR>
+    au FileType netrw nnoremap <buffer> <LocalLeader>q :q<CR>
+    au FileType netrw nmap     <buffer> <LocalLeader>u -<Esc>
+augroup END
+
 augroup vimrc_notes
     au!
     au BufNewFile,BufRead *.notes set filetype=temporary syntax=conf
@@ -169,7 +189,11 @@ let g:verilog_syntax_fold_lst = "all"
 " Netrw Settings {{{1
 
 let g:netrw_banner = 0
-let g:netrw_liststyle = 3
+let g:netrw_liststyle = 0
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
+
+" hide by default
+let g:netrw_list_hide = '^\..*'
+let g:netrw_hide = 1
