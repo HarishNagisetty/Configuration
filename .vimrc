@@ -135,6 +135,8 @@ augroup vimrc_systemverilog
     au!
     au FileType verilog_systemverilog setlocal foldmethod=manual
     au FileType verilog_systemverilog setlocal colorcolumn=100
+    au FileType verilog_systemverilog,verilog setlocal softtabstop=2
+    au FileType verilog_systemverilog,verilog setlocal shiftwidth=2
 augroup END
 
 augroup vimrc_notes
