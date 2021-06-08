@@ -18,6 +18,7 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 set nomodeline
+set hidden
 
 runtime macros/matchit.vim
 
@@ -31,6 +32,7 @@ set listchars=tab:\`\
 set background=light
 if has('gui_running')
     colorscheme solarized
+    set guifont=Source\ Code\ Pro\ 11,Monospace\ 11
 endif
 
 " Mappings {{{1
@@ -102,6 +104,14 @@ function! HNFinishKeyMapping(keys)
     endif
 endfunction
 
+" Prompt user and create file at dir
+function! HNCreateFile(dir)
+    let file = input('Enter File Name: ')
+    if len(file) > 0
+        execute "!touch " . a:dir . "/" . file
+    endif
+endfunction
+
 " Filter range with command in new buffer
 function! HNExecuteRange(command) range
     " Yank range and restore register
@@ -113,7 +123,6 @@ function! HNExecuteRange(command) range
     split __Results__
     normal! ggdG
     setlocal buftype=nofile
-    setlocal filetype=temporary
     " Paste yanked range
     call append(0, split(input, '\v\n'))
     execute "normal! ggVG:!" . a:command . "\<CR>"
@@ -143,20 +152,35 @@ augroup vimrc_systemverilog
     au FileType verilog_systemverilog setlocal colorcolumn=100
     au FileType verilog_systemverilog,verilog setlocal softtabstop=2
     au FileType verilog_systemverilog,verilog setlocal shiftwidth=2
+    " Key Mappings
+    au FileType verilog_systemverilog nnoremap <buffer> <LocalLeader>  :echo "
+                \ i: Go to start of instance\n
+                \ I: Follow instance"<CR>
+                \:call HNFinishKeyMapping("\<LocalLeader>")<CR>
+    au FileType verilog_systemverilog nnoremap <buffer> <LocalLeader>i :VerilogGotoInstanceStart<CR>
+    au FileType verilog_systemverilog nnoremap <buffer> <LocalLeader>I :VerilogFollowInstance<CR>
 augroup END
 
 augroup vimrc_netrw
     au!
-    au FileType netrw nnoremap <buffer> <LocalLeader>  :echo "
+    au FileType netrw nnoremap <buffer> <LocalLeader>   :echo "
+                \ c: Create File/Directory\n
                 \ d: Cycle Hide Dotfiles\n
                 \ h: Netrw Help\n
                 \ q: Quit\n
                 \ u: Go Up"<CR>
                 \:call HNFinishKeyMapping("\<LocalLeader>")<CR>
-    au FileType netrw nmap     <buffer> <LocalLeader>d a
-    au FileType netrw nmap     <buffer> <LocalLeader>h :help netrw-quickmap<CR>
-    au FileType netrw nnoremap <buffer> <LocalLeader>q :q<CR>
-    au FileType netrw nmap     <buffer> <LocalLeader>u -<Esc>
+    au FileType netrw nnoremap <buffer> <LocalLeader>c  :echo "
+                \ d: Create Directory\n
+                \ f: Create File"<CR>
+                \:call HNFinishKeyMapping("\<LocalLeader>c")<CR>
+    au FileType netrw nmap     <buffer> <LocalLeader>cd d
+    au FileType netrw nnoremap <buffer> <LocalLeader>cf :call 
+                \HNCreateFile(b:netrw_curdir)<CR>
+    au FileType netrw nmap     <buffer> <LocalLeader>d  a
+    au FileType netrw nnoremap <buffer> <LocalLeader>h  :help netrw-quickmap<CR>
+    au FileType netrw nnoremap <buffer> <LocalLeader>q  :q<CR>
+    au FileType netrw nmap     <buffer> <LocalLeader>u  -<Esc>
 augroup END
 
 augroup vimrc_notes
@@ -174,7 +198,7 @@ augroup END
 augroup vimrc_temporary
     au!
     au FileType temporary setlocal noswapfile
-    au FileType temporary nnoremap <buffer> q :q<CR>
+    au FileType temporary nnoremap <buffer> <LocalLeader>q :q<CR>
 augroup END
 
 " Gnupg Settings {{{1
