@@ -179,7 +179,7 @@ augroup vimrc_netrw
                 \HNCreateFile(b:netrw_curdir)<CR>
     au FileType netrw nmap     <buffer> <LocalLeader>d  a
     au FileType netrw nnoremap <buffer> <LocalLeader>h  :help netrw-quickmap<CR>
-    au FileType netrw nnoremap <buffer> <LocalLeader>q  :q<CR>
+    au FileType netrw nnoremap <buffer> <LocalLeader>q  :bd<CR>
     au FileType netrw nmap     <buffer> <LocalLeader>u  -<Esc>
 augroup END
 
@@ -198,7 +198,7 @@ augroup END
 augroup vimrc_temporary
     au!
     au FileType temporary setlocal noswapfile
-    au FileType temporary nnoremap <buffer> <LocalLeader>q :q<CR>
+    au FileType temporary nnoremap <buffer> <LocalLeader>q :bd<CR>
 augroup END
 
 " Gnupg Settings {{{1
