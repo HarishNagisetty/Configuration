@@ -47,7 +47,8 @@ nnoremap <Leader>   :echo "
             \ d: Insert Date\n
             \ o: Open\n
             \ s: Spell Check\n
-            \ t: Tags"<CR>
+            \ t: Tags\n
+            \ w: Windows"<CR>
             \:call HNFinishKeyMapping("\<Leader>")<CR>
 nnoremap <Leader>b  :ls<CR>:b<Space>
 nnoremap <Leader>d  :r! date<CR>
@@ -83,6 +84,17 @@ nnoremap <Leader>tf g]
 nnoremap <Leader>tl :tags<CR>
 nnoremap <Leader>tn :tag<CR>
 nnoremap <Leader>tp <C-t>
+nnoremap <Leader>w  :echo "
+            \ hjkl: Navigate\n
+            \ c: Close Window\n
+            \ o: Only Window"<CR>
+            \:call HNFinishKeyMapping("\<Leader>w")<CR>
+nnoremap <Leader>wh <C-w>h
+nnoremap <Leader>wj <C-w>j
+nnoremap <Leader>wk <C-w>k
+nnoremap <Leader>wl <C-w>l
+nnoremap <Leader>wc <C-w>c
+nnoremap <Leader>wo <C-w>o
 
 " Commands {{{1
 
