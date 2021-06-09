@@ -4,7 +4,7 @@
 
 (require 'key-chord)
 
-(key-chord-mode t)
+(key-chord-mode 1)
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 
 (provide 'user-init-key-chord)

@@ -4,6 +4,6 @@
 
 (require 'whitespace)
 
-(global-whitespace-mode t)
+(global-whitespace-mode 1)
 
 (provide 'user-init-whitespace)

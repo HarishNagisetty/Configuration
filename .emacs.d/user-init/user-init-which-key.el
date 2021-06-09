@@ -2,6 +2,6 @@
 
 (require 'which-key)
 
-(which-key-mode)
+(which-key-mode 1)
 
 (provide 'user-init-which-key)

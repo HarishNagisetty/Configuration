@@ -8,6 +8,6 @@
 (require 'evil)
 
 (evil-select-search-module 'evil-search-module 'evil-search)
-(evil-mode t)
+(evil-mode 1)
 
 (provide 'user-init-evil)

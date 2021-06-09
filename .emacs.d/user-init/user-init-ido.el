@@ -4,7 +4,7 @@
 
 (require 'ido)
 
-(ido-mode t)
+(ido-mode 1)
 (global-set-key (kbd "C-x r b")
                 (lambda ()
                   (interactive)

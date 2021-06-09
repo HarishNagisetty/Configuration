@@ -7,8 +7,8 @@
 
 ;; Show line numbers
 (if (fboundp 'global-display-line-numbers-mode)
-    (global-display-line-numbers-mode t)
-  (global-linum-mode))
+    (global-display-line-numbers-mode 1)
+  (global-linum-mode 1))
 
 ;; Show matching parenthesis
 (show-paren-mode t)
