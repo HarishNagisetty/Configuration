@@ -46,6 +46,7 @@ nnoremap <Leader>   :echo "
             \ b: Show Buffers\n
             \ d: Insert Date\n
             \ o: Open\n
+            \ q: Delete Buffer\n
             \ s: Spell Check\n
             \ t: Tags\n
             \ w: Windows"<CR>
@@ -57,9 +58,10 @@ nnoremap <Leader>o  :echo "
             \ n: Open Notes\n
             \ t: Open Tree"<CR>
             \:call HNFinishKeyMapping("\<Leader>o")<CR>
-nnoremap <Leader>om  :sp ~/.marks<CR>
-nnoremap <Leader>on  :sp ~/.notes<CR>
-nnoremap <Leader>ot  :Vexplore<CR>
+nnoremap <Leader>om :sp ~/.marks<CR>
+nnoremap <Leader>on :sp ~/.notes<CR>
+nnoremap <Leader>ot :Vexplore<CR>
+nnoremap <Leader>q  :bd<CR>
 nnoremap <Leader>s  :echo "
             \ a: Add Spelling\n
             \ i: Ignore Spelling\n
@@ -179,7 +181,6 @@ augroup vimrc_netrw
                 \ c: Create File/Directory\n
                 \ d: Cycle Hide Dotfiles\n
                 \ h: Netrw Help\n
-                \ q: Quit\n
                 \ u: Go Up"<CR>
                 \:call HNFinishKeyMapping("\<LocalLeader>")<CR>
     au FileType netrw nnoremap <buffer> <LocalLeader>c  :echo "
@@ -191,7 +192,6 @@ augroup vimrc_netrw
                 \HNCreateFile(b:netrw_curdir)<CR>
     au FileType netrw nmap     <buffer> <LocalLeader>d  a
     au FileType netrw nnoremap <buffer> <LocalLeader>h  :help netrw-quickmap<CR>
-    au FileType netrw nnoremap <buffer> <LocalLeader>q  :bd<CR>
     au FileType netrw nmap     <buffer> <LocalLeader>u  -<Esc>
 augroup END
 
@@ -210,7 +210,6 @@ augroup END
 augroup vimrc_temporary
     au!
     au FileType temporary setlocal noswapfile
-    au FileType temporary nnoremap <buffer> <LocalLeader>q :bd<CR>
 augroup END
 
 " Gnupg Settings {{{1
