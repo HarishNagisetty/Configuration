@@ -1,6 +1,9 @@
 ;;; user-init-global.el --- Global configuration of installed packages
 
 ;; dired
+; Show sizes in human readable form
+; Don't show user or group
+(setq dired-listing-switches "-alhgG")
 (add-hook 'dired-mode-hook 'hn-no-line-numbers)
 ; Evil uses most dired mappings by default.
 (add-hook 'dired-mode-hook
@@ -10,6 +13,12 @@
             (evil-local-set-key 'normal (kbd "w") 'evil-forward-word-begin)
             (evil-local-set-key 'normal (kbd "gg") 'evil-goto-first-line)
             (evil-local-set-key 'normal (kbd "G") 'evil-goto-line)))
+
+;; Buffer List
+; After selecting buffer through the Buffer List, I don't want evil
+; alternate file to be *Buffer List*
+(advice-add 'Buffer-menu-this-window :after
+            (lambda () (kill-buffer "*Buffer List*")))
 
 ;; Global Key Bindings
 
