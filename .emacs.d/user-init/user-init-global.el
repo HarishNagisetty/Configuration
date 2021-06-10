@@ -5,14 +5,23 @@
 ; Don't show user or group
 (setq dired-listing-switches "-alhgG")
 (add-hook 'dired-mode-hook 'hn-no-line-numbers)
-; Evil uses most dired mappings by default.
+; Local bindings
+(eval-after-load 'dired
+  (lambda ()
+    ;; Clear local leader
+    (define-key dired-mode-map (kbd hn-evil-localleader) nil)
+    (define-key dired-mode-map
+      (kbd (concat hn-evil-localleader "u")) 'hn-dired-up-directory)
+    ))
+; Add some evil bindings for navigation
 (add-hook 'dired-mode-hook
           (lambda ()
             (define-key evil-normal-state-local-map
-              (kbd (concat hn-evil-localleader "u")) 'hn-dired-up-directory)
-            (evil-local-set-key 'normal (kbd "w") 'evil-forward-word-begin)
-            (evil-local-set-key 'normal (kbd "gg") 'evil-goto-first-line)
-            (evil-local-set-key 'normal (kbd "G") 'evil-goto-line)))
+              (kbd "w") 'evil-forward-word-begin)
+            (define-key evil-normal-state-local-map
+              (kbd "gg") 'evil-goto-first-line)
+            (define-key evil-normal-state-local-map
+              (kbd "G") 'evil-goto-line)))
 
 ;; Buffer List
 ; After selecting buffer through the Buffer List, I don't want evil
