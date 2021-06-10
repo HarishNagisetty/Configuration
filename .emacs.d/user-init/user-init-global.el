@@ -24,34 +24,38 @@
 
 (eval-after-load 'evil
   (lambda ()
-    (which-key-add-keymap-based-replacements evil-normal-state-map
+    ;; Clear leader and local leader for which-key
+    (define-key evil-motion-state-map (kbd hn-evil-leader) nil)
+    (define-key evil-motion-state-map (kbd hn-evil-localleader) nil)
+
+    (which-key-add-keymap-based-replacements evil-motion-state-map
       (concat hn-evil-leader "b") '("Switch Buffer")
       (concat hn-evil-leader "o") '("Open...")
       (concat hn-evil-leader "q") '("Delete Buffer")
       (concat hn-evil-leader "w") '("Window...")
       )
 
-    (define-key evil-normal-state-map
+    (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "b")) 'ido-switch-buffer)
-    (define-key evil-normal-state-map
+    (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "ot")) 'hn-dired-open-sidebar)
-    (define-key evil-normal-state-map
+    (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "q")) (lambda ()
                                           (interactive)
                                           (kill-this-buffer)
                                           (when (> (count-windows) 1)
                                             (delete-window))))
-    (define-key evil-normal-state-map
+    (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "wc")) 'evil-window-delete)
-    (define-key evil-normal-state-map
+    (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "wh")) 'evil-window-left)
-    (define-key evil-normal-state-map
+    (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "wj")) 'evil-window-down)
-    (define-key evil-normal-state-map
+    (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "wk")) 'evil-window-up)
-    (define-key evil-normal-state-map
+    (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "wl")) 'evil-window-right)
-    (define-key evil-normal-state-map
+    (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "wo")) 'delete-other-windows)
     ))
 
