@@ -55,7 +55,8 @@
     (split-window-horizontally width)
     (dired default-directory)
     (dired-hide-details-mode)
-    (local-set-key (kbd "<return>") 'hn-dired-open-other-window-if-file)))
+    (define-key evil-normal-state-local-map
+      (kbd "<return>") 'hn-dired-open-other-window-if-file)))
 
 (defun hn-no-line-numbers ()
   "Disable line numbering for the current buffer"
