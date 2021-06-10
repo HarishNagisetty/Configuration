@@ -1,11 +1,11 @@
 ;;; user-init-global.el --- Global configuration of installed packages
 
-;; dired
-; Show sizes in human readable form
-; Don't show user or group
+;;; dired
+;; Show sizes in human readable form
+;; Don't show user or group
 (setq dired-listing-switches "-alhgG")
 (add-hook 'dired-mode-hook 'hn-no-line-numbers)
-; Local bindings
+;; Local bindings
 (eval-after-load 'dired
   (lambda ()
     ;; Clear local leader
@@ -13,7 +13,7 @@
     (define-key dired-mode-map
       (kbd (concat hn-evil-localleader "u")) 'hn-dired-up-directory)
     ))
-; Add some evil bindings for navigation
+;; Add some evil bindings for navigation
 (add-hook 'dired-mode-hook
           (lambda ()
             (define-key evil-normal-state-local-map
@@ -23,14 +23,13 @@
             (define-key evil-normal-state-local-map
               (kbd "G") 'evil-goto-line)))
 
-;; Buffer List
-; After selecting buffer through the Buffer List, I don't want evil
-; alternate file to be *Buffer List*
+;;; Buffer List
+;; After selecting buffer through the Buffer List, I don't want evil
+;; alternate file to be *Buffer List*
 (advice-add 'Buffer-menu-this-window :after
             (lambda () (kill-buffer "*Buffer List*")))
 
-;; Global Key Bindings
-
+;;; Global Key Bindings
 (eval-after-load 'evil
   (lambda ()
     ;; Clear leader and local leader for which-key

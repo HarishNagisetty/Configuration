@@ -43,6 +43,10 @@
     (if (file-directory-p file)
         (progn
           (dired-find-file)
+          (define-key evil-normal-state-local-map
+            (kbd "<return>") 'hn-dired-open-other-window-if-file)
+          ;; If hide-details was previously set, do
+          ;; the same for this buffer too.
           (when hide-details
             (dired-hide-details-mode)))
       (dired-find-file-other-window)
