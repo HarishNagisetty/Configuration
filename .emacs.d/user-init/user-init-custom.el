@@ -1,5 +1,8 @@
 ;;; user-init-custom.el --- Add custom commands to emacs
 
+(setq hn-evil-leader ", ")
+(setq hn-evil-localleader "SPC ")
+
 (defun hn-font-exists-p (font)
   "Check if font is available"
   (if (null (x-list-fonts font)) nil t))
@@ -24,6 +27,14 @@
      (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
    "/DONE" nil))
 
+(defun hn-dired-up-directory ()
+  "Go to parent directory and hide details if previously hidden."
+  (interactive)
+  (let ((hide-details (bound-and-true-p dired-hide-details-mode)))
+    (dired-up-directory)
+    (when hide-details
+      (dired-hide-details-mode))))
+
 (defun hn-dired-open-other-window-if-file ()
   "Open in same window if directory, other window if file"
   (interactive)
@@ -37,8 +48,8 @@
       (dired-find-file-other-window)
       (other-window -1))))
 
-(defun hn-open-dired-sidebar ()
-  "Open dired to the left"
+(defun hn-dired-open-sidebar ()
+  "Open dired like a sidebar"
   (interactive)
   (let ((width (round (* 0.33 (window-width)))))
     (split-window-horizontally width)
