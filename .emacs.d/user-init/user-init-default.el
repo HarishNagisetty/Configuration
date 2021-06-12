@@ -2,6 +2,11 @@
 
 (setq inhibit-splash-screen t)
 
+(setq make-backup-files nil)
+
+;; Save minibuffer history
+(savehist-mode 1)
+
 ;(setq desktop-restore-frames nil)
 ;(desktop-save-mode t)
 

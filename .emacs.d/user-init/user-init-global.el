@@ -39,6 +39,8 @@
     (which-key-add-keymap-based-replacements evil-motion-state-map
       (concat hn-evil-leader "b") '("Switch Buffer")
       (concat hn-evil-leader "o") '("Open...")
+      (concat hn-evil-leader "om") '("Open Bookmarks")
+      (concat hn-evil-leader "on") '("Open Notes")
       (concat hn-evil-leader "q") '("Delete Buffer")
       (concat hn-evil-leader "w") '("Window...")
       )
@@ -47,6 +49,18 @@
       (kbd (concat hn-evil-leader "b")) 'ido-switch-buffer)
     (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "ot")) 'hn-dired-open-sidebar)
+    (define-key evil-motion-state-map
+      (kbd (concat hn-evil-leader "om")) (lambda ()
+                                           (interactive)
+                                           (split-window-vertically)
+                                           (find-file "~/.marks")
+                                           (markdown-mode)))
+    (define-key evil-motion-state-map
+      (kbd (concat hn-evil-leader "on")) (lambda ()
+                                           (interactive)
+                                           (split-window-vertically)
+                                           (find-file "~/.notes")
+                                           (hn-set-comment-char "#")))
     (define-key evil-motion-state-map
       (kbd (concat hn-evil-leader "q")) (lambda ()
                                           (interactive)

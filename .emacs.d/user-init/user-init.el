@@ -7,6 +7,7 @@
 (require 'user-init-evil)
 (require 'user-init-ido)
 (require 'user-init-key-chord)
+(require 'user-init-markdown-mode)
 (require 'user-init-origami)
 (require 'user-init-verilog-mode)
 (require 'user-init-which-key)

@@ -19,6 +19,7 @@ set shiftwidth=4
 set expandtab
 set nomodeline
 set hidden
+set path+=**
 
 runtime macros/matchit.vim
 
