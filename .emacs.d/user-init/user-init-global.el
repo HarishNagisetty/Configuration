@@ -44,6 +44,9 @@
     (define-key evil-motion-state-map (kbd hn-evil-leader) nil)
     (define-key evil-motion-state-map (kbd hn-evil-localleader) nil)
 
+    (define-key evil-motion-state-map
+      (kbd "<tab>") 'evil-toggle-fold)
+
     (which-key-add-keymap-based-replacements evil-motion-state-map
       (concat hn-evil-leader "b") '("Switch Buffer")
       (concat hn-evil-leader "o") '("Open...")
