@@ -57,10 +57,12 @@ nnoremap <Leader>d  :r! date<CR>
 nnoremap <Leader>o  :echo "
             \ m: Open Bookmarks\n
             \ n: Open Notes\n
+            \ s: Open Scratch\n
             \ t: Open Tree"<CR>
             \:call HNFinishKeyMapping("\<Leader>o")<CR>
 nnoremap <Leader>om :sp ~/.marks<CR>
 nnoremap <Leader>on :sp ~/.notes<CR>
+nnoremap <Leader>os :HNScratchBuffer<CR>
 nnoremap <Leader>ot :Vexplore<CR>
 nnoremap <Leader>q  :bd<CR>
 nnoremap <Leader>s  :echo "
@@ -102,11 +104,13 @@ nnoremap <Leader>wo <C-w>o
 " Commands {{{1
 
 command!          HNCopyFileName  let @*=expand("%:p") | echo @*
+command!          HNChangeDir     cd %:h
 command!          HNWriteBackup   execute "w %:p." . system("date +%s")
 command! -range   HNEncryptRegion <line1>,<line2>! gpg -ca
 command! -range   HNDecryptRegion <line1>,<line2>! gpg -dq
 command! -range=% HNExecutePython <line1>,<line2>call HNExecuteRange("python")
 command! -range=% HNExecuteBash   <line1>,<line2>call HNExecuteRange("bash")
+command!          HNScratchBuffer call HNScratchBuffer()
 
 " Functions {{{1
 
@@ -127,6 +131,16 @@ function! HNCreateFile(dir)
     endif
 endfunction
 
+" Backup file if required
+function! HNBackupFile()
+    let extension = expand("%:e")
+    " ==? is Case Insensitive
+    if extension ==? "GPG"
+        execute "!mkdir -p ~/nobackup/gpg/"
+        execute "!cp % ~/nobackup/gpg/%:t." . system("date +%s")
+    endif
+endfunction
+
 " Filter range with command in new buffer
 function! HNExecuteRange(command) range
     " Yank range and restore register
@@ -135,12 +149,24 @@ function! HNExecuteRange(command) range
     let input = @a
     let @a = l:savereg
     " Open a new split and set it up.
-    split __Results__
+    split *Results*
     normal! ggdG
     setlocal buftype=nofile
     " Paste yanked range
     call append(0, split(input, '\v\n'))
     execute "normal! ggVG:!" . a:command . "\<CR>"
+endfunction
+
+" Create scratch buffer
+function! HNScratchBuffer()
+    edit *Scratch*
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    setlocal noswapfile
+    " if persistent undo is present, disable it for this buffer
+    if exists('+undofile')
+      setl noundofile
+    endif
 endfunction
 
 " Terminal Mode {{{1
@@ -153,6 +179,11 @@ if exists (":tnoremap")
 endif
 
 " Autocommands {{{1
+
+augroup vimrc_all
+    au!
+    au BufWritePre,FileWritePre * call HNBackupFile()
+augroup END
 
 augroup vimrc_text
     au!

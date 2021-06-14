@@ -63,10 +63,27 @@
       (kbd "<return>") 'hn-dired-open-other-window-if-file)))
 
 (defun hn-no-line-numbers ()
-  "Disable line numbering for the current buffer"
+  "Disable line numbering for the current buffer."
   (interactive)
   (if (fboundp 'global-display-line-numbers-mode)
       (display-line-numbers-mode 0)
     (linum-mode 0)))
+
+(defun hn-follow-markdown-link-on-line ()
+  "Follow the first markdown link on the current line."
+  (interactive)
+  (save-match-data
+    (let ((line (buffer-substring-no-properties
+                 (line-beginning-position)
+                 (line-end-position))))
+      (string-match "\\](\\([[:word:]/]*\\))" line)
+      (let ((path (match-string 1 line)))
+        (message "Path: %s" path)))))
+
+(defun hn-open-scratch-buffer nil
+  "Open/Create a scratch buffer"
+  (interactive)
+  (switch-to-buffer (get-buffer-create "*scratch*"))
+  (lisp-interaction-mode))
 
 (provide 'user-init-custom)
