@@ -1,12 +1,10 @@
 ;;; user-init-global.el --- Global configuration of installed packages
 
 ;;; Markdown Mode
-(eval-after-load 'markdown-mode
+(add-hook 'markdown-mode-hook
   (lambda ()
-    ;; Clear local leader
-    (define-key markdown-mode-map (kbd hn-evil-localleader) nil)
-    (define-key markdown-mode-map
-      (kbd (concat hn-evil-localleader "<return>"))
+    (define-key evil-normal-state-local-map
+      (kbd "<return>")
       'hn-follow-markdown-link-on-line)
     ))
 
