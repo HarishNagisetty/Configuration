@@ -76,9 +76,12 @@
     (let ((line (buffer-substring-no-properties
                  (line-beginning-position)
                  (line-end-position))))
-      (string-match "\\](\\([[:word:]/]*\\))" line)
+      (string-match "\\](\\(.*\\))" line)
       (let ((path (match-string 1 line)))
-        (message "Path: %s" path)))))
+        (if (file-exists-p path)
+            ;(find-file path)
+            (find-file path)
+          (message "Invalid File: %s" path))))))
 
 (defun hn-open-scratch-buffer nil
   "Open/Create a scratch buffer"

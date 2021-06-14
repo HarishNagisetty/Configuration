@@ -1,12 +1,13 @@
 ;;; user-init-global.el --- Global configuration of installed packages
 
 ;;; Markdown Mode
-(eval-after-load 'dired
+(eval-after-load 'markdown-mode
   (lambda ()
     ;; Clear local leader
     (define-key markdown-mode-map (kbd hn-evil-localleader) nil)
     (define-key markdown-mode-map
-      (kbd (concat hn-evil-localleader "<return>")) 'hn-dired-up-directory)
+      (kbd (concat hn-evil-localleader "<return>"))
+      'hn-follow-markdown-link-on-line)
     ))
 
 ;;; dired
