@@ -6,7 +6,7 @@
  '(org-babel-load-languages '((emacs-lisp . t) (python . t) (perl . t)))
  '(origami-show-fold-header t)
  '(package-selected-packages
-   '(markdown-mode which-key org-bullets undo-fu whitespace-cleanup-mode key-chord evil))
+   '(company markdown-mode which-key org-bullets undo-fu whitespace-cleanup-mode key-chord evil))
  '(safe-local-variable-values '((origami-fold-style . triple-braces))))
 
 (custom-set-faces
