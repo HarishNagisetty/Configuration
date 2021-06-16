@@ -13,8 +13,7 @@
 (/core/boot/after '/bindings/core
   (/bindings/core/define-localleader-keys /bindings/dired/localleader-map
     ("u" #'/bindings/dired/up-directory "Up Directory")
-    )
-  )
+    ))
 
 ;; Add localleader-map to dired-mode-map
 (/core/boot/after [/bindings/core dired]

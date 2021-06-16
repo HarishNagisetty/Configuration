@@ -27,8 +27,8 @@
   (require 'package)
   (package-initialize)
 
-  ;; Load boot.el
-  (load (concat core-directory "boot"))
+  ;; Load core-boot.el
+  (load (concat core-directory "core-boot"))
 
   ;; Load custom.el
   (setq custom-file(concat user-emacs-directory "custom.el"))

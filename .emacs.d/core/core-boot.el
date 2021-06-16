@@ -72,3 +72,5 @@ FEATURE may be any one of:
       prog))
    (t
     `(with-eval-after-load ,feature ,@body))))
+
+(provide '/core/boot)

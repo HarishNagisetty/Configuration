@@ -10,7 +10,6 @@
       (string-match "\\](\\(.*\\))" line)
       (let ((path (match-string 1 line)))
         (if (file-exists-p path)
-            ;(find-file path)
             (find-file path)
           (message "Invalid File: %s" path))))))
 
