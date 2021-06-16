@@ -11,7 +11,7 @@
                 collect
                 `(let ((seq ,(car binding))
                        (func ,(cadr binding))
-                       (desc ,(caddr binding)))
+                       (desc ,(car (cddr binding))))
                    (when seq
                      (define-key ,keymap (kbd seq) func))
                    (when desc

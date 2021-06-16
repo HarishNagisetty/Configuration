@@ -1,4 +1,6 @@
-*
-
+/*
+!core/
+!config/
+!bindings/
 !.gitignore
 !init.el
