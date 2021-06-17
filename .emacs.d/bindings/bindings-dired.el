@@ -11,15 +11,13 @@
     (when is-sidebar (/bindings/core/dired-sidebar-properties))))
 
 (/core/boot/after '/bindings/core
-  (/bindings/core/define-localleader-keys /bindings/dired/localleader-map
-    ("u" #'/bindings/dired/up-directory "Up Directory")
-    ))
+  (/bindings/core/define-keys /bindings/dired/localleader-map
+    ("u" #'/bindings/dired/up-directory "Up Directory")))
 
 ;; Add localleader-map to dired-mode-map
 (/core/boot/after [/bindings/core dired]
-  (/bindings/core/define-prefix-keys dired-mode-map nil
-    (/bindings/core/localleader /bindings/dired/localleader-map)
-    ))
+  (/bindings/core/define-keys dired-mode-map
+    (/bindings/core/localleader /bindings/dired/localleader-map)))
 
 ;; Add some evil bindings for navigation
 (add-hook 'dired-mode-hook

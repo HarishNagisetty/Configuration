@@ -20,6 +20,7 @@ set expandtab
 set nomodeline
 set hidden
 set path+=**
+set autochdir
 
 runtime macros/matchit.vim
 

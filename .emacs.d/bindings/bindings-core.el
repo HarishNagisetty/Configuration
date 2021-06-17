@@ -4,7 +4,7 @@
 (setq /bindings/core/localleader "SPC")
 (setq /bindings/core/global-leader-map (make-sparse-keymap))
 
-(defmacro /bindings/core/define-prefix-keys (keymap prefix &rest body)
+(defmacro /bindings/core/define-keys (keymap &rest body)
   (declare (indent defun))
   `(progn
      ,@(cl-loop for binding in body
@@ -15,22 +15,8 @@
                    (when seq
                      (define-key ,keymap (kbd seq) func))
                    (when desc
-                     (which-key-add-key-based-replacements
-                       (if ,prefix
-                           (concat ,prefix " " seq)
-                         seq)
-                       desc))))))
-
-(defmacro /bindings/core/define-leader-keys (keymap &rest body)
-  (declare (indent defun))
-  `(/bindings/core/define-prefix-keys
-     ,keymap /bindings/core/leader ,@body))
-
-(defmacro /bindings/core/define-localleader-keys (keymap &rest body)
-  (declare (indent defun))
-  `(/bindings/core/define-prefix-keys
-     ,keymap /bindings/core/localleader ,@body))
-
+                     (which-key-add-keymap-based-replacements
+                       ,keymap seq desc))))))
 
 ;;; Mapped Functions
 
@@ -87,13 +73,15 @@
 
 ;;; Global Mappings
 
-(/bindings/core/define-leader-keys /bindings/core/global-leader-map
+(/bindings/core/define-keys /bindings/core/global-leader-map
   ("b" #'ido-switch-buffer "Switch Buffer")
   ("o" nil "Open...")
   ("ot" #'/bindings/core/open-dired "Open Dired")
   ("om" #'/bindings/core/open-marks "Open Bookmarks")
   ("on" #'/bindings/core/open-notes "Open Notes")
   ("os" #'/bindings/core/open-scratch-buffer "Open Scratch Buffer")
+  ("p" nil "Preferences...")
+  ("pw" 'toggle-truncate-lines "Toggle Line-Wrap")
   ("q" #'/bindings/core/delete-buffer "Delete Buffer")
   ("w" nil "Windows...")
   ("wc" #'evil-window-delete "Delete Window")
@@ -101,7 +89,14 @@
   ("wj" #'evil-window-down "Move Down")
   ("wk" #'evil-window-up "Move Up")
   ("wl" #'evil-window-right "Move Right")
-  ("wo" #'delete-other-windows "Delete Other Windows")
-  )
+  ("wo" #'delete-other-windows "Delete Other Windows"))
+
+(/core/boot/after 'evil
+  (/bindings/core/define-keys evil-motion-state-map
+    (/bindings/core/leader /bindings/core/global-leader-map "Leader")))
+
+(/bindings/core/define-keys global-map
+  ("C-c c" #'company-complete "Company Complete")
+  ("C-c l" /bindings/core/global-leader-map "Leader"))
 
 (provide '/bindings/core)
