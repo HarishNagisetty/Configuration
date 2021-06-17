@@ -46,20 +46,25 @@ nnoremap <Tab>      za
 nnoremap <Leader>   :echo "
             \ b: Show Buffers\n
             \ d: Insert Date\n
+            \ g: General\n
             \ o: Open\n
             \ q: Delete Buffer\n
             \ s: Spell Check\n
             \ t: Tags\n
-            \ w: Windows"<CR>
-            \:call HNFinishKeyMapping("\<Leader>")<CR>
+            \ w: Windows" 
+            \\| call HNFinishKeyMapping("\<Leader>")<CR>
 nnoremap <Leader>b  :ls<CR>:b<Space>
 nnoremap <Leader>d  :r! date<CR>
+nnoremap <Leader>g  :echo "
+            \ w: Toggle Line-Wrap"
+            \\| call HNFinishKeyMapping("\<Leader>g")<CR>
+nnoremap <Leader>gw :setlocal invwrap<CR>
 nnoremap <Leader>o  :echo "
             \ m: Open Bookmarks\n
             \ n: Open Notes\n
             \ s: Open Scratch\n
-            \ t: Open Tree"<CR>
-            \:call HNFinishKeyMapping("\<Leader>o")<CR>
+            \ t: Open Tree"
+            \\| call HNFinishKeyMapping("\<Leader>o")<CR>
 nnoremap <Leader>om :sp ~/.marks<CR>
 nnoremap <Leader>on :sp ~/.notes<CR>
 nnoremap <Leader>os :HNScratchBuffer<CR>
@@ -71,8 +76,8 @@ nnoremap <Leader>s  :echo "
             \ n: Next Error\n
             \ p: Previous Error\n
             \ r: Remove Spelling\n
-            \ t: Toggle Spell Check On/Off"<CR>
-            \:call HNFinishKeyMapping("\<Leader>s")<CR>
+            \ t: Toggle Spell Check On/Off"
+            \\| call HNFinishKeyMapping("\<Leader>s")<CR>
 nnoremap <Leader>sa zg
 nnoremap <Leader>si zG
 nnoremap <Leader>sn ]s
@@ -83,8 +88,8 @@ nnoremap <Leader>t  :echo "
             \ f: Follow Tag\n
             \ l: List Tags\n
             \ n: Next (Push) Tag\n
-            \ p: Previous (Pop) Tag"<CR>
-            \:call HNFinishKeyMapping("\<Leader>t")<CR>
+            \ p: Previous (Pop) Tag"
+            \\| call HNFinishKeyMapping("\<Leader>t")<CR>
 nnoremap <Leader>tf g]
 nnoremap <Leader>tl :tags<CR>
 nnoremap <Leader>tn :tag<CR>
@@ -92,8 +97,8 @@ nnoremap <Leader>tp <C-t>
 nnoremap <Leader>w  :echo "
             \ hjkl: Navigate\n
             \ c: Close Window\n
-            \ o: Only Window"<CR>
-            \:call HNFinishKeyMapping("\<Leader>w")<CR>
+            \ o: Only Window"
+            \\| call HNFinishKeyMapping("\<Leader>w")<CR>
 nnoremap <Leader>wh <C-w>h
 nnoremap <Leader>wj <C-w>j
 nnoremap <Leader>wk <C-w>k
@@ -116,7 +121,7 @@ command!          HNScratchBuffer call HNScratchBuffer()
 
 " Repeat input key prefixed with previous keys
 function! HNFinishKeyMapping(keys)
-    let key = input('Enter Key: ')
+    let key = input("Enter Key: ")
     redraw
     if len(key) > 0
         call feedkeys(a:keys . key)
@@ -201,8 +206,8 @@ augroup vimrc_systemverilog
     " Key Mappings
     au FileType verilog_systemverilog nnoremap <buffer> <LocalLeader>  :echo "
                 \ i: Go to start of instance\n
-                \ I: Follow instance"<CR>
-                \:call HNFinishKeyMapping("\<LocalLeader>")<CR>
+                \ I: Follow instance"
+                \\| call HNFinishKeyMapping("\<LocalLeader>")<CR>
     au FileType verilog_systemverilog nnoremap <buffer> <LocalLeader>i :VerilogGotoInstanceStart<CR>
     au FileType verilog_systemverilog nnoremap <buffer> <LocalLeader>I :VerilogFollowInstance<CR>
 augroup END
@@ -213,12 +218,12 @@ augroup vimrc_netrw
                 \ c: Create File/Directory\n
                 \ d: Cycle Hide Dotfiles\n
                 \ h: Netrw Help\n
-                \ u: Go Up"<CR>
-                \:call HNFinishKeyMapping("\<LocalLeader>")<CR>
+                \ u: Go Up"
+                \\| call HNFinishKeyMapping("\<LocalLeader>")<CR>
     au FileType netrw nnoremap <buffer> <LocalLeader>c  :echo "
                 \ d: Create Directory\n
-                \ f: Create File"<CR>
-                \:call HNFinishKeyMapping("\<LocalLeader>c")<CR>
+                \ f: Create File"
+                \\| HNFinishKeyMapping("\<LocalLeader>c")<CR>
     au FileType netrw nmap     <buffer> <LocalLeader>cd d
     au FileType netrw nnoremap <buffer> <LocalLeader>cf :call 
                 \HNCreateFile(b:netrw_curdir)<CR>

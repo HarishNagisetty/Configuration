@@ -5,7 +5,7 @@
             (lambda ()
               (let ((elapsed (float-time
                               (time-subtract
-                               (current-time)emacs-start-time))))
+                               (current-time) emacs-start-time))))
                 (message "[Emacs initialized in %.3fs]" elapsed)))))
 
 ;; Speed up startup by setting gc-cons-threshold and
