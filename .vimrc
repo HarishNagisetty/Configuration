@@ -46,8 +46,8 @@ nnoremap <Tab>      za
 nnoremap <Leader>   :echo "
             \ b: Show Buffers\n
             \ d: Insert Date\n
-            \ g: General\n
             \ o: Open\n
+            \ p: Preferences\n
             \ q: Delete Buffer\n
             \ s: Spell Check\n
             \ t: Tags\n
@@ -55,10 +55,6 @@ nnoremap <Leader>   :echo "
             \\| call HNFinishKeyMapping("\<Leader>")<CR>
 nnoremap <Leader>b  :ls<CR>:b<Space>
 nnoremap <Leader>d  :r! date<CR>
-nnoremap <Leader>g  :echo "
-            \ w: Toggle Line-Wrap"
-            \\| call HNFinishKeyMapping("\<Leader>g")<CR>
-nnoremap <Leader>gw :setlocal invwrap<CR>
 nnoremap <Leader>o  :echo "
             \ m: Open Bookmarks\n
             \ n: Open Notes\n
@@ -69,6 +65,10 @@ nnoremap <Leader>om :sp ~/.marks<CR>
 nnoremap <Leader>on :sp ~/.notes<CR>
 nnoremap <Leader>os :HNScratchBuffer<CR>
 nnoremap <Leader>ot :Vexplore<CR>
+nnoremap <Leader>p  :echo "
+            \ w: Toggle Line-Wrap"
+            \\| call HNFinishKeyMapping("\<Leader>p")<CR>
+nnoremap <Leader>pw :setlocal invwrap<CR>
 nnoremap <Leader>q  :bd<CR>
 nnoremap <Leader>s  :echo "
             \ a: Add Spelling\n
