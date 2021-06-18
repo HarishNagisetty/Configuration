@@ -71,8 +71,8 @@
   (switch-to-buffer (get-buffer-create "*scratch*"))
   (lisp-interaction-mode))
 
-;;; Global Mappings
-
+;;; Leader Mappings
+;; Use only lowercase letters
 (/bindings/core/define-keys /bindings/core/global-leader-map
   ("b" #'ido-switch-buffer "Switch Buffer")
   ("o" nil "Open...")
@@ -82,6 +82,7 @@
   ("os" #'/bindings/core/open-scratch-buffer "Open Scratch Buffer")
   ("p" nil "Preferences...")
   ("pw" 'toggle-truncate-lines "Toggle Line-Wrap")
+  ("ps" #'flyspell-mode "Toggle Spell Check On/Off")
   ("q" #'/bindings/core/delete-buffer "Delete Buffer")
   ("w" nil "Windows...")
   ("wc" #'evil-window-delete "Delete Window")
@@ -91,12 +92,20 @@
   ("wl" #'evil-window-right "Move Right")
   ("wo" #'delete-other-windows "Delete Other Windows"))
 
+(setq /bindings/core/global-map
+      (copy-keymap /bindings/core/global-leader-map))
+
+;;; Global Mappings
+;; Use only uppercase letters
+(/bindings/core/define-keys /bindings/core/global-map
+  ("C" #'company-complete "Company Complete")
+  ("S" #'ispell-word "Correct Spelling at Point"))
+
 (/core/boot/after 'evil
   (/bindings/core/define-keys evil-motion-state-map
     (/bindings/core/leader /bindings/core/global-leader-map "Leader")))
 
 (/bindings/core/define-keys global-map
-  ("C-c c" #'company-complete "Company Complete")
-  ("C-c l" /bindings/core/global-leader-map "Leader"))
+  ("C-c" /bindings/core/global-map))
 
 (provide '/bindings/core)
