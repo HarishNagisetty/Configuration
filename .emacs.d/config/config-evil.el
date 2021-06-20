@@ -12,4 +12,8 @@
 (evil-select-search-module 'evil-search-module 'evil-search)
 (evil-mode 1)
 
+(defalias #'forward-evil-word #'forward-evil-symbol)
+;; make evil-search-word look for symbol rather than word boundaries
+(setq-default evil-symbol-word-search t)
+
 (provide '/config/evil)
