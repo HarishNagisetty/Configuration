@@ -8,7 +8,6 @@
 
 (setq verilog-indent-module-normal t)
 (setq verilog-indent-lists nil)
-(setq verilog-indent-lists nil)
 (setq verilog-auto-endcomments nil)
 
 (provide '/config/verilog)

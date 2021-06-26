@@ -23,9 +23,12 @@
 (defun /config/core/font-exists-p (font)
   "Check if font is available."
   (if (null (x-list-fonts font)) nil t))
-(if (/config/core/font-exists-p "Source Code Pro")
-    (set-face-attribute 'default nil :font "Source Code Pro" :height 114)
-  (set-face-attribute 'default nil :height 124))
+(cond
+ ((/config/core/font-exists-p "Source Code Pro")
+  (set-face-attribute 'default nil :font "Source Code Pro" :height 114))
+ ((/config/core/font-exists-p "Monospace")
+  (set-face-attribute 'default nil :font "Monospace" :height 140))
+ (t (set-face-attribute 'default nil :height 114)))
 
 ;;; Buffer List
 ;; After selecting buffer through the Buffer List, I don't want evil
