@@ -4,6 +4,7 @@
 (setq make-backup-files nil)
 (setq epa-armor t)
 (setq dired-listing-switches "-alhgG")
+(setq scroll-conservatively 101)
 
 (if (fboundp 'global-display-line-numbers-mode)
     (global-display-line-numbers-mode 1)
@@ -16,8 +17,8 @@
 ;; Save minibuffer history.
 (savehist-mode 1)
 ;; Save desktop session.
-;(setq desktop-restore-frames nil)
-;(desktop-save-mode t)
+(setq desktop-restore-frames nil)
+(desktop-save-mode t)
 
 ;;; Fonts
 (defun /config/core/font-exists-p (font)
