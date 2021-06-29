@@ -5,6 +5,7 @@
 (setq epa-armor t)
 (setq dired-listing-switches "-alhgG")
 (setq scroll-conservatively 101)
+(setq org-startup-folded t)
 
 (if (fboundp 'global-display-line-numbers-mode)
     (global-display-line-numbers-mode 1)

@@ -109,6 +109,7 @@
     (/bindings/core/leader /bindings/core/global-leader-map "Leader")))
 
 (/bindings/core/define-keys global-map
-  ("C-c" /bindings/core/global-map))
+  ("C-c" /bindings/core/global-map)
+  ("M-u" #'universal-argument))
 
 (provide '/bindings/core)
