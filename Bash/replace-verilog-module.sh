@@ -32,7 +32,7 @@ if [[ -n "$START" ]]; then
         fi
         head -n $(($START - 1)) $1 > $TMP_FILE
         cat $2 >> $TMP_FILE
-        tail -n +$(($START + $LEN + 1)) $1 >> $TMP_FILE
+        tail -n +$(($START + $LEN)) $1 >> $TMP_FILE
         mv $TMP_FILE $DST_FILE
         if [[ $? -ne 0 ]]; then
             printf "Unable to move $TMP_FILE to $DST_FILE\n"

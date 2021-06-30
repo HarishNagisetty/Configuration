@@ -5,7 +5,8 @@
 (setq epa-armor t)
 (setq dired-listing-switches "-alhgG")
 (setq scroll-conservatively 101)
-(setq org-startup-folded t)
+
+(add-hook 'dired-mode-hook '/config/util/no-line-numbers)
 
 (if (fboundp 'global-display-line-numbers-mode)
     (global-display-line-numbers-mode 1)

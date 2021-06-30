@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
 (setq /bindings/dired/localleader-map (make-sparse-keymap))
-(add-hook 'dired-mode-hook '/config/util/no-line-numbers)
 
 (defun /bindings/dired/up-directory ()
   "Go to parent directory and keep some buffer properties."
