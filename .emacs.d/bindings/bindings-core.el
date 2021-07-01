@@ -48,7 +48,7 @@
 (defun /bindings/core/open-dired ()
   "Open dired like a sidebar"
   (interactive)
-  (let ((width (round (* 0.33 (window-width)))))
+  (let ((width (round (* 0.25 (window-width)))))
     (split-window-horizontally width)
     (dired default-directory)
     (/bindings/core/dired-sidebar-properties)))

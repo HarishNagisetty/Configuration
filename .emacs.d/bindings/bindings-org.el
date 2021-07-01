@@ -9,7 +9,12 @@
 
 (/core/boot/after '/bindings/core
   (/bindings/core/define-keys /bindings/org/localleader-map
-    ("a" #'org-archive-to-archive-sibling "Archive This Entry")
+    ("a" #'org-archive-subtree-default-with-confirmation
+     "Archive This Entry")
+    ("e" nil "Export")
+    ("ea" #'org-ascii-export-to-ascii "Export to ASCII")
+    ("eh" #'org-html-export-to-html "Export to HTML")
+    ("i" #'org-insert-structure-template "Insert Structure Template")
     ("l" nil "Links")
     ("li" #'org-insert-link "Insert Link")
     ("lf" #'/bindings/org/org-insert-link-prefix "Insert File Link")
@@ -26,8 +31,8 @@
                  "Local Leader")))))
 
 ;; Tab to toggle fold instead of cycling default.
-(/core/boot/after [/bindings/core org]
-  (/bindings/core/define-keys org-mode-map
-    ("<tab>" #'outline-toggle-children)))
+;(/core/boot/after [/bindings/core org]
+;  (/bindings/core/define-keys org-mode-map
+;    ("<tab>" #'outline-toggle-children)))
 
 (provide '/bindings/org)
