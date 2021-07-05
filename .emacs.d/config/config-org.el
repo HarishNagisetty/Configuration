@@ -7,6 +7,8 @@
 (setq org-cycle-open-archived-trees nil)
 (setq org-archive-location "~/Cloud/org/archive.org::* From %s")
 
+(/core/boot/require-package 'htmlize)
+
 ;(/core/boot/require-package 'org-bullets)
 ;(add-hook 'org-mode-hook 'org-bullets-mode)
 
