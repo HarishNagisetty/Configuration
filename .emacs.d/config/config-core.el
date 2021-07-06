@@ -23,6 +23,9 @@
 ;; Save desktop session.
 (desktop-save-mode 1)
 
+(require 'hide-mode-line)
+(global-hide-mode-line-mode)
+
 ;;; Fonts
 (defun /config/core/font-exists-p (font)
   "Check if font is available."
@@ -40,7 +43,5 @@
 ;; alternate file to be *Buffer List*
 (advice-add 'Buffer-menu-this-window :after
             (lambda () (kill-buffer "*Buffer List*")))
-
-(require 'hide-mode-line)
 
 (provide '/config/core)
