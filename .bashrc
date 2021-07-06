@@ -39,7 +39,7 @@ alias emc="emacsclient -n"
 # Functions #
 #############
 
-cl () { cd $1; ls; }
+cl () { cd "$1"; ls; }
 
 hn-gen-password () {
     tr -dc A-Za-z0-9 < /dev/urandom | head -c $1 ; echo ''
