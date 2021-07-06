@@ -16,9 +16,6 @@
       (bindings-directory (concat user-emacs-directory "bindings/"))
       (config-directory (concat user-emacs-directory "config/")))
 
-  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-  (unless (display-graphic-p) (menu-bar-mode -1))
-
   ;; If package-enable-at-startup is non-nil, package-initialize will
   ;; be run again after init.
   ;; https://www.reddit.com/r/emacs/comments/1rdstn/set_packageenableatstartup_to_nil_for_slightly/
