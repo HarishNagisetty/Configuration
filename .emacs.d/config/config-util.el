@@ -37,4 +37,9 @@
                (substring (shell-command-to-string "date +%s") 0 -1)))
     (message "Current buffer does not have a file name.")))
 
+(defun /config/util/disable-themes ()
+  "Disable enabled themes."
+  (interactive)
+  (mapcar #'disable-theme custom-enabled-themes))
+
 (provide '/config/util)

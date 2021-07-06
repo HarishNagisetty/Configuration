@@ -86,7 +86,7 @@
   ("pt" nil "Change Theme")
   ("ptl" #'/config/spacemacs-theme/light "Spacemacs Light Theme")
   ("ptd" #'/config/spacemacs-theme/dark "Spacemacs Dark Theme")
-  ("ptn" #'/config/spacemacs-theme/disable "No Spacemacs Theme")
+  ("ptn" #'/config/util/disable-themes "No Theme")
   ("q" #'/bindings/core/delete-buffer "Delete Buffer")
   ("w" nil "Windows...")
   ("wc" #'evil-window-delete "Delete Window")

@@ -2,6 +2,9 @@
 
 (/core/boot/require-package 'spacemacs-theme)
 
+(setq spacemacs-theme-org-agenda-height nil)
+(setq spacemacs-theme-org-height nil)
+
 (defun /config/spacemacs-theme/dark ()
   "Load Spacemacs Dark theme."
   (interactive)
@@ -11,11 +14,5 @@
   "Load Spacemacs Light theme."
   (interactive)
   (load-theme 'spacemacs-light t))
-
-(defun /config/spacemacs-theme/disable ()
-  "Disable Spacemacs theme."
-  (interactive)
-  (disable-theme 'spacemacs-light)
-  (disable-theme 'spacemacs-dark))
 
 (provide '/config/spacemacs-theme)
