@@ -81,10 +81,12 @@
   ("on" #'/bindings/core/open-notes "Open Notes")
   ("os" #'/bindings/core/open-scratch-buffer "Open Scratch Buffer")
   ("p" nil "Preferences...")
+  ("pf" #'toggle-frame-fullscreen "Toggle Frame Fullscreen")
   ("pl" #'hide-mode-line-mode "Toggle Mode Line")
   ("pm" #'menu-bar-mode "Toggle Menu Bar")
   ("ps" #'flyspell-mode "Toggle Spell Check On/Off")
   ("pt" nil "Change Theme")
+  ("pth" #'/config/util/harish-theme "Harish Theme")
   ("ptl" #'/config/spacemacs-theme/light "Spacemacs Light Theme")
   ("ptd" #'/config/spacemacs-theme/dark "Spacemacs Dark Theme")
   ("ptn" #'/config/util/disable-themes "No Theme")
@@ -105,6 +107,9 @@
 ;; Use only uppercase letters
 (/bindings/core/define-keys /bindings/core/global-map
   ("C" #'company-complete "Company Complete")
+  ("G" (lambda ()
+         (interactive)
+         (message buffer-file-name)) "Display File Name")
   ("S" #'ispell-word "Correct Spelling at Point"))
 
 (/core/boot/after 'evil

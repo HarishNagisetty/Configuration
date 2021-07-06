@@ -6,7 +6,7 @@
 (setq scroll-conservatively 101)
 (setq desktop-restore-frames nil)
 (setq-default fill-column 79)
-(setq-default indent-tabs-mode 0)
+(setq-default indent-tabs-mode nil)
 
 (add-hook 'text-mode-hook 'auto-fill-mode)
 
@@ -23,8 +23,11 @@
 ;; Save desktop session.
 (desktop-save-mode 1)
 
+(/core/boot/after '/config/util
+  (/config/util/harish-theme))
+
 (require 'hide-mode-line)
-(global-hide-mode-line-mode)
+;(global-hide-mode-line-mode)
 
 ;;; Fonts
 (defun /config/core/font-exists-p (font)

@@ -14,7 +14,8 @@
       (file-name-handler-alist nil)
       (core-directory (concat user-emacs-directory "core/"))
       (bindings-directory (concat user-emacs-directory "bindings/"))
-      (config-directory (concat user-emacs-directory "config/")))
+      (config-directory (concat user-emacs-directory "config/"))
+      (themes-directory (concat user-emacs-directory "themes/")))
 
   ;; If package-enable-at-startup is non-nil, package-initialize will
   ;; be run again after init.
@@ -28,9 +29,12 @@
   (load (concat core-directory "core-boot"))
 
   ;; Load custom.el
-  (setq custom-file(concat user-emacs-directory "custom.el"))
+  (setq custom-file (concat user-emacs-directory "custom.el"))
   (when (file-exists-p custom-file)
     (load custom-file))
+
+  ;; Add themes directory
+  (add-to-list 'custom-theme-load-path themes-directory)
 
   ;; Load all files in config and bindings directories.
   (cl-loop for file in (append (reverse (directory-files-recursively config-directory "\\.el$"))

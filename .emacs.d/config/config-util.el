@@ -42,4 +42,10 @@
   (interactive)
   (mapcar #'disable-theme custom-enabled-themes))
 
+(defun /config/util/harish-theme ()
+  "Load Harish theme."
+  (interactive)
+  (load-theme 'harish t))
+
+
 (provide '/config/util)
