@@ -5,8 +5,10 @@
 (setq epa-armor t)
 (setq dired-listing-switches "-alhgG")
 (setq scroll-conservatively 101)
+(setq fill-column 79)
 
 (add-hook 'dired-mode-hook '/config/util/no-line-numbers)
+(add-hook 'text-mode-hook 'auto-fill-mode)
 
 (if (fboundp 'global-display-line-numbers-mode)
     (global-display-line-numbers-mode 1)

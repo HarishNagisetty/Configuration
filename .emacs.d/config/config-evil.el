@@ -3,6 +3,7 @@
 (setq evil-shift-width 4)
 (setq evil-undo-system 'undo-fu)
 (setq evil-want-C-u-scroll t)
+(setq evil-ex-search-case 'sensitive)
 
 (/core/boot/require-package 'undo-fu)
 (/core/boot/require-package 'evil)

@@ -9,6 +9,8 @@
 
 (/core/boot/require-package 'htmlize)
 
+(add-hook 'org-mode-hook 'auto-fill-mode)
+
 ;(/core/boot/require-package 'org-bullets)
 ;(add-hook 'org-mode-hook 'org-bullets-mode)
 

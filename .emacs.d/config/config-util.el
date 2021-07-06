@@ -27,4 +27,14 @@
       (display-line-numbers-mode 0)
     (linum-mode 0)))
 
+(defun /config/util/write-backup ()
+  "Write current buffer to a timestamped backup file."
+  (interactive)
+  (if buffer-file-name
+      (write-region
+       (point-min) (point-max)
+       (concat buffer-file-name "."
+               (substring (shell-command-to-string "date +%s") 0 -1)))
+    (message "Current buffer does not have a file name.")))
+
 (provide '/config/util)
