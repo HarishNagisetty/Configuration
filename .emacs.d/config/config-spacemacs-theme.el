@@ -4,6 +4,8 @@
 
 (setq spacemacs-theme-org-agenda-height nil)
 (setq spacemacs-theme-org-height nil)
+(setq spacemacs-theme-org-bold nil)
+(setq spacemacs-theme-org-priority-bold nil)
 
 (defun /config/spacemacs-theme/dark ()
   "Load Spacemacs Dark theme."
