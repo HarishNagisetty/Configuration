@@ -82,7 +82,6 @@
   ("os" #'/bindings/core/open-scratch-buffer "Open Scratch Buffer")
   ("p" nil "Preferences...")
   ("pf" #'toggle-frame-fullscreen "Toggle Frame Fullscreen")
-  ("pl" #'hide-mode-line-mode "Toggle Mode Line")
   ("pm" #'menu-bar-mode "Toggle Menu Bar")
   ("ps" #'flyspell-mode "Toggle Spell Check On/Off")
   ("pt" nil "Change Theme")
