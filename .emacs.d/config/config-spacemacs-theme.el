@@ -17,4 +17,6 @@
   (interactive)
   (load-theme 'spacemacs-light t))
 
+(/config/spacemacs-theme/dark)
+
 (provide '/config/spacemacs-theme)

@@ -85,6 +85,7 @@
   ("p-" #'text-scale-decrease "Decrease Text Scale")
   ("p+" #'text-scale-increase "Increase Text Scale")
   ("p0" (lambda () (interactive) (text-scale-mode 0)) "Reset Text Scale")
+  ("pc" #'/config/util/center-buffer "Center Buffer")
   ("pf" #'toggle-frame-fullscreen "Toggle Frame Fullscreen")
   ("pm" #'menu-bar-mode "Toggle Menu Bar")
   ("ps" #'flyspell-mode "Toggle Spell Check On/Off")
