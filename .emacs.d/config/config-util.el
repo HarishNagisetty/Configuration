@@ -23,9 +23,48 @@
 (defun /config/util/no-line-numbers ()
   "Disable line numbering for the current buffer."
   (interactive)
-  (if (fboundp 'global-display-line-numbers-mode)
+  (if (fboundp 'display-line-numbers-mode)
       (display-line-numbers-mode 0)
     (linum-mode 0)))
+
+(defun /config/util/line-numbers ()
+  "Enable line numbering for the current buffer."
+  (interactive)
+  (if (fboundp 'display-line-numbers-mode)
+      (display-line-numbers-mode 1)
+    (linum-mode 1)))
+
+(defun /config/util/toggle-line-numbers ()
+  "Toggle line numbering for the currrent buffer."
+  (interactive)
+  (if (fboundp 'display-line-numbers-mode)
+      (display-line-numbers-mode 'toggle)
+    (linum-mode 'toggle)))
+
+(defun /config/util/center-buffer (buffer-width-chars)
+  "Position buffer of width BUFFER-WIDTH at the center of the screen."
+  (interactive (list (read-number "Buffer Width: " 80)))
+  (if (> buffer-width-chars 0)
+      ;; ** Fringe Mode
+      ;;(progn
+      ;;  (/config/util/no-line-numbers)
+      ;;  (set-fringe-mode
+      ;;   (/ (- (frame-pixel-width)
+      ;;         (* buffer-width-chars (frame-char-width)))
+      ;;      2)))
+      ;; ** set-window-margins
+      ;;(let ((margin-size (/ (- (frame-width) buffer-width-chars) 2)))
+      ;;  (set-window-margins nil margin-size margin-size)
+      ;;  (/config/util/no-line-numbers))
+      (let ((margin-size (/ (- (frame-width) buffer-width-chars) 2)))
+        (setq left-margin-width margin-size)
+        (setq right-margin-width margin-size)
+        (/config/util/no-line-numbers)
+        (set-window-buffer (selected-window) (current-buffer)))
+    (/config/util/line-numbers)
+    (setq left-margin-width 0)
+    (setq right-margin-width 0)
+    (set-window-buffer (selected-window) (current-buffer))))
 
 (defun /config/util/write-backup ()
   "Write current buffer to a timestamped backup file."
