@@ -34,7 +34,7 @@ set listchars=tab:\`\
 set background=dark
 if has('gui_running')
     colorscheme solarized
-    set guifont=Source\ Code\ Pro\ 11,Monospace\ 11
+    set guifont=Source\ Code\ Pro\ 11,Monospace\ 13
 endif
 
 " Mappings {{{1
