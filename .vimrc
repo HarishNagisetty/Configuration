@@ -20,7 +20,7 @@ set expandtab
 set nomodeline
 set hidden
 set path+=**
-set autochdir
+" set autochdir
 
 runtime macros/matchit.vim
 
@@ -31,7 +31,7 @@ set ruler
 set list
 set listchars=tab:\`\ 
 
-set background=light
+set background=dark
 if has('gui_running')
     colorscheme solarized
     set guifont=Source\ Code\ Pro\ 11,Monospace\ 11
