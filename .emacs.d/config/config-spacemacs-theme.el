@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t -*-
 
-(/core/boot/require-package 'spacemacs-theme)
+;(/core/boot/require-package 'spacemacs-theme)
+(require 'spacemacs-common)
 
 (setq spacemacs-theme-org-agenda-height nil)
 (setq spacemacs-theme-org-height nil)

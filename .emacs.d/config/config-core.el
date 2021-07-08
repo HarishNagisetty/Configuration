@@ -23,8 +23,8 @@
 ;; Save desktop session.
 (desktop-save-mode 1)
 
-(/core/boot/after '/config/util
-  (/config/util/harish-theme))
+;(/core/boot/after '/config/util
+;  (/config/util/harish-theme))
 
 ;(require 'hide-mode-line)
 ;(global-hide-mode-line-mode)
