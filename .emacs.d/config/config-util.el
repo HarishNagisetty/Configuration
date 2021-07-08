@@ -86,5 +86,11 @@
   (interactive)
   (load-theme 'harish t))
 
+(defun /config/util/position-frame ()
+  "Size and position frame in a sensible way."
+  (interactive)
+  (set-frame-width (selected-frame) 110)
+  (set-frame-height (selected-frame) 33)
+  (set-frame-position (selected-frame) 0 0))
 
 (provide '/config/util)

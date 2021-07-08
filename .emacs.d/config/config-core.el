@@ -7,6 +7,7 @@
 (setq desktop-restore-frames nil)
 (setq-default fill-column 79)
 (setq-default indent-tabs-mode nil)
+(setq frame-resize-pixelwise t)
 
 (add-hook 'text-mode-hook 'auto-fill-mode)
 

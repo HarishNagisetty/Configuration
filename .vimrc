@@ -195,7 +195,7 @@ augroup vimrc_text
     au!
     "au FileType text setlocal colorcolumn=80
     au FileType text setlocal textwidth=79
-    au FileType text setlocal spell
+    "au FileType text setlocal spell
 augroup END
 
 augroup vimrc_systemverilog
