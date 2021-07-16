@@ -10,4 +10,11 @@
 (setq verilog-indent-lists nil)
 (setq verilog-auto-endcomments nil)
 
+(/core/boot/after 'verilog-mode
+  (progn
+    (define-key verilog-mode-map (kbd ";") 'self-insert-command)
+    (define-key verilog-mode-map (kbd ":") 'self-insert-command)
+    (define-key verilog-mode-map (kbd "RET") 'newline)))
+;     (define-key verilog-mode-map (kbd "TAB") 'indent-for-tab-command)))
+
 (provide '/config/verilog)

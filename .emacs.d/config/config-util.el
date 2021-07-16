@@ -93,4 +93,11 @@
   (set-frame-height (selected-frame) 33)
   (set-frame-position (selected-frame) 0 0))
 
+(defun /config/util/reload-feature (feat)
+  "Load/reload feature."
+  (interactive "SFeature: ")
+  (when (featurep feat)
+    (unload-feature feat))
+  (require feat))
+
 (provide '/config/util)

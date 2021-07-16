@@ -114,7 +114,8 @@
   ("G" (lambda ()
          (interactive)
          (message buffer-file-name)) "Display File Name")
-  ("S" #'ispell-word "Correct Spelling at Point"))
+  ("S" #'ispell-word "Correct Spelling at Point")
+  ("O" #'just-one-space "Just One Space"))
 
 (/core/boot/after 'evil
   (/bindings/core/define-keys evil-motion-state-map
