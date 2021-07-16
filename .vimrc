@@ -31,7 +31,7 @@ set ruler
 set list
 set listchars=tab:\`\ 
 
-set background=dark
+set background=light
 if has('gui_running')
     colorscheme solarized
     set guifont=Source\ Code\ Pro\ 11,Monospace\ 13
