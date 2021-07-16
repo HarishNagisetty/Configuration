@@ -14,7 +14,7 @@
   (progn
     (define-key verilog-mode-map (kbd ";") 'self-insert-command)
     (define-key verilog-mode-map (kbd ":") 'self-insert-command)
-    (define-key verilog-mode-map (kbd "RET") 'newline)))
-;     (define-key verilog-mode-map (kbd "TAB") 'indent-for-tab-command)))
+    (define-key verilog-mode-map (kbd "RET") 'newline)
+     (define-key verilog-mode-map (kbd "TAB") 'indent-for-tab-command)))
 
 (provide '/config/verilog)

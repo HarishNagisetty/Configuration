@@ -232,7 +232,8 @@
     ,(push 'right verilog2-one-line-keywords)
     (assoc ",")
     (right "=" "<=")
-    (assoc "|")
+    (assoc "&&" "||")
+    (assoc "|" "&")
     (assoc "+" "-")
     (assoc "*" "/")
     (assoc "<<" "<<<" ">>" ">>>")
@@ -315,7 +316,7 @@
               (let ((lbeg (line-beginning-position)))
                 (while (and (member (funcall smie-backward-token-function)
                                     '("else" "end" "always" "always_ff"))
-                            (< lbeg (point)))
+                            (<= lbeg (point)))
                   (setq base (current-column))))
               `(column . ,(+ base verilog2-indent-offset)))))))
    ;; Set indentation for tokens after one-line keywords.
