@@ -3,6 +3,9 @@
 (defvar verilog3-indent-offset 2
   "Indentation offset for Verilog3 mode.")
 
+(defvar verilog3-relative-indent t
+  "Speed up indentation by aligning to close-by statements.")
+
 ;;; Font Lock
 
 (let* ((verilog3-type-font-keywords
@@ -346,22 +349,57 @@ backward-sexp."
           ;; If our search didn't succeed, go back to the original position.
           (when (> open-count 0) (goto-char sp)))))))
 
+(defun verilog3-forward-sexp (token)
+  "Skip to the matching keyword of TOKEN. If TOKEN is empty or nil, try
+forward-sexp."
+  (if (zerop (length token))
+      (condition-case nil
+          (forward-sexp 1)
+        (scan-error nil))
+    (let* ((matching-kw (verilog3-matching-regexp :begin token))
+           (equivalent-kw (verilog3-equivalent-regexp :begin token)))
+      (when matching-kw
+        (when (not equivalent-kw) (error "Did not find equivalent keywords"))
+        (let ((sp (point))
+              (pat (concat matching-kw "\\|\\(" equivalent-kw "\\)"))
+              (open-count 1))
+          ;; Keep going until we found our matching keyword or until there are
+          ;; no more matches.
+          (while (and (> open-count 0)
+                      (re-search-forward pat nil t))
+            ;; Only consider this match if it's not a string or comment or 
+            ;; a special begin keyword.
+            (when (not (or (verilog3-comment-or-string-p)
+                           (verilog3-special-begin-keyword-p
+                            (match-string-no-properties 0))))
+              (setq open-count
+                    (if (match-end 1) (1+ open-count) (1- open-count)))))
+          ;; If our search didn't succeed, go back to the original position.
+          (when (> open-count 0) (goto-char sp)))))))
+
 (defun verilog3-backward-stride (&optional stop-token)
   "Move backward to the last unbalanced token or STOP-TOKEN. Return nil if
 something unexpected happens."
-  (let ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
-        (end-keywords (mapcar #'cdr verilog3-indent-matching-keywords))
-        token
-        end-of-statement)
+  (let* ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
+         (end-keywords (mapcar #'cdr verilog3-indent-matching-keywords))
+         (rel-true-keywords (append begin-keywords))
+         (rel-keywords (append begin-keywords end-keywords
+                               verilog3-indent-one-line-keywords))
+         rel0 rel1
+         token
+         end-of-statement)
     (condition-case nil
         (catch 'return
           (while t
-            ;; Fetch new token and skip any sexp. If point didn't move, Return nil.
             (let ((sp (point)))
+              ;; Get new token
               (setq token (verilog3-backward-token))
-              (when (member token begin-keywords) (throw 'return token))
               (when (and stop-token (equal token stop-token))
                 (throw 'return token))
+              ;; Unbalanced open token
+              (when (member token begin-keywords) (throw 'return token))
+              (when (save-excursion (backward-char 1) (looking-at "\\s("))
+                (throw 'return "("))
               ;; If we see a semicolon or an `end' keyword, all one-statement
               ;; indentation is considered to have ended. The constraint block
               ;; allows `if' statements to terminate with "}". Let's use that as
@@ -370,15 +408,32 @@ something unexpected happens."
                         (member token '(";" "end")))
                 (setq end-of-statement t))
               (verilog3-backward-sexp token)
-              (when (save-excursion (backward-char 1) (looking-at "\\s("))
-                (throw 'return "("))
+              ;; Unbalanced close token
+              (when (member (save-excursion (verilog3-forward-token))
+                            end-keywords)
+                (throw 'return token))
               ;; If we haven't moved...
               (when (or (>= (point) sp) (null token)) (throw 'return nil)))
             ;; If we meet a one-statement keyword without meeting a full statement
             ;; before, return.
             (when (and (member token verilog3-indent-one-line-keywords)
                        (not end-of-statement))
-              (throw 'return token))))
+              (throw 'return token))
+            ;; Relative Indentation:
+            ;; Keep the past two `rel-keywords'. When both of them are
+            ;; `rel-true-keywords', we found a legitimate end of statement.
+            (when verilog3-relative-indent
+              (let ((token (save-excursion (verilog3-forward-token))))
+                (when (member token rel-keywords)
+                  (setq rel0 rel1)
+                  (setq rel1 (if (member token rel-true-keywords) (point)))
+                  (when (and (numberp rel0)
+                             (numberp rel1))
+                    (goto-char rel0)
+                    (throw 'return
+                           (progn
+                             (verilog3-forward-sexp (verilog3-forward-token))
+                             (verilog3-backward-token)))))))))
       (error nil))))
 
 (defun verilog3-forward-comment-same-line ()
@@ -503,6 +558,17 @@ keywords and the keyword after point."
        ((verilog3-special-begin-keyword-p tok)
         (save-excursion
           (verilog3-indent-calculate savep)))
+       ;; Meet an `end' keyword. This should only happen in relative indentation
+       ;; mode or when the end keyword is unbalanced.
+       ((let ((kw (verilog3-matching-regexp :end tok)))
+          (or kw (equal tok ";")))
+        ;; Indenting a closing token (keyword or paren). Decrement indent.
+        (if (save-excursion
+              (goto-char savep)
+              (or (verilog3-matching-regexp :end (verilog3-forward-token))
+                  (looking-at "\\s)")))
+            (- (current-indentation) verilog3-indent-offset)
+          (current-indentation)))
        ;; If an unbalanced keyword was found, increase indent.
        (tok (+ (current-indentation) verilog3-indent-offset))
        ;; Default
