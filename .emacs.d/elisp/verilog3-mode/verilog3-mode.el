@@ -478,8 +478,8 @@ it means something else when preceeded by `wait'."
                     (verilog3-keyword-regexp '("extern"
                                                "import"
                                                "export"
-                                               "pure"
-                                               "virtual"))
+                                               "pure virtual"
+                                               ))
                     "\\)" ".*\\<" tok "\\>")
             (line-end-position) t 1)))
     t)
