@@ -346,7 +346,7 @@ backward-sexp."
           ;; If our search didn't succeed, go back to the original position.
           (when (> open-count 0) (goto-char sp)))))))
 
-(defun verilog3-stride-backward (&optional stop-token)
+(defun verilog3-backward-stride (&optional stop-token)
   "Move backward to the last unbalanced token or STOP-TOKEN. Return nil if
 something unexpected happens."
   (let ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
@@ -421,21 +421,20 @@ it means something else when preceeded by `wait'."
          ;; Find the previous mention without skipping any unbalanced
          ;; keywords.
          (or (save-excursion
-               (equal (verilog3-stride-backward "extern") "extern"))
+               (equal (verilog3-backward-stride "extern") "extern"))
              (save-excursion
-               (equal (verilog3-stride-backward "import") "import"))
+               (equal (verilog3-backward-stride "import") "import"))
              (save-excursion
-               (equal (verilog3-stride-backward "export") "export"))))
+               (equal (verilog3-backward-stride "export") "export"))))
     t)
    ))
 
 (defun verilog3-indent-calculate (&optional savep)
   "Calculate indentation for the current line based on previous unmatched
 keywords and the keyword after point."
-  (when (verilog3-comment-or-string-p)
-    (error "Tried to indent in comment or string"))
+  (when (verilog3-comment-or-string-p) nil)
   (let ((savep (or savep (point)))
-        (tok (verilog3-stride-backward)))
+        (tok (verilog3-backward-stride)))
     (cond
      ;; We meet an open paren and we're looking at a close paren.
      ((and (equal tok "(")
@@ -489,7 +488,7 @@ keywords and the keyword after point."
         (goto-char savep)
         (verilog3-forward-comment-same-line)
         (when (and (looking-at "\\<else\\>")
-                   (equal (verilog3-stride-backward "if") "if"))
+                   (equal (verilog3-backward-stride "if") "if"))
           (current-indentation))))
      ;; Left-aligned keywords
      ((save-excursion
