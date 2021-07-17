@@ -432,79 +432,80 @@ it means something else when preceeded by `wait'."
 (defun verilog3-indent-calculate (&optional savep)
   "Calculate indentation for the current line based on previous unmatched
 keywords and the keyword after point."
-  (when (verilog3-comment-or-string-p) nil)
-  (let ((savep (or savep (point)))
-        (tok (verilog3-backward-stride)))
-    (cond
-     ;; We meet an open paren and we're looking at a close paren.
-     ((and (equal tok "(")
-           (save-excursion
-             (goto-char savep)
-             (verilog3-forward-comment-same-line)
-             (looking-at "\\s)")))
-      (save-excursion
-        (let ((save-col (current-column))
-              (save-eol (line-end-position))
-              (save-pt (point)))
-          (verilog3-forward-token)
-          ;; Check whether there is content after the open parenthesis on the
-          ;; same line.
-          (if (<= (point) save-eol)
-              save-col
-            (goto-char save-pt)
-            (current-indentation)))))
-     ;; We meet an open paren and there is content on the same line:
-     ;; module test (token
-     ;;              ^
-     ((and (equal tok "(")
-           (save-excursion
-             (let ((save-col (current-column))
-                   (save-eol (line-end-position)))
-               (verilog3-forward-token)
-               (if (> (point) save-eol)
-                   nil
-                 save-col)))))
-     ;; We meet an open keyword and we're looking at a matching close keyword.
-     ((let ((kw (verilog3-matching-regexp :begin tok)))
-        (and kw
+  (if (verilog3-comment-or-string-p)
+      nil
+    (let ((savep (or savep (point)))
+          (tok (verilog3-backward-stride)))
+      (cond
+       ;; We meet an open paren and we're looking at a close paren.
+       ((and (equal tok "(")
              (save-excursion
                (goto-char savep)
                (verilog3-forward-comment-same-line)
-               (looking-at kw))))
-      (current-indentation))
-     ;; We meet a one statement keyword ("if", "always") and we're looking at a
-     ;; "begin" keyword.
-     ((and tok
-           (string-match (verilog3-keyword-regexp
-                          verilog3-indent-one-line-keywords)
-                         tok)
-           (save-excursion
-             (goto-char savep)
-             (verilog3-forward-comment-same-line)
-             (looking-at (verilog3-keyword-regexp '("begin")))))
-      (current-indentation))
-     ;; "else"
-     ((save-excursion
-        (goto-char savep)
-        (verilog3-forward-comment-same-line)
-        (when (and (looking-at "\\<else\\>")
-                   (equal (verilog3-backward-stride "if") "if"))
-          (current-indentation))))
-     ;; Left-aligned keywords
-     ((save-excursion
-        (goto-char savep)
-        (verilog3-forward-comment-same-line)
-        (when (looking-at
-               (verilog3-keyword-regexp verilog3-left-aligned-keywords))
-          0)))
-     ;; Special-case begin keywords
-     ((verilog3-special-begin-keyword-p tok)
-      (save-excursion
-        (verilog3-indent-calculate savep)))
-     ;; If an unbalanced keyword was found, increase indent.
-     (tok (+ (current-indentation) verilog3-indent-offset))
-     ;; Default
-     (t (current-indentation)))))
+               (looking-at "\\s)")))
+        (save-excursion
+          (let ((save-col (current-column))
+                (save-eol (line-end-position))
+                (save-pt (point)))
+            (verilog3-forward-token)
+            ;; Check whether there is content after the open parenthesis on the
+            ;; same line.
+            (if (<= (point) save-eol)
+                save-col
+              (goto-char save-pt)
+              (current-indentation)))))
+       ;; We meet an open paren and there is content on the same line:
+       ;; module test (token
+       ;;              ^
+       ((and (equal tok "(")
+             (save-excursion
+               (let ((save-col (current-column))
+                     (save-eol (line-end-position)))
+                 (verilog3-forward-token)
+                 (if (> (point) save-eol)
+                     nil
+                   save-col)))))
+       ;; We meet an open keyword and we're looking at a matching close keyword.
+       ((let ((kw (verilog3-matching-regexp :begin tok)))
+          (and kw
+               (save-excursion
+                 (goto-char savep)
+                 (verilog3-forward-comment-same-line)
+                 (looking-at kw))))
+        (current-indentation))
+       ;; We meet a one statement keyword ("if", "always") and we're looking at a
+       ;; "begin" keyword.
+       ((and tok
+             (string-match (verilog3-keyword-regexp
+                            verilog3-indent-one-line-keywords)
+                           tok)
+             (save-excursion
+               (goto-char savep)
+               (verilog3-forward-comment-same-line)
+               (looking-at (verilog3-keyword-regexp '("begin")))))
+        (current-indentation))
+       ;; "else"
+       ((save-excursion
+          (goto-char savep)
+          (verilog3-forward-comment-same-line)
+          (when (and (looking-at "\\<else\\>")
+                     (equal (verilog3-backward-stride "if") "if"))
+            (current-indentation))))
+       ;; Left-aligned keywords
+       ((save-excursion
+          (goto-char savep)
+          (verilog3-forward-comment-same-line)
+          (when (looking-at
+                 (verilog3-keyword-regexp verilog3-left-aligned-keywords))
+            0)))
+       ;; Special-case begin keywords
+       ((verilog3-special-begin-keyword-p tok)
+        (save-excursion
+          (verilog3-indent-calculate savep)))
+       ;; If an unbalanced keyword was found, increase indent.
+       (tok (+ (current-indentation) verilog3-indent-offset))
+       ;; Default
+       (t (current-indentation))))))
 
 (defun verilog3-indent-line ()
   "Indent the current line. If point is before the current indent, move it to
