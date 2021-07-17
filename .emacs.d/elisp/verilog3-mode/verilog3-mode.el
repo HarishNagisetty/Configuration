@@ -517,7 +517,8 @@ the new indent."
                          (forward-line 0)
                          (skip-chars-forward " \t")
                          (if (>= (point) savep) (setq savep nil))
-                         (or (verilog3-indent-calculate) 0)))
+                         (or (verilog3-indent-calculate)
+                             (current-indentation))))
                      (current-indentation))))
     (if (not (numberp indent))
         ;; If something funny is used (e.g. `noindent'), return it.
