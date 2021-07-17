@@ -340,7 +340,7 @@ backward-sexp."
             ;; a special begin keyword.
             (when (not (or (verilog3-comment-or-string-p)
                            (verilog3-special-begin-keyword-p
-                            (match-string 0))))
+                            (match-string-no-properties 0))))
               (setq open-count
                     (if (match-end 1) (1+ open-count) (1- open-count)))))
           ;; If our search didn't succeed, go back to the original position.
@@ -402,6 +402,11 @@ it means something else when preceeded by `wait'."
                                                "cover"
                                                "restrict"))))
     t)
+   ;; "default clocking"
+   ((save-excursion
+      (and (member tok '("clocking"))
+           (member (verilog3-backward-token) '("default"))))
+    t)
    ;; "wait fork"
    ;; "disable fork"
    ((save-excursion
@@ -409,23 +414,19 @@ it means something else when preceeded by `wait'."
            (member (verilog3-backward-token) '("wait"
                                                "disable"))))
     t)
-   ;; "pure virtual function"
-   ;; "pure virtual task"
-   ((save-excursion
-      (and (member tok '("function" "task"))
-           (member (verilog3-backward-token) '("virtual"))
-           (member (verilog3-backward-token) '("pure"))))
-    t)
-   ;; "extern", "import"
+   ;; "extern", etc.
    ((and (member tok '("function" "task" "module"))
-         ;; Find the previous mention without skipping any unbalanced
-         ;; keywords.
-         (or (save-excursion
-               (equal (verilog3-backward-stride "extern") "extern"))
-             (save-excursion
-               (equal (verilog3-backward-stride "import") "import"))
-             (save-excursion
-               (equal (verilog3-backward-stride "export") "export"))))
+         (save-excursion
+           (beginning-of-line)
+           (re-search-forward
+            (concat "\\("
+                    (verilog3-keyword-regexp '("extern"
+                                               "import"
+                                               "export"
+                                               "pure"
+                                               "virtual"))
+                    "\\)" ".*\\<" tok "\\>")
+            (line-end-position) t 1)))
     t)
    ))
 
