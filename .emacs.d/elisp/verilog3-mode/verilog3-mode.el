@@ -233,6 +233,7 @@
 (defvar verilog3-indent-one-line-keywords
   '("if"
     "else"
+    "for"
     "initial"
     "final"
     "always"
@@ -411,6 +412,10 @@ group number 1."
     (or (nth 3 (syntax-ppss))
         (nth 4 (syntax-ppss))))
 
+(defun verilog3-indent-bolp ()
+  "Return non-nil if the current token is the first on the line."
+  (save-excursion (skip-chars-backward " \t") (bolp)))
+
 (defun verilog3-backward-sexp (token)
   "Skip to the matching keyword of TOKEN. If TOKEN is empty or nil, try
 backward-sexp."
@@ -473,8 +478,7 @@ something unexpected happens."
   (let* ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
          (end-keywords (mapcar #'cdr verilog3-indent-matching-keywords))
          (rel-true-keywords (append '(";") begin-keywords))
-         (rel-keywords (append rel-true-keywords end-keywords
-                               verilog3-indent-one-line-keywords))
+         (rel-all-keywords (append rel-true-keywords '("else")))
          rel0 rel1
          token
          end-of-statement)
@@ -510,21 +514,25 @@ something unexpected happens."
                        (not end-of-statement))
               (throw 'return token))
             ;; Relative Indentation:
-            ;; Keep the past two `rel-keywords'. When both of them are
+            ;; Keep the past two `rel-all-keywords'. When both of them are
             ;; `rel-true-keywords', we found a legitimate end of statement.
             (when verilog3-relative-indent
-              (let ((token (save-excursion (verilog3-forward-token))))
-                (when (member token rel-keywords)
+              (let ((savep (point))
+                    (token (verilog3-forward-token)))
+                (when (member token rel-all-keywords)
                   (setq rel0 rel1)
                   (setq rel1 (if (member token rel-true-keywords) (point)))
-                  (when (and (numberp rel0)
-                             (numberp rel1))
-                    (goto-char rel0)
-                    (let ((token (verilog3-forward-token)))
-                      (unless (equal token ";")
-                        (verilog3-forward-sexp token))
-                      (throw 'return
-                             (verilog3-backward-token)))))))))
+                  (when (and (numberp rel0) (numberp rel1))
+                    (unless (equal token ";")
+                      (verilog3-forward-sexp token))
+                    (forward-comment (point-max))
+                    ;; This point is good for indentation if it is at the
+                    ;; beginning of the line, and it isn't indented specially.
+                    (when (and (verilog3-indent-bolp)
+                               (not (member (save-excursion (verilog3-forward-token))
+                                            verilog3-left-aligned-keywords)))
+                      (throw 'return ""))))
+                (goto-char savep)))))
       (error nil))))
 
 (defun verilog3-forward-comment-same-line ()
@@ -665,9 +673,11 @@ keywords and the keyword after point."
               (verilog3-backward-token)
               (verilog3-backward-sexp tok)
               (current-indentation)))))
-       ;; Stride meets an `end' keyword. This should only happen in relative
-       ;; indentation mode or when the end keyword is unbalanced.
-       ((or (verilog3-keyword-paired-p :end tok)
+       ;; Stride meets an `end' keyword. This could happen when the `end'
+       ;; keyword is unbalanced.  When `tok' is an empty string, this is a
+       ;; relative indentation case.
+       ((or (equal tok "")
+            (verilog3-keyword-paired-p :end tok)
             (member tok '(";" ",")))
         ;; If the semicolon is after a parenthesis, skip back to find
         ;; indentation.
