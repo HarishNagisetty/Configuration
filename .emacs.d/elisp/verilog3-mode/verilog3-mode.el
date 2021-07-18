@@ -669,7 +669,14 @@ keywords and the keyword after point."
        ;; indentation mode or when the end keyword is unbalanced.
        ((or (verilog3-keyword-paired-p :end tok)
             (member tok '(";" ",")))
-        (current-indentation))
+        ;; If the semicolon is after a parenthesis, skip back to find
+        ;; indentation.
+        (or (save-excursion
+              (when (and (zerop (length (verilog3-backward-token)))
+                         (member tok '(";")))
+                (verilog3-backward-sexp "")
+                (current-indentation)))
+            (current-indentation)))
        ;; If an unbalanced keyword was found, increase indent.
        (tok (+ (current-indentation) verilog3-indent-offset))
        ;; Default
