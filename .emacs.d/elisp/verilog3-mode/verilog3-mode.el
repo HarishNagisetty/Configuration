@@ -6,6 +6,9 @@
 (defvar verilog3-relative-indent t
   "Speed up indentation by aligning to close-by statements.")
 
+(defvar verilog3-cache-patterns t
+  "Speed up indentation by caching regular expression patterns.")
+
 ;;; Font Lock
 
 (let* ((verilog3-type-font-keywords
@@ -261,6 +264,54 @@
     "`undefineall")
   "Keywords (directives) that should be left aligned.")
 
+(defvar verilog3-indent-equivalent-cache nil)
+(defvar verilog3-indent-matching-cache nil)
+
+(defun verilog3-keyword-paired-p (type kw)
+  (let ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
+        (end-keywords (mapcar #'cdr verilog3-indent-matching-keywords)))
+    (if (eq type :begin)
+        (member kw begin-keywords)
+      (member kw end-keywords))))
+
+(defun verilog3-equivalent-regexp-1 (type kw)
+  (when (verilog3-keyword-paired-p type kw)
+    (if verilog3-cache-patterns
+        (let* ((type-alist (cdr (assoc type verilog3-indent-equivalent-cache)))
+               (cached (cdr (assoc kw type-alist))))
+          (if (not cached)
+              (let ((begin-alist (cdr (assoc :begin verilog3-indent-equivalent-cache)))
+                    (end-alist (cdr (assoc :end verilog3-indent-equivalent-cache))))
+                (setq cached (verilog3-equivalent-regexp type kw))
+                (if (eq type :begin)
+                    (setq begin-alist (append `((,kw . ,cached)) begin-alist))
+                  (setq end-alist (append `((,kw . ,cached)) end-alist)))
+                (setq verilog3-indent-equivalent-cache (list
+                                                        (cons :begin begin-alist)
+                                                        (cons :end end-alist)))))
+          cached)
+      (verilog3-equivalent-regexp type kw))
+    ))
+
+(defun verilog3-matching-regexp-1 (type kw)
+  (when (verilog3-keyword-paired-p type kw)
+    (if verilog3-cache-patterns
+        (let* ((type-alist (cdr (assoc type verilog3-indent-matching-cache)))
+               (cached (cdr (assoc kw type-alist))))
+          (if (not cached)
+              (let ((begin-alist (cdr (assoc :begin verilog3-indent-matching-cache)))
+                    (end-alist (cdr (assoc :end verilog3-indent-matching-cache))))
+                (setq cached (verilog3-matching-regexp type kw))
+                (if (eq type :begin)
+                    (setq begin-alist (append `((,kw . ,cached)) begin-alist))
+                  (setq end-alist (append `((,kw . ,cached)) end-alist)))
+                (setq verilog3-indent-matching-cache (list
+                                                      (cons :begin begin-alist)
+                                                      (cons :end end-alist)))))
+          cached)
+      (verilog3-matching-regexp type kw))
+    ))
+
 (defun verilog3-equivalent-regexp (type kw)
   "Returns a regexp to match keywords equivalent to keyword KW of TYPE. TYPE
 may be :begin or :end"
@@ -279,7 +330,8 @@ may be :begin or :end"
     (verilog3-keyword-regexp eqlist)))
 
 (defun verilog3-matching-regexp (type kw)
-  "Returns a regexp to match keyword KW of TYPE. TYPE may be :begin or :end."
+  "Returns a regexp to match keywords that partner with keyword KW of
+TYPE. TYPE may be :begin or :end."
   (let (matchlist)
     (dolist (pair verilog3-indent-matching-keywords)
       (when (equal kw (if (eq type :end) (cdr pair) (car pair)))
@@ -328,8 +380,8 @@ backward-sexp."
       (condition-case nil
           (backward-sexp 1)
         (scan-error nil))
-    (let* ((matching-kw (verilog3-matching-regexp :end token))
-           (equivalent-kw (verilog3-equivalent-regexp :end token)))
+    (let* ((matching-kw (verilog3-matching-regexp-1 :end token))
+           (equivalent-kw (verilog3-equivalent-regexp-1 :end token)))
       (when matching-kw
         (when (not equivalent-kw) (error "Did not find equivalent keywords"))
         (let ((sp (point))
@@ -356,8 +408,8 @@ forward-sexp."
       (condition-case nil
           (forward-sexp 1)
         (scan-error nil))
-    (let* ((matching-kw (verilog3-matching-regexp :begin token))
-           (equivalent-kw (verilog3-equivalent-regexp :begin token)))
+    (let* ((matching-kw (verilog3-matching-regexp-1 :begin token))
+           (equivalent-kw (verilog3-equivalent-regexp-1 :begin token)))
       (when matching-kw
         (when (not equivalent-kw) (error "Did not find equivalent keywords"))
         (let ((sp (point))
@@ -522,7 +574,7 @@ keywords and the keyword after point."
                      nil
                    save-col)))))
        ;; We meet an open keyword and we're looking at a matching close keyword.
-       ((let ((kw (verilog3-matching-regexp :begin tok)))
+       ((let ((kw (verilog3-matching-regexp-1 :begin tok)))
           (and kw
                (save-excursion
                  (goto-char savep)
@@ -560,12 +612,12 @@ keywords and the keyword after point."
           (verilog3-indent-calculate savep)))
        ;; Meet an `end' keyword. This should only happen in relative indentation
        ;; mode or when the end keyword is unbalanced.
-       ((let ((kw (verilog3-matching-regexp :end tok)))
+       ((let ((kw (verilog3-matching-regexp-1 :end tok)))
           (or kw (equal tok ";")))
         ;; Indenting a closing token (keyword or paren). Decrement indent.
         (if (save-excursion
               (goto-char savep)
-              (or (verilog3-matching-regexp :end (verilog3-forward-token))
+              (or (verilog3-matching-regexp-1 :end (verilog3-forward-token))
                   (looking-at "\\s)")))
             (- (current-indentation) verilog3-indent-offset)
           (current-indentation)))
