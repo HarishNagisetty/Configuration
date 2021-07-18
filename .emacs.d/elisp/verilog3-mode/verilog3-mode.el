@@ -352,15 +352,15 @@ TYPE. TYPE may be :begin or :end."
     pat))
 
 (defun verilog3-set-token-regex ()
-  "Regex matching keywords or parens. Parentheses are matched in group number
-1."
+  "Regex matching keywords, semicolons or parens. Parentheses are matched in
+group number 1."
   (when (not verilog3-token-regex)
     (let* ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
            (end-keywords (mapcar #'cdr verilog3-indent-matching-keywords))
            (kw-regex (verilog3-keyword-regexp
                       (append begin-keywords end-keywords
                               verilog3-indent-one-line-keywords))))
-      (setq verilog3-token-regex (concat kw-regex "\\|\\([][(){}]\\)")))))
+      (setq verilog3-token-regex (concat kw-regex "\\|;\\|\\([][(){}]\\)")))))
   
 (defun verilog3-backward-token-1 ()
   "Skip to keywords or parens - the only tokens we usually care about."
