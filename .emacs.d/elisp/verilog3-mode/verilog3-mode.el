@@ -354,7 +354,7 @@ TYPE. TYPE may be :begin or :end."
 (defun verilog3-set-token-regex ()
   "Regex matching keywords, semicolons or parens. Parentheses are matched in
 group number 1."
-  (when (not verilog3-token-regex)
+  (unless verilog3-token-regex
     (let* ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
            (end-keywords (mapcar #'cdr verilog3-indent-matching-keywords))
            (kw-regex (verilog3-keyword-regexp
@@ -368,7 +368,7 @@ group number 1."
   (let ((done nil))
     (while (and (not done)
                 (re-search-backward verilog3-token-regex nil t))
-      (when (not (verilog3-comment-or-string-p)) (setq done t)))
+      (unless (verilog3-comment-or-string-p) (setq done t)))
     (when done
       (if (not (match-end 1))
           (match-string-no-properties 0)
@@ -381,7 +381,7 @@ group number 1."
   (let ((done nil))
     (while (and (not done)
                 (re-search-forward verilog3-token-regex nil t))
-      (when (not (verilog3-comment-or-string-p)) (setq done t)))
+      (unless (verilog3-comment-or-string-p) (setq done t)))
     (when done
       (if (not (match-end 1))
           (match-string-no-properties 0)
@@ -421,7 +421,7 @@ backward-sexp."
     (let* ((matching-kw (verilog3-matching-regexp-1 :end token))
            (equivalent-kw (verilog3-equivalent-regexp-1 :end token)))
       (when matching-kw
-        (when (not equivalent-kw) (error "Did not find equivalent keywords"))
+        (unless equivalent-kw (error "Did not find equivalent keywords"))
         (let ((sp (point))
               (pat (concat matching-kw "\\|\\(" equivalent-kw "\\)"))
               (open-count 1))
@@ -431,9 +431,9 @@ backward-sexp."
                       (re-search-backward pat nil t))
             ;; Only consider this match if it's not a string or comment or 
             ;; a special begin keyword.
-            (when (not (or (verilog3-comment-or-string-p)
-                           (verilog3-special-begin-keyword-p
-                            (match-string-no-properties 0))))
+            (unless (or (verilog3-comment-or-string-p)
+                        (verilog3-special-begin-keyword-p
+                         (match-string-no-properties 0)))
               (setq open-count
                     (if (match-end 1) (1+ open-count) (1- open-count)))))
           ;; If our search didn't succeed, go back to the original position.
@@ -449,7 +449,7 @@ forward-sexp."
     (let* ((matching-kw (verilog3-matching-regexp-1 :begin token))
            (equivalent-kw (verilog3-equivalent-regexp-1 :begin token)))
       (when matching-kw
-        (when (not equivalent-kw) (error "Did not find equivalent keywords"))
+        (unless equivalent-kw (error "Did not find equivalent keywords"))
         (let ((sp (point))
               (pat (concat matching-kw "\\|\\(" equivalent-kw "\\)"))
               (open-count 1))
@@ -459,9 +459,9 @@ forward-sexp."
                       (re-search-forward pat nil t))
             ;; Only consider this match if it's not a string or comment or 
             ;; a special begin keyword.
-            (when (not (or (verilog3-comment-or-string-p)
-                           (verilog3-special-begin-keyword-p
-                            (match-string-no-properties 0))))
+            (unless (or (verilog3-comment-or-string-p)
+                        (verilog3-special-begin-keyword-p
+                         (match-string-no-properties 0)))
               (setq open-count
                     (if (match-end 1) (1+ open-count) (1- open-count)))))
           ;; If our search didn't succeed, go back to the original position.
@@ -472,8 +472,8 @@ forward-sexp."
 something unexpected happens."
   (let* ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
          (end-keywords (mapcar #'cdr verilog3-indent-matching-keywords))
-         (rel-true-keywords (append begin-keywords))
-         (rel-keywords (append begin-keywords end-keywords
+         (rel-true-keywords (append '(";") begin-keywords))
+         (rel-keywords (append rel-true-keywords end-keywords
                                verilog3-indent-one-line-keywords))
          rel0 rel1
          token
@@ -520,9 +520,10 @@ something unexpected happens."
                   (when (and (numberp rel0)
                              (numberp rel1))
                     (goto-char rel0)
-                    (throw 'return
-                           (progn
-                             (verilog3-forward-sexp (verilog3-forward-token))
+                    (let ((token (verilog3-forward-token)))
+                      (unless (equal token ";")
+                        (verilog3-forward-sexp token))
+                      (throw 'return
                              (verilog3-backward-token)))))))))
       (error nil))))
 
@@ -548,17 +549,19 @@ when preceeded by `wait'."
                                                "cover"
                                                "restrict"))))
     t)
-   ;; "default clocking"
-   ((save-excursion
-      (and (member tok '("clocking"))
-           (member (verilog3-backward-token) '("default"))))
-    t)
    ;; "wait fork"
    ;; "disable fork"
    ((save-excursion
       (and (member tok '("fork"))
            (member (verilog3-backward-token) '("wait"
                                                "disable"))))
+    t)
+   ;; "default clocking" without "@" (event) is a single statement.
+   ((and (member tok '("clocking"))
+         (not
+          (save-excursion
+            (beginning-of-line)
+            (re-search-forward "clocking.*@" (line-end-position) t 1))))
     t)
    ;; "extern", etc.
    ((and (member tok '("function" "task" "module"))
@@ -649,17 +652,24 @@ keywords and the keyword after point."
        ((verilog3-special-begin-keyword-p tok)
         (save-excursion
           (verilog3-indent-calculate savep)))
-       ;; Meet an `end' keyword. This should only happen in relative indentation
-       ;; mode or when the end keyword is unbalanced.
-       ((let ((kw (verilog3-matching-regexp-1 :end tok)))
-          (or kw (member tok '(";" ","))))
-        ;; Indenting a closing token (keyword or paren). Decrement indent.
-        (if (save-excursion
-              (goto-char savep)
-              (or (verilog3-matching-regexp-1 :end (verilog3-forward-token))
-                  (looking-at "\\s)")))
-            (- (current-indentation) verilog3-indent-offset)
-          (current-indentation)))
+       ;; If we're looking at an end keyword, try to match indentation.
+       ((save-excursion
+          (goto-char savep)
+          (let ((eol (line-end-position))
+                (tok (verilog3-forward-token)))
+            (when (and (<= (point) eol)
+                       (or (verilog3-keyword-paired-p :end tok)
+                           (looking-at "\\s)")))
+              (when (looking-at "\\s)")
+                (forward-char 1))
+              (verilog3-backward-token)
+              (verilog3-backward-sexp tok)
+              (current-indentation)))))
+       ;; Stride meets an `end' keyword. This should only happen in relative
+       ;; indentation mode or when the end keyword is unbalanced.
+       ((or (verilog3-keyword-paired-p :end tok)
+            (member tok '(";" ",")))
+        (current-indentation))
        ;; If an unbalanced keyword was found, increase indent.
        (tok (+ (current-indentation) verilog3-indent-offset))
        ;; Default
