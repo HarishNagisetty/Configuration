@@ -269,7 +269,9 @@
 (defvar verilog3-indent-matching-cache nil)
 (defvar verilog3-token-regex nil)
 
-(defun verilog3-keyword-paired-p (type kw)
+(defun verilog3-paired-keyword-p (type kw)
+  "Check if keyword KW of TYPE is part of a keyword pair. TYPE may be :begin or
+:end"
   (let ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
         (end-keywords (mapcar #'cdr verilog3-indent-matching-keywords)))
     (if (eq type :begin)
@@ -277,42 +279,50 @@
       (member kw end-keywords))))
 
 (defun verilog3-equivalent-regexp-1 (type kw)
-  (when (verilog3-keyword-paired-p type kw)
+  "Return the same thing as `verilog3-equivalent-regexp' but cache the value
+for future calls."
+  (when (verilog3-paired-keyword-p type kw)
     (if verilog3-cache-patterns
         (let* ((type-alist (cdr (assoc type verilog3-indent-equivalent-cache)))
                (cached (cdr (assoc kw type-alist))))
           (if (not cached)
-              (let ((begin-alist (cdr (assoc :begin verilog3-indent-equivalent-cache)))
-                    (end-alist (cdr (assoc :end verilog3-indent-equivalent-cache))))
+              (let ((begin-alist
+                     (cdr (assoc :begin verilog3-indent-equivalent-cache)))
+                    (end-alist
+                     (cdr (assoc :end verilog3-indent-equivalent-cache))))
                 (setq cached (verilog3-equivalent-regexp type kw))
                 (if (eq type :begin)
                     (setq begin-alist (append `((,kw . ,cached)) begin-alist))
                   (setq end-alist (append `((,kw . ,cached)) end-alist)))
-                (setq verilog3-indent-equivalent-cache (list
-                                                        (cons :begin begin-alist)
-                                                        (cons :end end-alist)))))
+                (setq verilog3-indent-equivalent-cache
+                      (list
+                       (cons :begin begin-alist)
+                       (cons :end end-alist)))))
           cached)
-      (verilog3-equivalent-regexp type kw))
-    ))
+      (verilog3-equivalent-regexp type kw))))
 
 (defun verilog3-matching-regexp-1 (type kw)
-  (when (verilog3-keyword-paired-p type kw)
+  "Return the same thing as `verilog3-matching-regexp' but cache the value
+for future calls."
+  (when (verilog3-paired-keyword-p type kw)
     (if verilog3-cache-patterns
         (let* ((type-alist (cdr (assoc type verilog3-indent-matching-cache)))
                (cached (cdr (assoc kw type-alist))))
           (if (not cached)
-              (let ((begin-alist (cdr (assoc :begin verilog3-indent-matching-cache)))
-                    (end-alist (cdr (assoc :end verilog3-indent-matching-cache))))
+              (let ((begin-alist
+                     (cdr (assoc :begin verilog3-indent-matching-cache)))
+                    (end-alist
+                     (cdr (assoc :end verilog3-indent-matching-cache))))
                 (setq cached (verilog3-matching-regexp type kw))
                 (if (eq type :begin)
                     (setq begin-alist (append `((,kw . ,cached)) begin-alist))
                   (setq end-alist (append `((,kw . ,cached)) end-alist)))
-                (setq verilog3-indent-matching-cache (list
-                                                      (cons :begin begin-alist)
-                                                      (cons :end end-alist)))))
+                (setq verilog3-indent-matching-cache
+                      (list
+                       (cons :begin begin-alist)
+                       (cons :end end-alist)))))
           cached)
-      (verilog3-matching-regexp type kw))
-    ))
+      (verilog3-matching-regexp type kw))))
 
 (defun verilog3-equivalent-regexp (type kw)
   "Returns a regexp to match keywords equivalent to keyword KW of TYPE. TYPE
@@ -364,7 +374,11 @@ group number 1."
       (setq verilog3-token-regex (concat kw-regex "\\|;\\|\\([][(){}]\\)")))))
   
 (defun verilog3-backward-token-1 ()
-  "Skip to keywords or parens - the only tokens we usually care about."
+  "Skip to keywords or parens - the only tokens we usually care about. Search
+for the previous instance of `verilog3-token-regex' and set point to the
+beginning of the occurrence. If the match is a paren-type character, point is
+set to just after that match and an empty string is returned. This function
+skips any matches inside comments."
   (verilog3-set-token-regex)
   (let ((done nil))
     (while (and (not done)
@@ -377,7 +391,11 @@ group number 1."
         ""))))
 
 (defun verilog3-forward-token-1 ()
-  "Skip to keywords or parens - the only tokens we usually care about."
+  "Skip to keywords or parens - the only tokens we usually care about. Search
+for the next instance of `verilog3-token-regex' and set point to the
+end of the occurrence. If the match is a paren-type character, point is set to
+just before that match and an empty string is returned. This function skips
+any matches inside comments."
   (verilog3-set-token-regex)
   (let ((done nil))
     (while (and (not done)
@@ -408,7 +426,7 @@ group number 1."
           (point))))
 
 (defun verilog3-comment-or-string-p ()
-  "Is POINT in a comment or string?"
+  "Chech whether point is inside a comment or string."
     (or (nth 3 (syntax-ppss))
         (nth 4 (syntax-ppss))))
 
@@ -418,7 +436,7 @@ group number 1."
 
 (defun verilog3-backward-sexp (token)
   "Skip to the matching keyword of TOKEN. If TOKEN is empty or nil, try
-backward-sexp."
+backward-sexp. If a matching token wasn't found, do not move point."
   (if (zerop (length token))
       (condition-case nil
           (backward-sexp 1)
@@ -446,7 +464,7 @@ backward-sexp."
 
 (defun verilog3-forward-sexp (token)
   "Skip to the matching keyword of TOKEN. If TOKEN is empty or nil, try
-forward-sexp."
+forward-sexp. If a matching token wasn't found, do not move point."
   (if (zerop (length token))
       (condition-case nil
           (forward-sexp 1)
@@ -473,11 +491,24 @@ forward-sexp."
           (when (> open-count 0) (goto-char sp)))))))
 
 (defun verilog3-backward-stride (&optional stop-token)
-  "Move backward to the last unbalanced token or STOP-TOKEN. Return nil if
-something unexpected happens."
+  "Move backward to the last pivot token or STOP-TOKEN, whichever comes
+first. Return nil if something unexpected happens. A pivot token is a token
+that is sufficient to determine indentation.
+
+This function only examines tokens matching `verilog3-token-regex'.
+
+If `verilog3-relative-indent' is non-nil, this function can return an empty
+string to suggest that the next regular line can be indented the same as the
+current point."
   (let* ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
          (end-keywords (mapcar #'cdr verilog3-indent-matching-keywords))
          (rel-true-keywords (append '(";") begin-keywords))
+         ;; `else' is the only keyword that "breaks" the rule that two
+         ;; consecutive begin keywords or semicolons means two separate
+         ;; statements.
+         ;; Note that if we see two nested begin keywords, the second will be
+         ;; an unbalanced token anyway. We return without trying relative
+         ;; indentation.
          (rel-all-keywords (append rel-true-keywords '("else")))
          rel0 rel1
          token
@@ -486,7 +517,6 @@ something unexpected happens."
         (catch 'return
           (while t
             (let ((sp (point)))
-              ;; Get new token
               (setq token (verilog3-backward-token-1))
               (when (and stop-token (equal token stop-token))
                 (throw 'return token))
@@ -527,7 +557,7 @@ something unexpected happens."
                       (verilog3-forward-sexp token))
                     (forward-comment (point-max))
                     ;; This point is good for indentation if it is at the
-                    ;; beginning of the line, and it isn't indented specially.
+                    ;; beginning of the line and it isn't indented specially.
                     (when (and (verilog3-indent-bolp)
                                (not (member (save-excursion (verilog3-forward-token))
                                             verilog3-left-aligned-keywords)))
@@ -548,8 +578,7 @@ should be just before TOK.
 Example: While `fork' generally starts a new block, it means something else
 when preceeded by `wait'."
   (cond
-   ;; We meet a "property" keyword, but it's preceeded by another keyword
-   ;; that indicates it's not part of a matching pair.
+   ;; "assert property", etc.
    ((save-excursion
       (and (member tok '("property"))
            (member (verilog3-backward-token) '("assert"
@@ -557,12 +586,16 @@ when preceeded by `wait'."
                                                "cover"
                                                "restrict"))))
     t)
-   ;; "wait fork"
-   ;; "disable fork"
+   ;; "wait fork", etc.
    ((save-excursion
       (and (member tok '("fork"))
            (member (verilog3-backward-token) '("wait"
                                                "disable"))))
+    t)
+   ;; "virtual interface"
+   ((save-excursion
+      (and (member tok '("interface"))
+           (member (verilog3-backward-token) '("virtual"))))
     t)
    ;; "default clocking" without "@" (event) is a single statement.
    ((and (member tok '("clocking"))
@@ -584,8 +617,7 @@ when preceeded by `wait'."
                                                ))
                     "\\)" ".*\\<" tok "\\>")
             (line-end-position) t 1)))
-    t)
-   ))
+    t)))
 
 (defun verilog3-indent-calculate (&optional savep)
   "Calculate indentation for the current line based on previous unmatched
@@ -666,7 +698,7 @@ keywords and the keyword after point."
           (let ((eol (line-end-position))
                 (tok (verilog3-forward-token)))
             (when (and (<= (point) eol)
-                       (or (verilog3-keyword-paired-p :end tok)
+                       (or (verilog3-paired-keyword-p :end tok)
                            (looking-at "\\s)")))
               (when (looking-at "\\s)")
                 (forward-char 1))
@@ -677,7 +709,7 @@ keywords and the keyword after point."
        ;; keyword is unbalanced.  When `tok' is an empty string, this is a
        ;; relative indentation case.
        ((or (equal tok "")
-            (verilog3-keyword-paired-p :end tok)
+            (verilog3-paired-keyword-p :end tok)
             (member tok '(";" ",")))
         ;; If the semicolon is after a parenthesis, skip back to find
         ;; indentation.
@@ -734,7 +766,6 @@ the new indent."
   (setq font-lock-multiline t)
 
   ;; Indent
-  (setq-local indent-line-function #'verilog3-indent-line)
-  )
+  (setq-local indent-line-function #'verilog3-indent-line))
 
 (provide 'verilog3-mode)
