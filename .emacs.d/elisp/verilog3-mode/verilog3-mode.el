@@ -9,6 +9,10 @@
 (defvar verilog3-cache-patterns t
   "Speed up indentation by caching regular expression patterns.")
 
+(defvar verilog3-indent-begin-special nil
+  "If true, indent begin differently. Don't indent a \"begin\" keyword that
+  follows a one-statement keyword.")
+
 ;;; Font Lock
 
 (let* ((verilog3-type-font-keywords
@@ -267,11 +271,19 @@
 
 (defvar verilog3-indent-equivalent-cache nil)
 (defvar verilog3-indent-matching-cache nil)
-(defvar verilog3-token-regex nil)
+(defvar verilog3-token-regex nil
+  "A search for this expression is used as an approximation to regular
+backward/forward token functions.")
+
+(defun verilog3-indent-buffer-measure-time ()
+  "Indent buffer and measure time taken to do so."
+  (let ((time (current-time)))
+    (indent-region (point-min) (point-max))
+    (message "%.06f" (float-time (time-since time)))))
 
 (defun verilog3-paired-keyword-p (type kw)
-  "Check if keyword KW of TYPE is part of a keyword pair. TYPE may be :begin or
-:end"
+  "Return non-nil if keyword KW of TYPE is part of a keyword pair. TYPE may be
+:begin or :end"
   (let ((begin-keywords (mapcar #'car verilog3-indent-matching-keywords))
         (end-keywords (mapcar #'cdr verilog3-indent-matching-keywords)))
     (if (eq type :begin)
@@ -426,7 +438,7 @@ any matches inside comments."
           (point))))
 
 (defun verilog3-comment-or-string-p ()
-  "Chech whether point is inside a comment or string."
+  "Return non-nil if point is inside a comment or string."
     (or (nth 3 (syntax-ppss))
         (nth 4 (syntax-ppss))))
 
@@ -455,7 +467,7 @@ backward-sexp. If a matching token wasn't found, do not move point."
             ;; Only consider this match if it's not a string or comment or 
             ;; a special begin keyword.
             (unless (or (verilog3-comment-or-string-p)
-                        (verilog3-special-begin-keyword-p
+                        (verilog3-special-open-keyword-p
                          (match-string-no-properties 0)))
               (setq open-count
                     (if (match-end 1) (1+ open-count) (1- open-count)))))
@@ -483,7 +495,7 @@ forward-sexp. If a matching token wasn't found, do not move point."
             ;; Only consider this match if it's not a string or comment or 
             ;; a special begin keyword.
             (unless (or (verilog3-comment-or-string-p)
-                        (verilog3-special-begin-keyword-p
+                        (verilog3-special-open-keyword-p
                          (match-string-no-properties 0)))
               (setq open-count
                     (if (match-end 1) (1+ open-count) (1- open-count)))))
@@ -528,9 +540,10 @@ current point."
               ;; indentation is considered to have ended. The constraint block
               ;; allows `if' statements to terminate with "}". Let's use that as
               ;; an end token too.
-              (when (or (equal (string (char-before)) "}")
-                        (member token '(";" "end")))
-                (setq end-of-statement t))
+              (when (not end-of-statement)
+                (when (or (equal (string (char-before)) "}")
+                          (member token (append '(";") end-keywords)))
+                  (setq end-of-statement t)))
               (verilog3-backward-sexp token)
               ;; Unbalanced close token
               (when (member (save-excursion (verilog3-forward-token))
@@ -572,9 +585,9 @@ current point."
     (forward-comment (point-max))
     (when (> (point) mp) (goto-char sp))))
 
-(defun verilog3-special-begin-keyword-p (tok)
-  "Check for a special case where the begin keyword means something else. POINT
-should be just before TOK.
+(defun verilog3-special-open-keyword-p (tok)
+  "Return t if the opening keyword TOK means something else. POINT should be
+just before TOK.
 Example: While `fork' generally starts a new block, it means something else
 when preceeded by `wait'."
   (cond
@@ -619,110 +632,154 @@ when preceeded by `wait'."
             (line-end-position) t 1)))
     t)))
 
-(defun verilog3-indent-calculate (&optional savep)
-  "Calculate indentation for the current line based on previous unmatched
-keywords and the keyword after point."
-  (if (verilog3-comment-or-string-p)
-      nil
-    (let ((savep (or savep (point)))
-          (tok (verilog3-backward-stride)))
-      (cond
-       ;; We meet an open paren and we're looking at a close paren.
-       ((and (equal tok "(")
+(defun verilog3-indent-comment-rule ()
+  (when (verilog3-comment-or-string-p)
+    (current-indentation)))
+
+(defun verilog3-indent-close-paren-rule ()
+  "Calculate indent when we're looking at a close paren."
+    (save-excursion
+      (verilog3-forward-comment-same-line)
+      (when (looking-at "\\s)")
+        (forward-char 1)
+        (verilog3-backward-sexp "")
+        (forward-char 1)
+        (let ((save-col (current-column))
+              (save-eol (line-end-position))
+              (save-pt (point)))
+          (verilog3-forward-token)
+          ;; Check whether there is content after the open parenthesis on the
+          ;; same line.
+          (if (<= (point) save-eol)
+              save-col
+            (goto-char save-pt)
+            (current-indentation))))))
+
+(defun verilog3-indent-inside-paren-rule (pivot-token pivot-point)
+  "Calculate indent when PIVOT-POINT is an open paren and there is content on
+the same line."
+  (when (equal pivot-token "(")
+    (save-excursion
+      (goto-char pivot-point)
+      (let ((save-col (current-column))
+            (save-eol (line-end-position)))
+        (verilog3-forward-token)
+        (if (> (point) save-eol)
+            nil
+          save-col)))))
+
+(defun verilog3-indent-begin-special-rule (pivot-token pivot-point)
+  "Calculate indent for the \"begin\" keyword when PIVOT-TOKEN is a one-statement
+keyword."
+  (when (and verilog3-indent-begin-special
              (save-excursion
-               (goto-char savep)
                (verilog3-forward-comment-same-line)
-               (looking-at "\\s)")))
-        (save-excursion
-          (let ((save-col (current-column))
-                (save-eol (line-end-position))
-                (save-pt (point)))
-            (verilog3-forward-token)
-            ;; Check whether there is content after the open parenthesis on the
-            ;; same line.
-            (if (<= (point) save-eol)
-                save-col
-              (goto-char save-pt)
-              (current-indentation)))))
-       ;; We meet an open paren and there is content on the same line:
-       ;; module test (token
-       ;;              ^
-       ((and (equal tok "(")
-             (save-excursion
-               (let ((save-col (current-column))
-                     (save-eol (line-end-position)))
-                 (verilog3-forward-token)
-                 (if (> (point) save-eol)
-                     nil
-                   save-col)))))
-       ;; We meet an open keyword and we're looking at a matching close keyword.
-       ((let ((kw (verilog3-matching-regexp-1 :begin tok)))
-          (and kw
-               (save-excursion
-                 (goto-char savep)
-                 (verilog3-forward-comment-same-line)
-                 (looking-at kw))))
-        (current-indentation))
-       ;; We meet a one statement keyword ("if", "always") and we're looking at a
-       ;; "begin" keyword.
-       ((and tok
+               (looking-at (verilog3-keyword-regexp '("begin"))))
+             pivot-token
              (string-match (verilog3-keyword-regexp
                             verilog3-indent-one-line-keywords)
-                           tok)
-             (save-excursion
-               (goto-char savep)
-               (verilog3-forward-comment-same-line)
-               (looking-at (verilog3-keyword-regexp '("begin")))))
-        (current-indentation))
-       ;; "else"
-       ((save-excursion
-          (goto-char savep)
-          (verilog3-forward-comment-same-line)
-          (when (and (looking-at "\\<else\\>")
-                     (equal (verilog3-backward-stride "if") "if"))
-            (current-indentation))))
-       ;; Left-aligned keywords
-       ((save-excursion
-          (goto-char savep)
-          (verilog3-forward-comment-same-line)
-          (when (looking-at
-                 (verilog3-keyword-regexp verilog3-left-aligned-keywords))
-            0)))
-       ;; Special-case begin keywords
-       ((verilog3-special-begin-keyword-p tok)
+                           pivot-token))
+    (save-excursion
+      (goto-char pivot-point)
+      (current-indentation))))
+
+(defun verilog3-indent-else-rule (pivot-token pivot-point)
+  "Calculate indent when looking at an else token."
+  (save-excursion
+    (verilog3-forward-comment-same-line)
+    (when (and (looking-at "\\<else\\>")
+               (equal (verilog3-backward-stride "if") "if"))
+      (current-indentation))))
+
+(defun verilog3-indent-left-aligned-keyword-rule (pivot-token pivot-point)
+  "Calculate indent when looking at left aligned keywords."
+  (save-excursion
+    (verilog3-forward-comment-same-line)
+    (when (looking-at
+           (verilog3-keyword-regexp verilog3-left-aligned-keywords))
+      0)))
+
+(defun verilog3-indent-special-open-keyword-rule (pivot-token pivot-point)
+  "Calculate indent when PIVOT-TOKEN is a special begin keyword."
+  (save-excursion
+    (let ((savep (point))
+          (fallback-indent (progn
+                             (goto-char pivot-point)
+                             (current-indentation))))
+      (when (verilog3-special-open-keyword-p pivot-token)
+        (or (verilog3-indent-calculate savep)
+            fallback-indent)))))
+
+(defun verilog3-indent-close-keyword-rule ()
+  "Calculate indentation when looking at a close keyword."
+  (save-excursion
+    (let ((savep (point))
+          (eol (line-end-position))
+          (tok (verilog3-forward-token)))
+      (when (and (<= (point) eol) (verilog3-paired-keyword-p :end tok))
+        (goto-char savep)
+        (verilog3-backward-sexp tok)
+        (current-indentation)))))
+
+(defun verilog3-indent-match-pivot-token-rule (pivot-token pivot-point)
+  "Calculate indentation when PIVOT-TOKEN indentation should be matched."
+  ;; - When `tok' is an empty string, this is a relative indentation case.
+  ;; - Stride could meet an `end' keyword when the `end' keyword is unbalanced.
+  (when (or (equal pivot-token "")
+            (verilog3-paired-keyword-p :end pivot-point))
+    (save-excursion
+      (goto-char pivot-point)
+      (current-indentation))))
+
+(defun verilog3-indent-increase-rule (pivot-token pivot-point)
+  "Increase indentation when PIVOT-TOKEN is non-nil."
+  (when pivot-token
+    (save-excursion
+      (goto-char pivot-point)
+      (+ (current-indentation) verilog3-indent-offset))))
+
+(defvar verilog3-pre-stride-indent-functions
+  '(verilog3-indent-comment-rule
+    verilog3-indent-close-keyword-rule
+    verilog3-indent-close-paren-rule)
+  "This hook is run before `verilog3-backward-stride'. If an indentation rule
+does not need the pivot point and doesn't need to be run after a function that
+does, putting it in this hook could speed things up.
+
+Each function is called with no argument, shouldn't move point, and should
+return either nil if it has no opinion, or an integer representing the column
+to which that point should be aligned, if we were to reindent it.")
+
+(defvar verilog3-post-stride-indent-functions
+  '(verilog3-indent-begin-special-rule
+    verilog3-indent-else-rule
+    verilog3-indent-left-aligned-keyword-rule
+    verilog3-indent-special-open-keyword-rule
+    verilog3-indent-match-pivot-token-rule
+    verilog3-indent-inside-paren-rule
+    verilog3-indent-increase-rule)
+  "This hook is run after `verilog3-backward-stride'.
+
+Each function is called with two arguments: PIVOT-TOKEN and PIVOT-POINT,
+shouldn't move point, and should return either nil if it has no opinion, or an
+integer representing the column to which that point should be aligned, if we
+were to reindent it.")
+
+(defun verilog3-indent-calculate (&optional savep)
+  "Calculate indentation for the current line."
+  (or (save-excursion
+        (when savep (goto-char savep))
+        (run-hook-with-args-until-success
+         'verilog3-pre-stride-indent-functions))
+      (let (pivot-token pivot-point)
         (save-excursion
-          (verilog3-indent-calculate savep)))
-       ;; If we're looking at an end keyword, try to match indentation.
-       ((save-excursion
-          (goto-char savep)
-          (let ((eol (line-end-position))
-                (tok (verilog3-forward-token)))
-            (when (and (<= (point) eol)
-                       (or (verilog3-paired-keyword-p :end tok)
-                           (looking-at "\\s)")))
-              (when (looking-at "\\s)")
-                (forward-char 1))
-              (verilog3-backward-token)
-              (verilog3-backward-sexp tok)
-              (current-indentation)))))
-       ;; Stride meets an `end' keyword. This could happen when the `end'
-       ;; keyword is unbalanced.  When `tok' is an empty string, this is a
-       ;; relative indentation case.
-       ((or (equal tok "")
-            (verilog3-paired-keyword-p :end tok)
-            (member tok '(";" ",")))
-        ;; If the semicolon is after a parenthesis, skip back to find
-        ;; indentation.
-        (or (save-excursion
-              (when (and (zerop (length (verilog3-backward-token)))
-                         (member tok '(";")))
-                (verilog3-backward-sexp "")
-                (current-indentation)))
-            (current-indentation)))
-       ;; If an unbalanced keyword was found, increase indent.
-       (tok (+ (current-indentation) verilog3-indent-offset))
-       ;; Default
-       (t (current-indentation))))))
+          (setq pivot-token (verilog3-backward-stride))
+          (setq pivot-point (point)))
+        (save-excursion
+          (when savep (goto-char savep))
+          (run-hook-with-args-until-success
+           'verilog3-post-stride-indent-functions
+           pivot-token pivot-point)))))
 
 (defun verilog3-indent-line ()
   "Indent the current line. If point is before the current indent, move it to
