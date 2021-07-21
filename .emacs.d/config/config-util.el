@@ -106,4 +106,27 @@
      ,@body
      (message "%.06f" (float-time (time-since time)))))
 
+(defun /config/util/font-exists-p (font)
+  "Return t if font is available."
+  (if (null (x-list-fonts font)) nil t))
+
+(defun /config/util/font-monospace ()
+  "Set the default font to a monospace font." 
+  (interactive)
+  (when (display-graphic-p)
+    (cond
+     ((/config/util/font-exists-p "Source Code Pro")
+      (set-face-attribute 'default nil :font "Source Code Pro" :height 110))
+     ((/config/util/font-exists-p "Monospace")
+      (set-face-attribute 'default nil :font "Monospace" :height 140))
+     (t (set-face-attribute 'default nil :height 114)))))
+
+(defun /config/util/font-proportional ()
+  "Set the default font to a proportional font." 
+  (interactive)
+  (when (display-graphic-p)
+    (cond
+     ((/config/util/font-exists-p "Sans")
+      (set-face-attribute 'default nil :font "Sans" :height 124)))))
+
 (provide '/config/util)
