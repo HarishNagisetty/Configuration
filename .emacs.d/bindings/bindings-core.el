@@ -75,6 +75,7 @@
 ;; Use only lowercase letters
 (/bindings/core/define-keys /bindings/core/global-leader-map
   ("b" #'ido-switch-buffer "Switch Buffer")
+  ("d" #'/config/util/insert-date "Insert Date")
   ("f" #'ido-find-file "Find File")
   ("o" nil "Open...")
   ("ot" #'/bindings/core/open-dired "Open Dired")

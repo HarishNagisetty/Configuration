@@ -129,4 +129,9 @@
      ((/config/util/font-exists-p "Sans")
       (set-face-attribute 'default nil :font "Sans" :height 124)))))
 
+(defun /config/util/insert-date ()
+  "Insert the date and time into the current buffer."
+  (interactive)
+  (insert (shell-command-to-string "echo -n `date`")))
+
 (provide '/config/util)

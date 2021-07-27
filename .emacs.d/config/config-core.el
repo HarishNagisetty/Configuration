@@ -19,17 +19,11 @@
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
 (menu-bar-mode 0)
-;; Save minibuffer history.
 (savehist-mode 1)
-;; Save desktop session.
 (desktop-save-mode 1)
 
-;(require 'hide-mode-line)
-;(global-hide-mode-line-mode)
-
 ;;; Fonts
-(/core/boot/after '/config/util
-  (/config/util/font-monospace))
+(/core/boot/after '/config/util (/config/util/font-monospace))
 
 ;;; Buffer List
 ;; After selecting buffer through the Buffer List, I don't want evil

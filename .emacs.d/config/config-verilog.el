@@ -15,7 +15,7 @@
     (define-key verilog-mode-map (kbd ";") 'self-insert-command)
     (define-key verilog-mode-map (kbd ":") 'self-insert-command)
     (define-key verilog-mode-map (kbd "RET") 'newline)
-     (define-key verilog-mode-map (kbd "TAB") 'indent-for-tab-command)))
+    (define-key verilog-mode-map (kbd "TAB") 'indent-for-tab-command)))
 
 (require 'verilog3-mode)
 (/core/boot/after 'verilog3-mode
