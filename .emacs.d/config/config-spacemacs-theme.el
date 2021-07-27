@@ -7,6 +7,7 @@
 (setq spacemacs-theme-org-height nil)
 (setq spacemacs-theme-org-bold nil)
 (setq spacemacs-theme-org-priority-bold nil)
+(setq spacemacs-theme-comment-bg nil)
 
 (defun /config/spacemacs-theme/dark ()
   "Load Spacemacs Dark theme."
@@ -17,7 +18,5 @@
   "Load Spacemacs Light theme."
   (interactive)
   (load-theme 'spacemacs-light t))
-
-(/config/spacemacs-theme/light)
 
 (provide '/config/spacemacs-theme)

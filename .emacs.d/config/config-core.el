@@ -25,6 +25,9 @@
 ;;; Fonts
 (/core/boot/after '/config/util (/config/util/font-monospace))
 
+;;; Theme
+(/core/boot/after '/config/util (/config/util/harish-theme))
+
 ;;; Buffer List
 ;; After selecting buffer through the Buffer List, I don't want evil
 ;; alternate file to be *Buffer List*
