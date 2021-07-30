@@ -34,6 +34,7 @@ alias ......="cd ../../..; ls"
 alias hn-copy-pwd="pwd | tr -d '\n' | xclip; pwd"
 
 alias emc="emacsclient -n"
+alias bcl="bc -ql"
 
 #############
 # Functions #

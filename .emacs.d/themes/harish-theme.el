@@ -3,7 +3,7 @@
 (deftheme harish "Personal customizations over default theme.")
 
 (let ((background-color "#fbf8ef")
-      (foreground-color "#3d3244")
+      (foreground-color "#202020")
       (region-color "#d7d7ff")
       (act1 "#e7e5eb")
       (border "#b3b9be")

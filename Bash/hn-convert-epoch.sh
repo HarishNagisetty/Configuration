@@ -15,6 +15,11 @@ STAMPS=""
 for i in "$@"; do
     # This millennium is 9 to 10 digits.
     stamp=$(echo "$i" | grep -oP '\d{9,10}$')
+    # If a timestamp wasn't found at the end of string, search for any ten
+    # consecutive digits.
+    if [[ -z "$stamp" ]]; then
+        stamp=$(echo "$i" | grep -oP '\d{9,10}')
+    fi
     if [[ -n "$stamp" ]]; then
         STAMPS="$STAMPS\n$stamp"
     fi
@@ -26,7 +31,7 @@ IFS=$'\n'
 for i in $SORTED; do
     # Print all arguments containing this timestamp.
     for j in "$@"; do
-        arg=$(echo "$j" | grep -P "$i\$")
+        arg=$(echo "$j" | grep -P "$i")
         if [[ -n "$arg" ]]; then
             printf "$arg: "
         fi

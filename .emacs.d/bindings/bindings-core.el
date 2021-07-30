@@ -115,6 +115,8 @@
   ("G" (lambda ()
          (interactive)
          (message buffer-file-name)) "Display File Name")
+  ("N" #'evil-complete-next "Complete Next")
+  ("P" #'evil-complete-previous "Complete Previous")
   ("S" #'ispell-word "Correct Spelling at Point")
   ("O" #'just-one-space "Just One Space"))
 
@@ -123,7 +125,6 @@
     (/bindings/core/leader /bindings/core/global-leader-map "Leader")))
 
 (/bindings/core/define-keys global-map
-  ("C-c" /bindings/core/global-map)
-  ("M-u" #'universal-argument))
+  ("C-c" /bindings/core/global-map))
 
 (provide '/bindings/core)
