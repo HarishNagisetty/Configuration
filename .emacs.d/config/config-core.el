@@ -9,6 +9,8 @@
 (setq-default indent-tabs-mode nil)
 (setq frame-resize-pixelwise t)
 
+(put 'narrow-to-region 'disabled nil)
+
 (add-hook 'text-mode-hook 'auto-fill-mode)
 
 (if (fboundp 'global-display-line-numbers-mode)

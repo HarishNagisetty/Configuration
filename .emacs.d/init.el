@@ -45,3 +45,4 @@
                           (insert (format "[INIT ERROR]\n%s\n%s\n\n" file ex)))))))
 
 (provide 'init)
+
