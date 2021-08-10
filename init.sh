@@ -38,6 +38,6 @@ link_file "$SCRIPT_DIR"/.config/sway/config      $XDG_CONFIG_HOME/sway/config
 printf "#! /usr/bin/env bash\nfirefox -private-window\n" > ~/bin/firefly
 chmod +x ~/bin/firefly
 
-printf '#! /usr/bin/env bash\nchromium-browser --incognito --user-data-dir=/tmp/$(od -N 4 -t uL -An /dev/urandom | tr -d " ")\n' > ~/bin/chromium-private
+printf '#! /usr/bin/env bash\nchromium-browser --incognito --user-data-dir=/tmp/$(date +%s)\n' > ~/bin/chromium-private
 chmod +x ~/bin/chromium-private
 
