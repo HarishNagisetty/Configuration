@@ -253,6 +253,7 @@ augroup END
 " Gnupg Settings {{{1
 
 let g:GPGPreferSymmetric = 1
+let g:GPGDefaultRecipients = ["harish_n@live.com"]
 let g:GPGPreferArmor = 1
 
 " Verilog-SystemVerilog Settings {{{1
