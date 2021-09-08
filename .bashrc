@@ -32,6 +32,8 @@ alias ....="cd ../..; ls"
 alias ......="cd ../../..; ls"
 
 alias hn-copy-pwd="pwd | tr -d '\n' | xclip; pwd"
+alias hn-git-tree="git log --oneline --graph --decorate --all"
+alias hn-git-merge="git merge --no-commit --no-ff"
 
 alias emc="emacsclient -n"
 alias bcl="bc -ql"
