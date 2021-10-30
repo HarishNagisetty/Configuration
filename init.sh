@@ -33,6 +33,8 @@ link_file "$SCRIPT_DIR"/Bash/hn-compress-images.sh ~/bin/hn-compress-images.sh
 link_file "$SCRIPT_DIR"/Bash/hn-timestamp.sh       ~/bin/hn-timestamp.sh
 link_file "$SCRIPT_DIR"/.config/nvim/init.vim      $XDG_CONFIG_HOME/nvim/init.vim
 link_file "$SCRIPT_DIR"/.config/sway/config        $XDG_CONFIG_HOME/sway/config
+link_file "$SCRIPT_DIR"/.config/alacritty/alacritty.yml \
+          $XDG_CONFIG_HOME/alacritty/alacritty.yml
 
 # Firefox - Open Private window
 printf "#! /usr/bin/env bash\nfirefox -private-window\n" > ~/bin/firefly
