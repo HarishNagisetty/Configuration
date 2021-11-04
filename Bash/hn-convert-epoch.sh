@@ -9,29 +9,24 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
-STAMPS=""
-
-# Put each timestamp on its own line.
+# Create a list of timestamps
 for i in "$@"; do
     # This millennium is 9 to 10 digits.
-    stamp=$(echo "$i" | grep -oP '\d{9,10}$')
-    # If a timestamp wasn't found at the end of string, search for any ten
-    # consecutive digits.
-    if [[ -z "$stamp" ]]; then
-        stamp=$(echo "$i" | grep -oP '\d{9,10}')
-    fi
+    stamp=$(echo "$i" | grep -oP '\d{9,10}')
     if [[ -n "$stamp" ]]; then
-        STAMPS="$STAMPS\n$stamp"
+        STAMPS="$STAMPS $stamp"
     fi
 done
 
-SORTED=$(printf "$STAMPS" | sort | uniq)
+# `xargs -n1' calls `echo' with one argument/timestamp
+# `xargs' calls `echo' with all arguments
+SORTED=$(printf "$STAMPS" | xargs -n1 | sort -u | xargs)
 
-IFS=$'\n'
 for i in $SORTED; do
-    # Print all arguments containing this timestamp.
+    # Iterate through all arguments...
     for j in "$@"; do
         arg=$(echo "$j" | grep -P "$i")
+        # Print argument if it contains timestamp
         if [[ -n "$arg" ]]; then
             printf "$arg: "
         fi
