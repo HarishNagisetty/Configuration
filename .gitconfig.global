@@ -1,0 +1,7 @@
+[user]
+	name = XXX
+	email = XXX
+[credential]
+	helper = cache
+[init]
+	defaultBranch = master
