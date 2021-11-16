@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
-# hn-compress-image.sh
-#  Compress images with JPG
+# hn-resize-image.sh
+#  Resize images with JPG
 
 print_usage () {
     printf "Usage: $(basename $1) output_directory input_files...\n"
@@ -23,7 +23,7 @@ for f in "$@" ; do
             echo "Creating directory."
             mkdir -p "$OUT_DIR/$(dirname -- "$f")"
         fi
-        convert ./"$f" -quality 80% "$OUT_DIR/${f%.*}.jpg" || {
+        convert ./"$f" -resize 50% "$OUT_DIR/${f%.*}.jpg" || {
             printf "Error processing file: \"$f\"\n"
         }
     fi
