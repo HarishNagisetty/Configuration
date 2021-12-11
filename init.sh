@@ -73,18 +73,13 @@ link_file "$SCRIPT_DIR"/Bash/status-bar.sh         ~/bin/status-bar.sh
 link_file "$SCRIPT_DIR"/Bash/hn-compress-images.sh ~/bin/hn-compress-images.sh
 link_file "$SCRIPT_DIR"/Bash/hn-resize-images.sh   ~/bin/hn-resize-images.sh
 link_file "$SCRIPT_DIR"/Bash/hn-timestamp.sh       ~/bin/hn-timestamp.sh
+link_file "$SCRIPT_DIR"/Bash/hn-firefox.sh         ~/bin/hn-firefox.sh
+link_file "$SCRIPT_DIR"/Bash/hn-chromium.sh        ~/bin/hn-chromium.sh
 link_file "$SCRIPT_DIR"/.config/nvim/init.vim      $XDG_CONFIG_HOME/nvim/init.vim
 link_file "$SCRIPT_DIR"/.config/sway/config        $XDG_CONFIG_HOME/sway/config
 link_file "$SCRIPT_DIR"/.config/alacritty/alacritty.yml \
           $XDG_CONFIG_HOME/alacritty/alacritty.yml
 copy_file "$SCRIPT_DIR"/.gitconfig.global          ~/.gitconfig
-
-# Firefox - Open Private window
-printf "#! /usr/bin/env bash\nfirefox -private-window\n" > ~/bin/firefly
-chmod +x ~/bin/firefly
-# Chromium - Open Private window
-printf '#! /usr/bin/env bash\nchromium-browser --incognito --user-data-dir=/tmp/chromium-$(date +%s)\n' > ~/bin/chromium-private
-chmod +x ~/bin/chromium-private
 
 # .emacs.d/
 clone_repo "https://github.com/HarishNagisetty/verilog3-mode.git" \

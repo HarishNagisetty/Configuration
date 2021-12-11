@@ -116,7 +116,7 @@
   (when (display-graphic-p)
     (cond
      ((/config/util/font-exists-p "Source Code Pro")
-      (set-face-attribute 'default nil :font "Source Code Pro" :height 110))
+      (set-face-attribute 'default nil :font "Source Code Pro" :height 100))
      ((/config/util/font-exists-p "Monospace")
       (set-face-attribute 'default nil :font "Monospace" :height 140))
      (t (set-face-attribute 'default nil :height 114)))))

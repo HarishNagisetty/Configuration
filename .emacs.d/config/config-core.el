@@ -3,6 +3,8 @@
 (setq inhibit-splash-screen t)
 (setq make-backup-files nil)
 (setq epa-armor t)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ; one line at a time
+(setq mouse-wheel-progressive-speed nil)            ; don't accelerate scrolling
 (setq scroll-conservatively 101)
 (setq desktop-restore-frames nil)
 (setq-default fill-column 79)
@@ -18,7 +20,7 @@
   (global-linum-mode 1))
 (column-number-mode 1)
 (show-paren-mode 1)
-(scroll-bar-mode 0)
+(scroll-bar-mode 1)
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (savehist-mode 1)

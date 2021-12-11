@@ -38,6 +38,8 @@ alias hn-git-merge="git merge --no-commit --no-ff"
 alias emc="emacsclient -n"
 alias bcl="bc -ql"
 
+alias hn-du="env ls -A1 | xargs -d '\n' du -shc | sort -h"
+
 #############
 # Functions #
 #############
