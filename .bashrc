@@ -50,6 +50,8 @@ hn-gen-password () {
     tr -dc A-Za-z0-9 < /dev/urandom | head -c $1 ; echo ''
 }
 
+hn-tmpdir () { cd $(mktemp -d); pwd; }
+
 ###########
 # Private #
 ###########
