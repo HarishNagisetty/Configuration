@@ -26,8 +26,13 @@
 (savehist-mode 1)
 ;(desktop-save-mode 1)
 
+(require 'server)
+(unless (server-running-p) (server-start))
+
 ;;; Fonts
-(/core/boot/after '/config/util (/config/util/font-monospace))
+(/core/boot/after '/config/util
+  (/config/util/font-monospace)
+  (/config/util/position-frame))
 
 ;;; Theme
 (/core/boot/after '/config/util (/config/util/harish-theme))
