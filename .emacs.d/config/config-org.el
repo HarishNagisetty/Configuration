@@ -3,7 +3,7 @@
 (setq org-startup-folded t)
 (setq org-todo-keywords
       '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
-(setq org-log-done 'note)
+(setq org-log-done 'time)
 (setq org-cycle-open-archived-trees nil)
 (setq org-archive-location "~/Cloud/org/archive.org::* From %s")
 
