@@ -39,4 +39,4 @@
             (lambda () (kill-buffer "*Buffer List*")))
 
 ;; Set highlight/region color to something more visible.
-(set-face-attribute 'region nil :background "#d7d7ff")
+(set-face-attribute 'region nil :background "#79fcaf")

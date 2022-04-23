@@ -13,6 +13,7 @@
 (let ((gc-cons-threshold (* 256 1024 1024))
       (file-name-handler-alist nil)
       (user-init-directory (concat user-emacs-directory "init/"))
+      (user-themes-directory (concat user-emacs-directory "themes/"))
       (user-packages-directory (concat user-emacs-directory "init/packages/"))
       (user-bindings-directory (concat user-emacs-directory "init/bindings/"))
       (user-elisp-directory (concat user-emacs-directory "elisp/")))
@@ -36,6 +37,9 @@
     (dolist (dir (directory-files user-elisp-directory t "^[^.]"))
       (when (file-directory-p dir)
         (add-to-list 'load-path dir))))
+
+  ;; Add themes directory to load path.
+  (add-to-list 'custom-theme-load-path user-themes-directory)
 
   (load-file (concat user-init-directory "util.el"))
   (load-file (concat user-init-directory "basic-settings.el"))
@@ -61,5 +65,4 @@
   (load-file (concat user-bindings-directory "core.el"))
   (load-file (concat user-bindings-directory "dired.el"))
   (load-file (concat user-bindings-directory "evil.el"))
-  (load-file (concat user-bindings-directory "org.el"))
-)
+  (load-file (concat user-bindings-directory "org.el")))

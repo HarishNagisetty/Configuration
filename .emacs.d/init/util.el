@@ -46,7 +46,17 @@
                (substring (shell-command-to-string "date +%s") 0 -1)))
     (message "Current buffer does not have a file name.")))
 
-(defun /config/util/insert-date ()
+(defun /init/util/insert-date ()
   "Insert the date and time into the current buffer."
   (interactive)
   (insert (shell-command-to-string "echo -n `date`")))
+
+(defun /init/util/disable-themes ()
+  "Disable enabled themes."
+  (interactive)
+  (mapcar #'disable-theme custom-enabled-themes))
+
+(defun /init/util/personal-light-theme ()
+  "Load Personal Light theme."
+  (interactive)
+  (load-theme 'personal-light t))
