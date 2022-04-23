@@ -1,5 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
+;; Measure startup time.
 (let ((emacs-start-time (current-time)))
   (add-hook 'emacs-startup-hook
             (lambda ()
@@ -8,41 +9,55 @@
                                (current-time) emacs-start-time))))
                 (message "[Emacs initialized in %.3fs]" elapsed)))))
 
-;; Speed up startup by setting gc-cons-threshold and
-;; file-name-handler-alist.
+
 (let ((gc-cons-threshold (* 256 1024 1024))
       (file-name-handler-alist nil)
-      (core-directory (concat user-emacs-directory "core/"))
-      (bindings-directory (concat user-emacs-directory "bindings/"))
-      (config-directory (concat user-emacs-directory "config/"))
-      (themes-directory (concat user-emacs-directory "themes/")))
+      (user-init-directory (concat user-emacs-directory "init/"))
+      (user-packages-directory (concat user-emacs-directory "init/packages/"))
+      (user-bindings-directory (concat user-emacs-directory "init/bindings/"))
+      (user-elisp-directory (concat user-emacs-directory "elisp/")))
 
-  ;; If package-enable-at-startup is non-nil, package-initialize will
-  ;; be run again after init.
-  ;; https://www.reddit.com/r/emacs/comments/1rdstn/set_packageenableatstartup_to_nil_for_slightly/
-  (setq package-enable-at-startup nil)
+  ;; Setup package.el.
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")))
   (require 'package)
   (package-initialize)
 
-  ;; Load core-boot.el
-  (load (concat core-directory "core-boot"))
+  ;; Measure library load times.
+  (load-file (concat user-init-directory "measure-load.el"))
 
-  ;; Load custom.el
+  ;; Load custom.el.
   (setq custom-file (concat user-emacs-directory "custom.el"))
   (when (file-exists-p custom-file)
-    (load custom-file))
+    (load-file custom-file))
 
-  ;; Add themes directory
-  (add-to-list 'custom-theme-load-path themes-directory)
+  (load-file (concat user-init-directory "util.el"))
+  (load-file (concat user-init-directory "basic-settings.el"))
+  (load-file (concat user-init-directory "c-language.el"))
+  (load-file (concat user-init-directory "require-package.el"))
 
-  ;; Load all files in config and bindings directories.
-  (cl-loop for file in (append (reverse (directory-files-recursively config-directory "\\.el$"))
-                               (reverse (directory-files-recursively bindings-directory "\\.el$")))
-           do (condition-case ex
-                  (load (file-name-sans-extension file))
-                ('error (with-current-buffer "*scratch*"
-                          (insert (format "[INIT ERROR]\n%s\n%s\n\n" file ex)))))))
+  ;; Load and configure packages.
+  (load-file (concat user-packages-directory "undo-fu.el"))
+  (load-file (concat user-packages-directory "evil.el"))
+  (load-file (concat user-packages-directory "ido.el"))
+  (load-file (concat user-packages-directory "key-chord.el"))
+  (load-file (concat user-packages-directory "company.el"))
+  (load-file (concat user-packages-directory "ledger.el"))
+  (load-file (concat user-packages-directory "markdown.el"))
+  (load-file (concat user-packages-directory "htmlize.el"))
+  (load-file (concat user-packages-directory "org.el"))
+  (load-file (concat user-packages-directory "whitespace.el"))
+  (load-file (concat user-packages-directory "which-key.el"))
 
-(provide 'init)
+  ;; Set keybindings.
+  (load-file (concat user-bindings-directory "core.el"))
+  (load-file (concat user-bindings-directory "dired.el"))
+  (load-file (concat user-bindings-directory "evil.el"))
+  (load-file (concat user-bindings-directory "org.el"))
 
+  ;; Add elisp directory to load-path.
+  (when (file-directory-p user-elisp-directory)
+    (add-to-list 'load-path user-elisp-directory)
+    (dolist (dir (directory-files user-elisp-directory t "^[^.]"))
+      (when (file-directory-p dir)
+        (add-to-list 'load-path dir))))
+)
