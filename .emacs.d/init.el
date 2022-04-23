@@ -44,25 +44,13 @@
   (load-file (concat user-init-directory "util.el"))
   (load-file (concat user-init-directory "basic-settings.el"))
   (load-file (concat user-init-directory "c-language.el"))
-  (load-file (concat user-init-directory "require-package.el"))
 
   ;; Load and configure packages.
-  (load-file (concat user-packages-directory "undo-fu.el"))
-  (load-file (concat user-packages-directory "evil.el"))
-  (load-file (concat user-packages-directory "ido.el"))
-  (load-file (concat user-packages-directory "key-chord.el"))
-  (load-file (concat user-packages-directory "company.el"))
-  (load-file (concat user-packages-directory "ledger.el"))
-  (load-file (concat user-packages-directory "markdown.el"))
-  (load-file (concat user-packages-directory "htmlize.el"))
-  (load-file (concat user-packages-directory "org.el"))
-  (load-file (concat user-packages-directory "whitespace.el"))
-  (load-file (concat user-packages-directory "which-key.el"))
-  (load-file (concat user-packages-directory "verilog.el"))
-  (load-file (concat user-packages-directory "verilog3.el"))
+  (dolist (pkg '("undo-fu" "evil" "ido" "key-chord" "company"
+                 "ledger" "markdown" "htmlize" "org" "whitespace"
+                 "which-key" "verilog" "verilog3"))
+    (load-file (concat user-packages-directory pkg ".el")))
 
   ;; Set keybindings.
-  (load-file (concat user-bindings-directory "core.el"))
-  (load-file (concat user-bindings-directory "dired.el"))
-  (load-file (concat user-bindings-directory "evil.el"))
-  (load-file (concat user-bindings-directory "org.el")))
+  (dolist (binding '("core" "dired" "evil" "org"))
+    (load-file (concat user-bindings-directory binding ".el"))))

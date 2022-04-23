@@ -8,7 +8,7 @@
 ;; Make * search for symbol rather than word.
 (setq evil-symbol-word-search t)
 
-(/init/require-package 'evil)
+(/init/util/require-package 'evil)
 (require 'evil)
 
 ;; Move forward and backward by symbol instead of word.

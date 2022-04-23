@@ -2,6 +2,6 @@
 
 (setq-default ido-enable-flex-matching t)
 
-(/init/require-package 'ido)
+(/init/util/require-package 'ido)
 
 (ido-mode)

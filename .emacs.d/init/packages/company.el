@@ -1,5 +1,5 @@
 ;; -*- lexical-binding: t -*-
 
-(/init/require-package 'company)
+(/init/util/require-package 'company)
 
 (global-company-mode 1)

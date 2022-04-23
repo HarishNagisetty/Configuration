@@ -1,3 +1,3 @@
 ;; -*- lexical-binding: t -*-
 
-(/init/require-package 'markdown-mode)
+(/init/util/require-package 'markdown-mode)
