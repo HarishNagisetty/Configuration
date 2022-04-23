@@ -30,6 +30,13 @@
   (when (file-exists-p custom-file)
     (load-file custom-file))
 
+  ;; Add elisp directory to load-path.
+  (when (file-directory-p user-elisp-directory)
+    (add-to-list 'load-path user-elisp-directory)
+    (dolist (dir (directory-files user-elisp-directory t "^[^.]"))
+      (when (file-directory-p dir)
+        (add-to-list 'load-path dir))))
+
   (load-file (concat user-init-directory "util.el"))
   (load-file (concat user-init-directory "basic-settings.el"))
   (load-file (concat user-init-directory "c-language.el"))
@@ -47,17 +54,12 @@
   (load-file (concat user-packages-directory "org.el"))
   (load-file (concat user-packages-directory "whitespace.el"))
   (load-file (concat user-packages-directory "which-key.el"))
+  (load-file (concat user-packages-directory "verilog.el"))
+  (load-file (concat user-packages-directory "verilog3.el"))
 
   ;; Set keybindings.
   (load-file (concat user-bindings-directory "core.el"))
   (load-file (concat user-bindings-directory "dired.el"))
   (load-file (concat user-bindings-directory "evil.el"))
   (load-file (concat user-bindings-directory "org.el"))
-
-  ;; Add elisp directory to load-path.
-  (when (file-directory-p user-elisp-directory)
-    (add-to-list 'load-path user-elisp-directory)
-    (dolist (dir (directory-files user-elisp-directory t "^[^.]"))
-      (when (file-directory-p dir)
-        (add-to-list 'load-path dir))))
 )
