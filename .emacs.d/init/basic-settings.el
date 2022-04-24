@@ -10,6 +10,7 @@
 (setq-default fill-column 79)
 (setq-default indent-tabs-mode nil)
 (setq frame-resize-pixelwise t)
+(setq confirm-kill-emacs #'yes-or-no-p)
 
 (put 'narrow-to-region 'disabled nil)
 
@@ -22,7 +23,7 @@
 (show-paren-mode 1)
 (scroll-bar-mode 1)
 (tool-bar-mode 0)
-(menu-bar-mode 0)
+(menu-bar-mode 1)
 (savehist-mode 1)
 ;(desktop-save-mode 1)
 
