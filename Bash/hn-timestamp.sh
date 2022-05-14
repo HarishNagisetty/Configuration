@@ -1,3 +1,3 @@
 #! /usr/bin/env bash
 
-date "+%Y_%b_%d-%s"
+date "+%s-%Y_%b_%d"
