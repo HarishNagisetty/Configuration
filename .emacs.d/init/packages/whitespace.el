@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
-(setq whitespace-style '(tabs tab-mark))
+(setq whitespace-style '(face trailing tab-mark))
 
 (/init/util/require-package 'whitespace)
 
