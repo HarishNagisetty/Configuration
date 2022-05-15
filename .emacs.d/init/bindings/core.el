@@ -91,6 +91,8 @@
   ("ps" #'flyspell-mode "Toggle Spell Check On/Off")
   ("pt" nil "Change Theme")
   ("pth" #'/init/util/personal-light-theme "Personal Light Theme")
+  ("ptl" #'bespoke/light-theme "Bespoke Light Theme")
+  ("ptd" #'bespoke/dark-theme "Bespoke Dark Theme")
   ("ptn" #'/init/util/disable-themes "No Theme")
   ("pw" 'toggle-truncate-lines "Toggle Line-Wrap")
   ("q" #'/init/bindings/core/delete-buffer "Delete Buffer")
