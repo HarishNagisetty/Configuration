@@ -263,8 +263,11 @@ subtlety stand out from the mode line and other adjacent faces."
    `(link                                          ((,class :foreground ,bespoke-salient)))
    `(region                                        ((,class :background ,bespoke-highlight)))
    `(fringe                                        ((,class :foreground ,bespoke-faded :weight light)))
-   `(highlight                                     ((,class :background ,bespoke-subtle)))
-   `(lazy-highlight                                ((,class :foreground ,bespoke-green)))
+   `(region                                        ((,class :background ,bespoke-highlight)))
+   `(highlight                                     ((,class :foreground ,bespoke-popout :background ,bespoke-highlight)))
+   `(lazy-highlight                                ((,class :background ,bespoke-highlight)))
+   ;;`(highlight                                     ((,class :background ,bespoke-subtle)))
+   ;;`(lazy-highlight                                ((,class :foreground ,bespoke-green)))
    `(trailing-whitespace                           ((,class :foreground ,bespoke-faded)))
    `(secondary-selection                           ((,class :foreground ,bespoke-yellow :background ,bespoke-subtle)))
    `(show-paren-match                              ((,class :foreground ,bespoke-yellow :weight bold)))
@@ -538,8 +541,8 @@ subtlety stand out from the mode line and other adjacent faces."
    `(flyspell-incorrect                            ((,class :foreground ,bespoke-critical)))
 
 ;;;;; Font Lock
-   `(font-lock-comment-face                        ((,class :foreground ,bespoke-faded :slant ,(if bespoke-set-italic-comments 'italic 'normal))))
-   `(font-lock-comment-delimiter-face              ((,class :foreground ,bespoke-faded :weight bold :slant ,(if bespoke-set-italic-comments 'italic 'normal))))
+   `(font-lock-comment-face                        ((,class :foreground ,bespoke-popout :slant ,(if bespoke-set-italic-comments 'italic 'normal))))
+   `(font-lock-comment-delimiter-face              ((,class :foreground ,bespoke-popout :weight bold :slant ,(if bespoke-set-italic-comments 'italic 'normal))))
    `(font-lock-doc-face                            ((,class :foreground ,bespoke-faded)))
    `(font-lock-string-face                         ((,class :foreground ,bespoke-popout)))
    `(font-lock-constant-face                       ((,class :foreground ,bespoke-green)))
@@ -1032,7 +1035,8 @@ subtlety stand out from the mode line and other adjacent faces."
    `(rainbow-delimiters-depth-9-face ((,class :foreground ,bespoke-foreground :weight light)))
 
 ;;;;; Search
-   `(evil-ex-search                               ((,class :background ,bespoke-popout)))
+   ;;`(evil-ex-search                               ((,class :background ,bespoke-popout)))
+   `(evil-ex-search                               ((,class :background ,bespoke-popout :foreground ,bespoke-highlight :weight bold)))
    `(isearch                                      ((,class :background ,bespoke-popout :foreground ,bespoke-highlight :weight bold)))
    `(isearch-fail                                 ((,class :background ,bespoke-critical)))
    `(isearch-group-1                              ((,class :background ,bespoke-blue)))

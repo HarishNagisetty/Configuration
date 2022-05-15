@@ -43,3 +43,4 @@
 (set-face-attribute 'region nil :background "#79fcaf")
 
 (require 'bespoke-themes)
+(bespoke/dark-theme)

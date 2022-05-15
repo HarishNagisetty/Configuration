@@ -59,7 +59,22 @@
 (defun /init/util/personal-light-theme ()
   "Load Personal Light theme."
   (interactive)
+  (/init/util/disable-themes)
   (load-theme 'personal-light t))
+
+(defun /init/util/spacemacs-dark-theme ()
+  "Load Spacemacs Dark theme."
+  (interactive)
+  (require 'spacemacs-common)
+  (/init/util/disable-themes)
+  (load-theme 'spacemacs-dark t))
+
+(defun /init/util/spacemacs-light-theme ()
+  "Load Spacemacs Light theme."
+  (interactive)
+  (require 'spacemacs-common)
+  (/init/util/disable-themes)
+  (load-theme 'spacemacs-light t))
 
 (defun /init/util/require-package (package)
   "Ensures that PACKAGE is installed."

@@ -86,6 +86,8 @@ clone_repo "https://github.com/HarishNagisetty/verilog3-mode.git" \
     ".emacs.d/elisp/verilog3-mode/"
 clone_repo "https://github.com/HarishNagisetty/origami.el.git" \
     ".emacs.d/elisp/origami.el/"
+clone_repo "https://github.com/nashamri/spacemacs-theme.git" \
+    ".emacs.d/elisp/spacemacs-theme/"
 # .vim/
 clone_repo "https://github.com/HarishNagisetty/vim-colors-solarized.git" \
     ~/.vim/pack/vim-colors-solarized/start/vim-colors-solarized/
