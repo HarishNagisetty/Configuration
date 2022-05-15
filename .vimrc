@@ -67,8 +67,15 @@ nnoremap <Leader>on :sp ~/.notes<CR>
 nnoremap <Leader>os :HNScratchBuffer<CR>
 nnoremap <Leader>ot :Vexplore<CR>
 nnoremap <Leader>p  :echo "
+            \ t: Theme\n
             \ w: Toggle Line-Wrap"
             \\| call HNFinishKeyMapping("\<Leader>p")<CR>
+nnoremap <Leader>pt  :echo "
+            \ l: Light\n
+            \ d: Dark"
+            \\| call HNFinishKeyMapping("\<Leader>pt")<CR>
+nnoremap <Leader>ptl :set background=light<CR>
+nnoremap <Leader>ptd :set background=dark<CR>
 nnoremap <Leader>pw :setlocal invwrap<CR>
 nnoremap <Leader>q  :bd<CR>
 nnoremap <Leader>s  :echo "
