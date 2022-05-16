@@ -237,7 +237,7 @@ subtlety stand out from the mode line and other adjacent faces."
   (setq bespoke-strong     (--l/d "#000000" "#ffffff"))
   (setq bespoke-popout     (--l/d "#940b96" "#bc85cf"))
   (setq bespoke-subtle     (--l/d "#eceff1" "#333a47"))
-  (setq bespoke-faded      (--l/d "#727d97" "#959eb1"))
+  (setq bespoke-faded      (--l/d "#0d3082" "#959eb1"))
 
   (setq bespoke-blue       (--l/d "#30608c" "#81a1c1"))
   (setq bespoke-green      (--l/d "#00796b" "#8eb89d"))
@@ -262,7 +262,7 @@ subtlety stand out from the mode line and other adjacent faces."
    `(minibuffer-prompt                             ((,class :foreground ,bespoke-green)))
    `(link                                          ((,class :foreground ,bespoke-salient)))
    `(region                                        ((,class :background ,bespoke-highlight)))
-   `(fringe                                        ((,class :foreground ,bespoke-faded :weight light)))
+   `(fringe                                        ((,class :foreground ,bespoke-faded)))
    `(region                                        ((,class :background ,bespoke-highlight)))
    `(highlight                                     ((,class :foreground ,bespoke-popout :background ,bespoke-highlight)))
    `(lazy-highlight                                ((,class :background ,bespoke-highlight)))
