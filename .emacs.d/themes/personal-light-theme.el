@@ -9,7 +9,7 @@
       (inactive-color   "#f5f5f5")
       (filename-color   "#282b35")
       (faded-color      "#ababab")
-      (function-color   "#273de6")
+      (function-color   "#250361")
       (trail-ws-color   "#f0823e")
       (comment-fg-color "#044a21")
       (comment-bg-color "#dff5dc")
