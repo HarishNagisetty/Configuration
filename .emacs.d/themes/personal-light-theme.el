@@ -9,6 +9,10 @@
       (inactive-color   "#f5f5f5")
       (filename-color   "#282b35")
       (faded-color      "#ababab")
+      (function-color   "#273de6")
+      (trail-ws-color   "#f0823e")
+      (comment-fg-color "#044a21")
+      (comment-bg-color "#dff5dc")
       (salient-color    "#303db4")
       (purple-color     "#6c3163")
       (blue-color       "#3256a8")
@@ -33,6 +37,13 @@
          :background ,inactive-color
          :box (:line-width 3 :color ,inactive-color :style nil))))
 
+   ;; Font-lock
+   `(font-lock-comment-face ((t :foreground ,comment-fg-color
+                                :background ,comment-bg-color
+                                :slant italic)))
+   `(font-lock-function-name-face ((t :foreground ,function-color
+                                      :weight bold)))
+
    ;; Outline
    `(outline-1 ((t :foreground ,blue-color  :height 1.3)))
    `(outline-2 ((t :foreground ,green-color :height 1.2)))
@@ -42,6 +53,9 @@
    `(outline-6 ((t :inherit outline-2)))
    `(outline-7 ((t :inherit outline-3)))
    `(outline-8 ((t :inherit outline-4)))
+
+   ;; Whitespace
+   `(whitespace-trailing ((t :background ,trail-ws-color)))
 
    ;; Org
    `(org-document-title ((t :foreground ,salient-color :height 1.1)))
