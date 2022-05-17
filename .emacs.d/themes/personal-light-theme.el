@@ -1,20 +1,59 @@
 ;; -*- lexical-binding: t -*-
 
-(deftheme personal-light "Light color theme inspired by Spacemacs.")
+(deftheme personal-light "Personal theme inspired by Spacemacs and Bespoke.")
 
 (let ((background-color "#fbf8ef")
       (foreground-color "#202020")
-      (region-color "#d7d7ff")
-      (act1 "#e7e5eb")
-      (border "#b3b9be")
-      (func "#6c3163"))
+      (region-color     "#d7d7ff")
+      (active-color     "#e7e5eb")
+      (inactive-color   "#f5f5f5")
+      (filename-color   "#282b35")
+      (faded-color      "#ababab")
+      (salient-color    "#303db4")
+      (purple-color     "#6c3163")
+      (blue-color       "#3256a8")
+      (red-color        "#a8326f")
+      (green-color      "#32a852")
+      (brown-color      "#a86432"))
   (custom-theme-set-faces
    'personal-light
-   `(region ((t (:inherit nil :background ,region-color))))
-   `(fringe ((t (:background ,background-color))))
-   `(default ((t (:background ,background-color :foreground ,foreground-color))))
-   `(mode-line ((t (:foreground ,foreground-color :background ,act1 :box (:color ,border :line-width 1)))))
-   `(mode-line-buffer-id ((t (:inherit bold :foreground ,func))))
-   `(mode-line-inactive  ((t (:foreground ,foreground-color :background ,background-color :box (:color ,border :line-width 1)))))))
+
+   ;; Basic Faces
+   `(region ((t :inherit nil :background ,region-color)))
+   `(fringe ((t :background ,background-color)))
+   `(default ((t :background ,background-color
+                 :foreground ,foreground-color)))
+   `(mode-line-buffer-id ((t :weight bold :foreground ,filename-color)))
+   `(mode-line
+     ((t :foreground ,foreground-color
+         :background ,active-color
+         :box (:line-width 3 :color ,active-color :style nil))))
+   `(mode-line-inactive
+     ((t :foreground ,foreground-color
+         :background ,inactive-color
+         :box (:line-width 3 :color ,inactive-color :style nil))))
+
+   ;; Outline
+   `(outline-1 ((t :foreground ,blue-color  :height 1.3)))
+   `(outline-2 ((t :foreground ,green-color :height 1.2)))
+   `(outline-3 ((t :foreground ,red-color   :height 1.1)))
+   `(outline-4 ((t :foreground ,brown-color :height 1.0)))
+   `(outline-5 ((t :inherit outline-1)))
+   `(outline-6 ((t :inherit outline-2)))
+   `(outline-7 ((t :inherit outline-3)))
+   `(outline-8 ((t :inherit outline-4)))
+
+   ;; Org
+   `(org-document-title ((t :foreground ,salient-color :height 1.1)))
+   `(org-done           ((t :foreground ,faded-color :strike-through t)))
+   `(org-headline-done  ((t :foreground ,faded-color)))
+   `(org-level-1        ((t :inherit 'outline-1)))
+   `(org-level-2        ((t :inherit 'outline-2)))
+   `(org-level-3        ((t :inherit 'outline-3)))
+   `(org-level-4        ((t :inherit 'outline-4)))
+   `(org-level-5        ((t :inherit 'outline-5)))
+   `(org-level-6        ((t :inherit 'outline-6)))
+   `(org-level-7        ((t :inherit 'outline-7)))
+   `(org-level-8        ((t :inherit 'outline-8)))))
 
 (provide-theme 'personal-light)
