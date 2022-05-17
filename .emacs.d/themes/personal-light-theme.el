@@ -46,7 +46,6 @@
    ;; Org
    `(org-document-title ((t :foreground ,salient-color :height 1.1)))
    `(org-done           ((t :foreground ,faded-color :strike-through t)))
-   `(org-headline-done  ((t :foreground ,faded-color)))
    `(org-level-1        ((t :inherit 'outline-1)))
    `(org-level-2        ((t :inherit 'outline-2)))
    `(org-level-3        ((t :inherit 'outline-3)))
@@ -54,6 +53,8 @@
    `(org-level-5        ((t :inherit 'outline-5)))
    `(org-level-6        ((t :inherit 'outline-6)))
    `(org-level-7        ((t :inherit 'outline-7)))
-   `(org-level-8        ((t :inherit 'outline-8)))))
+   `(org-level-8        ((t :inherit 'outline-8)))
+   `(org-headline-done  ((t :foreground ,faded-color)))
+   ))
 
 (provide-theme 'personal-light)
