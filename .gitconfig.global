@@ -5,3 +5,8 @@
 	helper = cache
 [init]
 	defaultBranch = master
+[alias]
+	stat = status
+	last = log -1 HEAD --stat
+	tree = log --oneline --graph --decorate --all
+	helpalias = "!git config -l | grep alias"
