@@ -83,3 +83,17 @@
     (unless (assoc package package-archive-contents)
       (package-refresh-contents))
     (package-install package)))
+
+(defun /init/util/open-occur-by-major-mode ()
+  (interactive)
+  (let* ((verilog-pattern "task\\|function\\|class\\|module")
+         (regexp-alist
+          `((python-mode . "class\\|def")
+            (emacs-lisp-mode . "(def")
+            (verilog-mode . ,verilog-pattern)
+            (verilog3-mode . ,verilog-pattern)))
+         active)
+    (setq active (assoc major-mode regexp-alist))
+    (when active
+      (occur (cdr active))
+      (other-window 1))))

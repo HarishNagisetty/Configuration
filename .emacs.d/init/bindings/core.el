@@ -82,6 +82,7 @@
   ("om" #'/init/bindings/core/open-marks "Open Bookmarks")
   ("on" #'/init/bindings/core/open-notes "Open Notes")
   ("os" #'/init/bindings/core/open-scratch-buffer "Open Scratch Buffer")
+  ("oo" #'/init/util/open-occur-by-major-mode "Open Occur")
   ("p" nil "Preferences...")
   ("p-" #'text-scale-decrease "Decrease Text Scale")
   ("p+" #'text-scale-increase "Increase Text Scale")
