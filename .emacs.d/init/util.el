@@ -86,7 +86,9 @@
 
 (defun /init/util/open-occur-by-major-mode ()
   (interactive)
-  (let* ((verilog-pattern "task\\|function\\|class\\|module")
+  (let* ((verilog-pattern (concat "task\\|function\\|class\\|module\\|"
+                                  ;; Match heading comments.
+                                  "//.*//"))
          (regexp-alist
           `((python-mode . "class\\|def")
             (emacs-lisp-mode . "(def")
