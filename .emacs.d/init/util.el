@@ -88,7 +88,7 @@
   (interactive)
   (let* ((verilog-pattern (concat "task\\|function\\|class\\|module\\|"
                                   ;; Match heading comments.
-                                  "//[^/]+//"))
+                                  "//[[:alnum:][:blank:]]+//"))
          (regexp-alist
           `((python-mode . "class\\|def")
             (emacs-lisp-mode . "(def")
