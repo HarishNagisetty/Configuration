@@ -52,5 +52,5 @@
     (load-file (concat user-packages-directory pkg ".el")))
 
   ;; Set keybindings.
-  (dolist (binding '("core" "dired" "evil" "org"))
+  (dolist (binding '("core" "dired" "evil" "org" "occur"))
     (load-file (concat user-bindings-directory binding ".el"))))
