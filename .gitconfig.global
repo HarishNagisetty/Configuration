@@ -7,6 +7,7 @@
 	defaultBranch = master
 [alias]
 	stat = status
+	cm = commit -m
 	last = log -1 HEAD --stat
 	tree = log --oneline --graph --decorate --all
 	helpalias = "!git config -l | grep alias"
