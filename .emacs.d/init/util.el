@@ -86,7 +86,7 @@
 
 (defun /init/util/open-occur-by-major-mode ()
   (interactive)
-  (let* ((verilog-pattern (concat "task\\|function\\|class\\|module\\|"
+  (let* ((verilog-pattern (concat "module\\|"
                                   ;; Match heading comments.
                                   "//[[:alnum:][:blank:]]+//"))
          (regexp-alist
