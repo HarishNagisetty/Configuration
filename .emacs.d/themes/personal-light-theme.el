@@ -49,10 +49,10 @@
    `(outline-2 ((t :foreground ,green-color :height 1.2)))
    `(outline-3 ((t :foreground ,red-color   :height 1.1)))
    `(outline-4 ((t :foreground ,brown-color :height 1.0)))
-   `(outline-5 ((t :inherit outline-1)))
-   `(outline-6 ((t :inherit outline-2)))
-   `(outline-7 ((t :inherit outline-3)))
-   `(outline-8 ((t :inherit outline-4)))
+   `(outline-5 ((t :foreground ,blue-color  :height 1.0)))
+   `(outline-6 ((t :foreground ,green-color :height 1.0)))
+   `(outline-7 ((t :foreground ,red-color   :height 1.0)))
+   `(outline-8 ((t :foreground ,brown-color :height 1.0)))
 
    ;; Whitespace
    `(whitespace-trailing ((t :background ,trail-ws-color)))
