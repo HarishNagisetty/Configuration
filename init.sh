@@ -73,6 +73,7 @@ link_file "$SCRIPT_DIR"/Bash/status-bar.sh         ~/bin/status-bar.sh
 link_file "$SCRIPT_DIR"/Bash/hn-compress-images.sh ~/bin/hn-compress-images.sh
 link_file "$SCRIPT_DIR"/Bash/hn-resize-images.sh   ~/bin/hn-resize-images.sh
 link_file "$SCRIPT_DIR"/Bash/hn-timestamp.sh       ~/bin/hn-timestamp.sh
+link_file "$SCRIPT_DIR"/Bash/hn-copy-date-and-time.sh ~/bin/hn-copy-date-and-time.sh
 link_file "$SCRIPT_DIR"/Bash/hn-firefox.sh         ~/bin/hn-firefox.sh
 link_file "$SCRIPT_DIR"/Bash/hn-chromium.sh        ~/bin/hn-chromium.sh
 link_file "$SCRIPT_DIR"/.config/nvim/init.vim      $XDG_CONFIG_HOME/nvim/init.vim
