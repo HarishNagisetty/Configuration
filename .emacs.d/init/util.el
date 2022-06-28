@@ -5,7 +5,7 @@
   (if (null (x-list-fonts font)) nil t))
 
 (defun /init/util/font-monospace ()
-  "Set the default font to a monospace font." 
+  "Set the default font to a monospace font."
   (interactive)
   (when (display-graphic-p)
     (cond
@@ -33,7 +33,7 @@
   "Toggle line numbering for the current buffer."
   (interactive)
   (if (fboundp 'display-line-numbers-mode)
-      (display-line-numbers-mode 'toggle) 
+      (display-line-numbers-mode 'toggle)
     (linum-mode 'toggle)))
 
 (defun /init/util/write-backup ()
@@ -75,6 +75,12 @@
   (require 'spacemacs-common)
   (/init/util/disable-themes)
   (load-theme 'spacemacs-light t))
+
+(defun /init/util/eink-theme ()
+  "Load E-Ink theme."
+  (interactive)
+  (/init/util/disable-themes)
+  (load-theme 'eink t))
 
 (defun /init/util/require-package (package)
   "Ensures that PACKAGE is installed."

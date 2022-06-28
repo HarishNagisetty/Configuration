@@ -91,6 +91,7 @@
   ("pm" #'menu-bar-mode "Toggle Menu Bar")
   ("ps" #'flyspell-mode "Toggle Spell Check On/Off")
   ("pt" nil "Change Theme")
+  ("pte" #'/init/util/eink-theme "E-Ink Theme")
   ("pth" #'/init/util/personal-light-theme "Personal Light Theme")
   ("ptn" #'/init/util/disable-themes "No Theme")
   ("ptb" nil "Bespoke Theme")
