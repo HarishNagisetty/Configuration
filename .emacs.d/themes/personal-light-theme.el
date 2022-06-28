@@ -5,7 +5,7 @@
 (let ((background-color "#fbf8ef")
       (foreground-color "#202020")
       (region-color     "#d7d7ff")
-      (active-color     "#ff837a")
+      (active-color     "#faa6a0")
       (inactive-color   "#ffcbc7")
       (filename-color   "#282b35")
       (faded-color      "#ababab")
