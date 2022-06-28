@@ -5,14 +5,14 @@
 (let ((background-color "#fbf8ef")
       (foreground-color "#202020")
       (region-color     "#d7d7ff")
-      (active-color     "#e7e5eb")
+      (active-color     "#eea8ff")
       (inactive-color   "#f5f5f5")
       (filename-color   "#282b35")
       (faded-color      "#ababab")
       (function-color   "#250361")
       (trail-ws-color   "#f0823e")
-      (comment-fg-color "#044a21")
-      (comment-bg-color "#dff5dc")
+      (comment-fg-color "#49005c")
+      (comment-bg-color "#fbf8ef")
       (salient-color    "#303db4")
       (purple-color     "#6c3163")
       (blue-color       "#3256a8")
@@ -40,7 +40,7 @@
    ;; Font-lock
    `(font-lock-comment-face ((t :foreground ,comment-fg-color
                                 :background ,comment-bg-color
-                                :slant italic)))
+                                :weight bold)))
    `(font-lock-function-name-face ((t :foreground ,function-color
                                       :weight bold)))
 
