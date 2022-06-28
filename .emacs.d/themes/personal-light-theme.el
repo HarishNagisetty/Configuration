@@ -2,8 +2,8 @@
 
 (deftheme personal-light "Personal theme inspired by Spacemacs and Bespoke.")
 
-(let ((background-color "#fbf8ef")
-      (foreground-color "#202020")
+(let ((background-color "#ffffff")
+      (foreground-color "#000000")
       (region-color     "#d7d7ff")
       (active-color     "#e7e5eb")
       (inactive-color   "#f5f5f5")
