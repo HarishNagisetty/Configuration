@@ -72,7 +72,8 @@
                       "spacemacs-dark"
                       "leuven"
                       "solo-jazz"
-                      "misterioso")
+                      "misterioso"
+                      "anti-zenburn")
      nil t)))
   (/init/util/disable-themes)
   (load-theme (intern theme-name) t))
