@@ -76,12 +76,6 @@
   (/init/util/disable-themes)
   (load-theme 'spacemacs-light t))
 
-(defun /init/util/eink-theme ()
-  "Load E-Ink theme."
-  (interactive)
-  (/init/util/disable-themes)
-  (load-theme 'eink t))
-
 (defun /init/util/require-package (package)
   "Ensures that PACKAGE is installed."
   (unless (or (package-installed-p package)

@@ -42,5 +42,4 @@
 ;; Set highlight/region color to something more visible.
 (set-face-attribute 'region nil :background "#79fcaf")
 
-(require 'bespoke-themes)
 (/init/util/personal-light-theme)
