@@ -52,6 +52,7 @@
 
    ;; Org
    `(org-done           ((t :foreground ,faded-color :strike-through t)))
+   `(org-document-title ((t :foreground ,foreground-color :height 2.0 :weight bold)))
    `(org-headline-done  ((t :foreground ,faded-color)))
    ))
 
