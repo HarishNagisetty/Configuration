@@ -56,25 +56,26 @@
   (interactive)
   (mapcar #'disable-theme custom-enabled-themes))
 
-(defun /init/util/personal-light-theme ()
-  "Load Personal Light theme."
+(defun /init/util/default-theme ()
+  "Load Default Theme."
   (interactive)
   (/init/util/disable-themes)
   (load-theme 'personal-light t))
 
-(defun /init/util/spacemacs-dark-theme ()
-  "Load Spacemacs Dark theme."
-  (interactive)
-  (require 'spacemacs-common)
+(defun /init/util/load-theme (theme-name)
+  "Load a Favorite Theme."
+  (interactive
+   (list
+    (completing-read
+     "Theme Name: " '("personal-light"
+                      "spacemacs-light"
+                      "spacemacs-dark"
+                      "leuven"
+                      "solo-jazz"
+                      "misterioso")
+     nil t)))
   (/init/util/disable-themes)
-  (load-theme 'spacemacs-dark t))
-
-(defun /init/util/spacemacs-light-theme ()
-  "Load Spacemacs Light theme."
-  (interactive)
-  (require 'spacemacs-common)
-  (/init/util/disable-themes)
-  (load-theme 'spacemacs-light t))
+  (load-theme (intern theme-name) t))
 
 (defun /init/util/require-package (package)
   "Ensures that PACKAGE is installed."
