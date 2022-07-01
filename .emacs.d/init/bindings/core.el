@@ -123,6 +123,10 @@
   ("N" #'evil-complete-next "Complete Next")
   ("P" #'evil-complete-previous "Complete Previous")
   ("S" #'ispell-word "Correct Spelling at Point")
+  ("V" (lambda ()
+         (interactive)
+         (insert (gui-get-selection)))
+   "Paste Contents of Primary Clipboard")
   ("O" #'just-one-space "Just One Space"))
 
 (/init/bindings/core/define-keys evil-motion-state-map

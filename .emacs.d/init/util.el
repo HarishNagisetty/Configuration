@@ -121,3 +121,7 @@
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
+(defun /init/util/copy-file-name ()
+  (interactive)
+  (gui-set-selection 'PRIMARY (buffer-file-name)))
