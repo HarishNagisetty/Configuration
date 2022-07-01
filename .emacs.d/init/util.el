@@ -75,6 +75,8 @@
                       "misterioso"
                       "anti-zenburn")
      nil t)))
+  (when (string-match "^spacemacs" theme-name)
+    (require 'spacemacs-common))
   (/init/util/disable-themes)
   (load-theme (intern theme-name) t))
 
