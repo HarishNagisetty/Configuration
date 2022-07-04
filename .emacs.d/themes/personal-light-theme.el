@@ -2,7 +2,7 @@
 
 (deftheme personal-light "Personal theme inspired by Spacemacs and Bespoke.")
 
-(let ((background-color "#ffffff")
+(let ((background-color "#f7f0f0")
       (foreground-color "#000000")
       (region-color     "#d7d7ff")
       (active-color     "#e7e5eb")
