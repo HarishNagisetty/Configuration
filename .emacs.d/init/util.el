@@ -68,6 +68,7 @@
    (list
     (completing-read
      "Theme Name: " '("personal-light"
+                      "personal-dark"
                       "spacemacs-light"
                       "spacemacs-dark"
                       "leuven"
