@@ -27,10 +27,6 @@ alias l=ls
 alias ll="ls -o"
 alias la="ls -a"
 
-alias ..="cd ..; ls"
-alias ....="cd ../..; ls"
-alias ......="cd ../../..; ls"
-
 alias hn-copy-pwd="pwd | tr -d '\n' | xclip; pwd"
 alias hn-timestamp="date '+%s-%Y_%b_%d'"
 alias hn-git-tree="git log --oneline --graph --decorate --all"
