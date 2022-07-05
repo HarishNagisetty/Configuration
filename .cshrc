@@ -26,3 +26,11 @@ alias emc="emacsclient -n"
 alias bcl="bc -ql"
 alias cl cd \!:1 \; ls
 alias hn-tmpdir source "$HOME/bin/hn-tmpdir.csh"
+
+###########
+# Private #
+###########
+
+if ( -f $HOME/.cshrc.private ) then
+    source $HOME/.cshrc.private
+endif
