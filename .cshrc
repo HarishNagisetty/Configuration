@@ -22,8 +22,8 @@ alias hn-timestamp date '+%s-%Y_%b_%d'
 alias hn-git-tree  git log --oneline --graph --decorate --all
 alias hn-git-merge git merge --no-commit --no-ff
 
-alias emc="emacsclient -n"
-alias bcl="bc -ql"
+alias emc emacsclient -n
+alias bcl bc -ql
 alias cl cd \!:1 \; ls
 alias hn-tmpdir source "$HOME/bin/hn-tmpdir.csh"
 
